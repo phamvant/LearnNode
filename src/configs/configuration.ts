@@ -1,7 +1,7 @@
 interface Config {
   development: {
     DB: {
-      HOST: string | undefined;
+      HOST: string;
     };
     APP: {
       PORT: number | undefined;
@@ -19,7 +19,7 @@ interface Config {
 
 const development: Config["development"] = {
   DB: {
-    HOST: process.env.DATABASE_TYPE_DEV,
+    HOST: process.env.DATABASE_TYPE_DEV || "file:./dev.db",
   },
   APP: {
     PORT: process.env.SERVER_PORT_DEV
