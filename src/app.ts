@@ -1,8 +1,7 @@
-import compression from "compression";
-import express, { NextFunction, Request, Response } from "express";
+import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
-import { checkDbInfo, checkOverLoad } from "./helpers/check.connect";
+import router from "./routes";
 
 const app = express();
 
@@ -15,23 +14,20 @@ app.use(morgan("combined"));
 app.use(helmet());
 
 //Compression
-app.use(compression());
+// app.use(compression());
+
+app.use(express.json());
+
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
 
 //------Middleware------//
 
-checkOverLoad();
+app.use("", router);
 
-app.get("/", (req: Request, res: Response, next: NextFunction) => {
-  return res.status(200).json({
-    message: "Hello",
-  });
-});
-
-app.get("/dbcheck", async (req: Request, res: Response, next: NextFunction) => {
-  const health = await checkDbInfo();
-  return res.status(200).send({
-    message: health,
-  });
-});
+// checkOverLoad();
 
 export default app;

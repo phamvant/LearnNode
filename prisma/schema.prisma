@@ -7,15 +7,44 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL_DEV")
 }
 
+//-------------Account-------------//
+
+enum Permission {
+  PERMISSION_0000
+  PERMISSION_1111
+  PERMISSION_2222
+}
+
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  name     String
+  password String
+  username String
+
+  verified Boolean   @default(false)
+  status   String    @default("INACTIVE")
+  roles    String[]
+  posts    Post[]
+  KeyToken KeyToken?
+}
+
+//-------------Security-------------//
+
+model KeyToken {
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int    @unique
+  publicKey String
+}
+
+model ApiKey {
+  key        String       @unique
+  status     Boolean      @default(true)
+  permission Permission[]
 }
 
 model Post {

@@ -173,3 +173,5 @@ dist
 bun.lockb
 prisma/dev.db
 prisma/dev.db-journal
+prisma/migrations/20231217033920_/migration.sql
+prisma/migrations/20231217034336_/migration.sql
