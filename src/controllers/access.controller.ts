@@ -1,16 +1,17 @@
 import { NextFunction, Request, Response } from "express";
+import { CREATE } from "../core/success.response";
 import AccessService from "../services/access.service";
 
 class AccessController {
   static signUp = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      console.log(`[P]::SignUp`, req.body);
-      const response = await AccessService.SignUp(req.body);
+    console.log(`[P]::SignUp`, req.body);
 
-      return res.status(201).json(response);
-    } catch (error) {
-      next(error);
-    }
+    const newUser = await AccessService.SignUp(req.body);
+
+    new CREATE({
+      message: "New User Created",
+      metadata: newUser || {},
+    }).send(res);
   };
 }
 

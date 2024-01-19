@@ -1,5 +1,6 @@
 import { generateKeyPairSync } from "node:crypto";
 import createKeyPair from "../auth/authUtils";
+import { BadRequestError, ConflictRequestError } from "../core/error.response";
 import { prisma } from "../database/init.prisma";
 import getIntoData from "../utils";
 import tokenService from "./token.service";
@@ -11,29 +12,35 @@ type Req = {
   password: string;
 };
 
-const userRole = {
-  ADMIN: "01",
-  NORMAL: "02",
-};
-
 class AccessService {
-  static SignUp = async ({ email, username, name, password }: Req) => {
-    try {
-      const user = prisma.user.findUnique({
+  static SignUp = async ({
+    email,
+    username,
+    name,
+    password,
+  }: Req): Promise<Record<string, any> | undefined> => {
+    const user = await prisma.user
+      .findFirst({
         where: {
           email: email,
         },
+      })
+      .catch((error) => {
+        console.log(error.toString());
+        throw new BadRequestError({
+          message: "DB Error",
+          details: error,
+        });
       });
 
-      if (!user) {
-        return {
-          code: "0001",
-          message: "Shop already exist",
-          status: "error",
-        };
-      }
+    if (user) {
+      throw new ConflictRequestError({
+        message: "Shop Already Exist",
+      });
+    }
 
-      const newUser = await prisma.user.create({
+    const newUser = await prisma.user
+      .create({
         data: {
           email: email,
           name: name,
@@ -41,82 +48,59 @@ class AccessService {
           password: password,
           roles: ["0000"],
         },
+      })
+      .catch((error) => {
+        throw new BadRequestError({
+          message: "Cant save user to DB",
+          details: error as string,
+        });
       });
 
-      if (newUser) {
-        const { publicKey, privateKey } = generateKeyPairSync("rsa", {
-          modulusLength: 4096,
-          publicKeyEncoding: { type: "pkcs1", format: "pem" },
-          privateKeyEncoding: {
-            type: "pkcs8",
-            format: "pem",
-          },
-        });
+    if (newUser) {
+      const { publicKey, privateKey } = generateKeyPairSync("rsa", {
+        modulusLength: 4096,
+        publicKeyEncoding: { type: "pkcs1", format: "pem" },
+        privateKeyEncoding: {
+          type: "pkcs8",
+          format: "pem",
+        },
+      });
 
-        const publicKeyString = tokenService.createToken({
+      console.log({ publicKey });
+
+      await tokenService.createToken({
+        userId: newUser.id,
+        publicKey: publicKey,
+      });
+
+      const token = await createKeyPair({
+        payload: {
           userId: newUser.id,
-          publicKey: publicKey,
-        });
+          email: email,
+        },
+        publicKey: publicKey,
+        privateKey: privateKey,
+      });
 
-        if (!publicKeyString) {
-          return {
-            code: "0001",
-            message: "PublicKey String error",
-            status: "error",
-          };
-        }
+      const { accessToken, refreshToken } = token;
 
-        const token = await createKeyPair({
-          payload: {
-            userId: newUser.id,
-            email: email,
-          },
-          publicKey: publicKey,
-          privateKey: privateKey,
-        });
+      //DEBUGING
 
-        const { accessToken, refreshToken } = token;
-
-        //DEBUGING
-
-        const UserToDelete = await prisma.user.delete({
-          where: {
-            id: newUser.id,
-          },
-        });
-
-        // const TokenToDelete = await prisma.keyToken.delete({
-        //   where: {
-        //     userId: newUser.id,
-        //   },
-        // });
-
-        return {
-          code: 201,
-          metadata: {
-            useData: getIntoData({
-              fields: ["userId", "email", "username"],
-              objects: newUser,
-            }),
-            token: {
-              accessToken: accessToken,
-              refreshToken: refreshToken,
-            },
-          },
-        };
-      }
+      // const UserToDelete = await prisma.user.delete({
+      //   where: {
+      //     id: newUser.id,
+      //   },
+      // });
 
       return {
-        code: "xxx",
-        message: "cant create user",
-        status: "error",
-      };
-    } catch (error) {
-      console.log(error);
-      return {
-        code: "0001",
-        message: error,
-        status: "error",
+        useData: getIntoData({
+          fields: ["userId", "email", "username"],
+          objects: newUser,
+        }),
+        token: {
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+        },
       };
     }
   };

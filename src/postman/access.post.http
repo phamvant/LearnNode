@@ -1,15 +1,17 @@
 @url_dev=http://localhost:3000/v1/api/
 
-# GET http://localhost:3000/dbcheck
+### root
+GET {{url_dev}}
+x-api-key: xxx
 
-
-POST http://localhost:3000/v1/api/shop/signup  HTTP/1.1
+### Signup
+POST {{url_dev}}/shop/signup  HTTP/1.1
 Content-Type: application/json
 x-api-key: xxx
 
 {
-    "email": "usa1",
-    "name": "v",
-    "username": "p",
+    "email": "thuan21",
+    "name": "pham",
+    "username": "pvt",
     "password": "1"
-}   
+}       

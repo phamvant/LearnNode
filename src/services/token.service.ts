@@ -1,3 +1,4 @@
+import { BadRequestError } from "../core/error.response";
 import { prisma } from "../database/init.prisma";
 
 class TokenService {
@@ -8,20 +9,19 @@ class TokenService {
     userId: number;
     publicKey: string;
   }) => {
-    try {
-      const publicKeyString = publicKey.toString();
-
-      const newToken = await prisma.keyToken.create({
+    await prisma.keyToken
+      .create({
         data: {
           userId: userId,
-          publicKey: publicKeyString,
+          publicKey: publicKey,
         },
+      })
+      .catch((error) => {
+        throw new BadRequestError({
+          message: "Cant save keyToken",
+          details: error as string,
+        });
       });
-
-      return newToken ? newToken.publicKey : null;
-    } catch (error) {
-      return error;
-    }
   };
 }
 

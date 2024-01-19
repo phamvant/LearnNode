@@ -26,24 +26,3 @@ export const prisma =
   });
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
-
-// class Database {
-//   static instance: any;
-
-//   constructor() {
-//     this.connect();
-//   }
-
-//   private connect() {
-//     const prisma = new PrismaClient();
-//   }
-
-//   static getInstance() {
-//     if (!Database.instance) {
-//       Database.instance = new Database();
-//     }
-//     return Database.instance;
-//   }
-// }
-
-// export const prismaInstance = Database.getInstance();
