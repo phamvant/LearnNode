@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { CREATE } from "../core/success.response";
+import { BadRequestError } from "../core/error.response";
+import { ACCEPTED, CREATE } from "../core/success.response";
 import AccessService from "../services/access.service";
 
 class AccessController {
@@ -11,6 +12,32 @@ class AccessController {
     new CREATE({
       message: "New User Created",
       metadata: newUser || {},
+    }).send(res);
+  };
+
+  static login = async (req: Request, res: Response, next: NextFunction) => {
+    console.log(`[P]::Login`, req.body);
+
+    const loggedInUser = await AccessService.Login(req.body);
+
+    new ACCEPTED({
+      message: "User Logged In",
+      metadata: loggedInUser,
+    }).send(res);
+  };
+
+  static logout = async (req: Request, res: Response, next: NextFunction) => {
+    console.log(`[P]::Login`, req.body);
+
+    const isLoggedOut = await AccessService.Logout(req.body);
+
+    if (!isLoggedOut) {
+      throw new BadRequestError({ message: "Unknown Error, Cant Logout" });
+    }
+
+    new ACCEPTED({
+      message: "User Logged Out",
+      metadata: {},
     }).send(res);
   };
 }

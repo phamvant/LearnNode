@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import { ErrorResponse } from "./core/error.response";
-import router from "./routes";
+import router from "./routes/index.routes";
 
 const app = express();
 

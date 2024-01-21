@@ -1,19 +1,35 @@
 import { BadRequestError } from "../core/error.response";
 import { prisma } from "../database/init.prisma";
 
+interface TokenSchema {
+  userId: number;
+  publicKey: string;
+  privateKey: string;
+  refreshToken: string;
+}
+
 class TokenService {
-  createToken = async ({
+  static storeToken = async ({
     userId,
     publicKey,
-  }: {
-    userId: number;
-    publicKey: string;
-  }) => {
+    privateKey,
+    refreshToken,
+  }: TokenSchema) => {
     await prisma.keyToken
-      .create({
-        data: {
+      .upsert({
+        create: {
           userId: userId,
           publicKey: publicKey,
+          privateKey: privateKey,
+          usedRefreshToken: [refreshToken],
+        },
+        update: {
+          usedRefreshToken: {
+            push: refreshToken,
+          },
+        },
+        where: {
+          userId: userId,
         },
       })
       .catch((error) => {
@@ -23,6 +39,23 @@ class TokenService {
         });
       });
   };
+
+  static findKeyById = async ({ userId }: { userId: number }) => {
+    const token = await prisma.keyToken
+      .findFirst({
+        where: {
+          userId: userId,
+        },
+      })
+      .catch((error) => {
+        throw new BadRequestError({
+          message: "Cant find keytoken",
+          details: error as string,
+        });
+      });
+
+    return token;
+  };
 }
 
-export default new TokenService();
+export default TokenService;

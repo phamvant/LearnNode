@@ -1,108 +1,177 @@
 import { generateKeyPairSync } from "node:crypto";
-import createKeyPair from "../auth/authUtils";
-import { BadRequestError, ConflictRequestError } from "../core/error.response";
+import { DEBUGING } from "..";
+import createTokenPair from "../auth/auth.utils";
+import {
+  BadRequestError,
+  ConflictRequestError,
+  ForbiddenError,
+  NotFoundError,
+} from "../core/error.response";
 import { prisma } from "../database/init.prisma";
 import getIntoData from "../utils";
+import ShopService from "./shop.service";
 import tokenService from "./token.service";
 
-type Req = {
+interface Credentials {
   email: string;
-  name: string;
   username: string;
   password: string;
-};
+}
+
+export interface SignUpCredential extends Credentials {
+  name: string;
+}
 
 class AccessService {
+  /**
+   *
+   * SignUp Function
+   *
+   * @static
+   * @param {Credentials} {
+   *     email,
+   *     username,
+   *     name,
+   *     password,
+   *   }
+   * @memberof AccessService
+   */
+
   static SignUp = async ({
     email,
     username,
     name,
     password,
-  }: Req): Promise<Record<string, any> | undefined> => {
-    const user = await prisma.user
-      .findFirst({
-        where: {
-          email: email,
-        },
-      })
-      .catch((error) => {
-        console.log(error.toString());
-        throw new BadRequestError({
-          message: "DB Error",
-          details: error,
-        });
-      });
+  }: SignUpCredential): Promise<Record<string, any> | undefined> => {
+    const existedUser = await ShopService.findUserByEmail({ email: email });
 
-    if (user) {
-      throw new ConflictRequestError({
-        message: "Shop Already Exist",
-      });
+    if (existedUser) {
+      throw new ConflictRequestError({ message: "Shop already existed" });
     }
 
-    const newUser = await prisma.user
-      .create({
-        data: {
-          email: email,
-          name: name,
-          username: username,
-          password: password,
-          roles: ["0000"],
-        },
-      })
-      .catch((error) => {
-        throw new BadRequestError({
-          message: "Cant save user to DB",
-          details: error as string,
-        });
-      });
+    const newUser = await ShopService.storeNewUser({
+      email: email,
+      username: username,
+      name: name,
+      password: password,
+    });
 
-    if (newUser) {
-      const { publicKey, privateKey } = generateKeyPairSync("rsa", {
-        modulusLength: 4096,
-        publicKeyEncoding: { type: "pkcs1", format: "pem" },
-        privateKeyEncoding: {
-          type: "pkcs8",
-          format: "pem",
-        },
-      });
+    if (!newUser) {
+      throw new BadRequestError({ message: "Cant create new user" });
+    }
 
-      console.log({ publicKey });
+    const { publicKey, privateKey } = generateKeyPairSync("rsa", {
+      modulusLength: 4096,
+      publicKeyEncoding: { type: "pkcs1", format: "pem" },
+      privateKeyEncoding: {
+        type: "pkcs8",
+        format: "pem",
+      },
+    });
 
-      await tokenService.createToken({
+    const { accessToken, refreshToken } = await createTokenPair({
+      payload: {
         userId: newUser.id,
-        publicKey: publicKey,
-      });
+        email: email,
+      },
+      privateKey: privateKey,
+    });
 
-      const token = await createKeyPair({
-        payload: {
-          userId: newUser.id,
-          email: email,
+    await tokenService.storeToken({
+      userId: newUser.id,
+      privateKey: privateKey,
+      publicKey: publicKey,
+      refreshToken: refreshToken,
+    });
+
+    //DEBUGING Delete User After Create
+    if (DEBUGING) {
+      await prisma.user.delete({
+        where: {
+          id: newUser.id,
         },
-        publicKey: publicKey,
-        privateKey: privateKey,
       });
-
-      const { accessToken, refreshToken } = token;
-
-      //DEBUGING
-
-      // const UserToDelete = await prisma.user.delete({
-      //   where: {
-      //     id: newUser.id,
-      //   },
-      // });
-
-      return {
-        useData: getIntoData({
-          fields: ["userId", "email", "username"],
-          objects: newUser,
-        }),
-        token: {
-          accessToken: accessToken,
-          refreshToken: refreshToken,
-        },
-      };
     }
+
+    return {
+      useData: getIntoData({
+        fields: ["userId", "email", "username"],
+        objects: newUser,
+      }),
+      token: {
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+      },
+    };
+  };
+
+  /**
+   *
+   * Login Function
+   *true
+   * @static
+   * @param {Credentials} { username, email, password }
+   * @memberof AccessService
+   */
+  static Login = async ({ username, email, password }: Credentials) => {
+    const loginUser = await ShopService.findUserByEmail({ email: email });
+
+    if (!loginUser) {
+      throw new BadRequestError({ message: "Cant find User" });
+    }
+
+    const isMatch = password === loginUser.password ? true : false;
+
+    if (!isMatch) {
+      throw new ForbiddenError({ message: "Password Incorrect" });
+    }
+
+    const { publicKey, privateKey } = generateKeyPairSync("rsa", {
+      modulusLength: 4096,
+      publicKeyEncoding: { type: "pkcs1", format: "pem" },
+      privateKeyEncoding: {
+        type: "pkcs8",
+        format: "pem",
+      },
+    });
+
+    const { accessToken, refreshToken } = await createTokenPair({
+      payload: {
+        userId: loginUser.id,
+        email: loginUser.email,
+      },
+      privateKey: privateKey,
+    });
+
+    await tokenService.storeToken({
+      userId: loginUser.id,
+      privateKey: privateKey,
+      publicKey: publicKey,
+      refreshToken: refreshToken,
+    });
+
+    return {
+      userData: getIntoData({
+        objects: loginUser,
+        fields: ["userId", "email", "username"],
+      }),
+      token: {
+        accessToken,
+        refreshToken,
+      },
+    };
+  };
+
+  static Logout = async ({ userId }: { userId: number }) => {
+    const removeToken = await ShopService.removeTokenById({ userId: userId });
+
+    if (!removeToken) {
+      throw new NotFoundError({
+        message: "Key not found",
+      });
+    }
+
+    return true;
   };
 }
 

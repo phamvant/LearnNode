@@ -36,9 +36,11 @@ model User {
 //-------------Security-------------//
 
 model KeyToken {
-  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int    @unique
-  publicKey String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           Int      @unique
+  publicKey        String
+  privateKey       String
+  usedRefreshToken String[]
 }
 
 model ApiKey {

@@ -33,6 +33,16 @@ export class ConflictRequestError extends ErrorResponse {
 
 export class BadRequestError extends ErrorResponse {
   constructor({
+    message = HttpResponse.Reason.BAD_REQUEST,
+    code = HttpResponse.Code.BAD_REQUEST,
+    details = "",
+  }) {
+    super({ code, message, details });
+  }
+}
+
+export class ForbiddenError extends ErrorResponse {
+  constructor({
     message = HttpResponse.Reason.FORBIDDEN,
     code = HttpResponse.Code.FORBIDDEN,
     details = "",
@@ -45,6 +55,16 @@ export class AuthFailureError extends ErrorResponse {
   constructor({
     message = HttpResponse.Reason.UNAUTHORIZED,
     code = HttpResponse.Code.UNAUTHORIZED,
+    details = "",
+  }) {
+    super({ code, message, details });
+  }
+}
+
+export class NotFoundError extends ErrorResponse {
+  constructor({
+    message = HttpResponse.Reason.NOT_FOUND,
+    code = HttpResponse.Code.NOT_FOUND,
     details = "",
   }) {
     super({ code, message, details });

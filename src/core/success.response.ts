@@ -55,6 +55,26 @@ export class CREATE extends SuccessResponse {
   }
 }
 
+export class ACCEPTED extends SuccessResponse {
+  constructor({
+    message,
+    metadata = {},
+    options = {},
+  }: {
+    message: string;
+    metadata: Record<string, any>;
+    options?: Record<string, any>;
+  }) {
+    super({
+      message,
+      metadata,
+      code: HttpResponse.Code.ACCEPTED,
+      reasonStatusCode: HttpResponse.Reason.ACCEPTED,
+      options,
+    });
+  }
+}
+
 // interface SuccessParams {
 //   status?: string;
 //   message?: string;

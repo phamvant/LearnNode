@@ -10,8 +10,27 @@ Content-Type: application/json
 x-api-key: xxx
 
 {
-    "email": "thuan21",
+    "email": "thuan",
     "name": "pham",
     "username": "pvt",
     "password": "1"
-}       
+}
+
+### Login
+POST {{url_dev}}/shop/login  HTTP/1.1
+Content-Type: application/json
+x-api-key: xxx
+
+{
+    "email": "thuan24",
+    "password": "1"
+}
+
+### Logout
+POST {{url_dev}}/shop/logout  HTTP/1.1
+Content-Type: application/json
+x-api-key: xxx
+x-client-id: 2
+
+{
+}
