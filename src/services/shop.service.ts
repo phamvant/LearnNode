@@ -81,7 +81,7 @@ class ShopService {
       })
       .catch((error) => {
         throw new BadRequestError({
-          message: "Cant save user to DB",
+          message: "Cant delete user from DB",
           details: error as string,
         });
       });

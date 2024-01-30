@@ -4,7 +4,6 @@ import { prisma } from "../database/init.prisma";
 interface TokenSchema {
   userId: number;
   publicKey: string;
-  privateKey: string;
   refreshToken: string;
 }
 
@@ -12,7 +11,6 @@ class TokenService {
   static storeToken = async ({
     userId,
     publicKey,
-    privateKey,
     refreshToken,
   }: TokenSchema) => {
     await prisma.keyToken
@@ -20,10 +18,10 @@ class TokenService {
         create: {
           userId: userId,
           publicKey: publicKey,
-          privateKey: privateKey,
-          usedRefreshToken: [refreshToken],
+          // usedRefreshToken: [refreshToken],
         },
         update: {
+          publicKey: publicKey,
           usedRefreshToken: {
             push: refreshToken,
           },
@@ -33,6 +31,7 @@ class TokenService {
         },
       })
       .catch((error) => {
+        console.log(error);
         throw new BadRequestError({
           message: "Cant save keyToken",
           details: error as string,

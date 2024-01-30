@@ -42,7 +42,7 @@ export class CREATE extends SuccessResponse {
     options = {},
   }: {
     message: string;
-    metadata: Record<string, any>;
+    metadata: Record<string, any> | undefined;
     options?: Record<string, any>;
   }) {
     super({
