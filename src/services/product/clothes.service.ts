@@ -10,6 +10,7 @@ export class Clothes extends Product {
     product_price,
     product_quantity,
     product_attribute,
+    product_shop,
   }: any) {
     super({
       product_name,
@@ -18,12 +19,11 @@ export class Clothes extends Product {
       product_price,
       product_quantity,
       product_attribute,
+      product_shop,
     });
   }
 
   async createProduct() {
-    console.log(this.product_name);
-
     const newClothes = await prisma.clothes
       .create({
         data: {

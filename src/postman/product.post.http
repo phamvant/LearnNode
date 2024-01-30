@@ -5,7 +5,7 @@ POST {{url_dev}}/product/create  HTTP/1.1
 Content-Type: application/json
 x-api-key: xxx
 x-client-id: 1
-Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEzLCJlbWFpbCI6InRodWFuMiIsImlhdCI6MTcwNjYyNjA3OSwiZXhwIjoxNzA2Nzk4ODc5fQ.Lw-Ik_O5q4WpGFCfyrhQeAxUrZQsXwVHYyoxj_px3TBEL0fIyw1yd03gSjSQxQWqisUQf6ILbpkgXGUW0QTt7E0v4Zux9UyAiUeEbckDgcFASMaQo-yuULkY4TQ06POB6eXxGrUSFWzdUrO-9FYMHYMAdeO2w3YgUxQg3MWsnKhJtu46RO6_ZDoMYf5UN6FI3CY6iyQYQOQ08GeRLWPlth0sr5mMemnjFUwDHsbifG85vJ6c6gVkdwP_OLXwAb1coyLRc7Xs69VI5LnYwujdOiQbaL6qtH96x-36WuqmWkcFnPY5upTbU3_GlrQciRNQ7Rh0oHJDA77a42OTmEud2g
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGh1YW4iLCJpYXQiOjE3MDY2MzQ5NjUsImV4cCI6MTcwNjgwNzc2NX0.KFLfZSQ3GCEo8pvx-bCeesdWYJSRclhGQhxwklVoo5i_Q5rRKjRq45PXJtXQTfW8TQ2_Gj-tp2b2vaQHHKcfmakz1XSwtgN2UENRvr_wl5kTjVLhKU1wuoCEKU8xMRa9Yo8zsOazkIvo_B4IWs9L_Y8BnOwRZtIA7ZNfsVEF89Kw2xeeI00YHI0k7OEdc43NH_rNHC8VAzp5ceV0iTPITQbnIHVPf2EKf_UufSHGdySs948SPY64fAlXp4jgH0N0XskJ96ADFh1AXP-OZJRpaEn5I6atS0dPzueXxjxe0AzJFciiiwEEDQTcQQCvgUP5V9la6qcAG1Vfc_NVx3vjcg
 
 {
     "product_type": "Electronics",
@@ -17,5 +17,25 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEzLCJlb
     "product_attribute": {
         "brand": "Apple",
         "color": "Black"
+    }
+}
+
+### CREATE Clothes
+POST {{url_dev}}/product/create  HTTP/1.1
+Content-Type: application/json
+x-api-key: xxx
+x-client-id: 1
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGh1YW4iLCJpYXQiOjE3MDY2MzQ5NjUsImV4cCI6MTcwNjgwNzc2NX0.KFLfZSQ3GCEo8pvx-bCeesdWYJSRclhGQhxwklVoo5i_Q5rRKjRq45PXJtXQTfW8TQ2_Gj-tp2b2vaQHHKcfmakz1XSwtgN2UENRvr_wl5kTjVLhKU1wuoCEKU8xMRa9Yo8zsOazkIvo_B4IWs9L_Y8BnOwRZtIA7ZNfsVEF89Kw2xeeI00YHI0k7OEdc43NH_rNHC8VAzp5ceV0iTPITQbnIHVPf2EKf_UufSHGdySs948SPY64fAlXp4jgH0N0XskJ96ADFh1AXP-OZJRpaEn5I6atS0dPzueXxjxe0AzJFciiiwEEDQTcQQCvgUP5V9la6qcAG1Vfc_NVx3vjcg
+
+{
+    "product_type": "Clothes",
+    "product_name": "Shirt",
+    "product_thumbs": "Image",
+    "product_description": "Expensive",
+    "product_price": 100,
+    "product_quantity": 100,
+    "product_attribute": {
+        "brand": "Apple",
+        "size": 10
     }
 }

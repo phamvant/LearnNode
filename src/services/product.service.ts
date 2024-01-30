@@ -15,7 +15,6 @@ export class ProductFactory {
         return newClothesName;
 
       case "Electronics":
-        console.log(payload);
         const newDeviceName = new Electronics(payload).createProduct();
         if (!newDeviceName) {
           throw new BadRequestError({

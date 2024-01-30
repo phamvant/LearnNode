@@ -6,4 +6,5 @@ const router = express.Router();
 
 router.post("/product/create", asyncHandler(ProductController.createProduct));
 
-export default router;
+
+export default router

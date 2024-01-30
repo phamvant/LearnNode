@@ -10,7 +10,6 @@ class AccessController {
     res: Response,
     next: NextFunction
   ) => {
-    console.log(req);
     if (!req.metadata?.extractedClientID && !req.metadata?.usedRefreshToken) {
       throw new NotFoundError({ message: "Unknown Error" });
     }
@@ -56,8 +55,6 @@ class AccessController {
     res: Response,
     next: NextFunction
   ) => {
-    console.log(req.metadata);
-
     const isLoggedOut = await AccessService.Logout({
       userId: parseInt(req.metadata?.extractedClientID),
     });
