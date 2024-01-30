@@ -25,6 +25,56 @@ export interface SignUpCredential extends Credentials {
 class AccessService {
   /**
    *
+   * Get New AccessToken using RefreshToken
+   *
+   * @static
+   * @param {{
+   *     userId: number;
+   *     usedRefreshToken: string;
+   *   }} {
+   *     extractedClientID,
+   *     usedRefreshToken,
+   *   }
+   * @memberof AccessService
+   */
+  static HandleRefreshToken = async ({
+    userId,
+    usedRefreshToken,
+  }: {
+    userId: number;
+    usedRefreshToken: string;
+  }) => {
+    console.log(typeof userId);
+    const { publicKey, privateKey } = generateKeyPairSync("rsa", {
+      modulusLength: 2048,
+      publicKeyEncoding: { type: "spki", format: "pem" },
+      privateKeyEncoding: { type: "pkcs8", format: "pem" },
+    });
+
+    const { accessToken, refreshToken } = await createTokenPair({
+      payload: {
+        userId: userId,
+      },
+      privateKey: privateKey,
+    });
+
+    await tokenService.storeToken({
+      userId: userId,
+      publicKey: publicKey,
+      refreshToken: usedRefreshToken,
+    });
+
+    return {
+      userData: userId,
+      token: {
+        accessToken,
+        refreshToken,
+      },
+    };
+  };
+
+  /**
+   *
    * SignUp Function
    *
    * @static
@@ -61,12 +111,9 @@ class AccessService {
     }
 
     const { publicKey, privateKey } = generateKeyPairSync("rsa", {
-      modulusLength: 4096,
-      publicKeyEncoding: { type: "pkcs1", format: "pem" },
-      privateKeyEncoding: {
-        type: "pkcs8",
-        format: "pem",
-      },
+      modulusLength: 2048,
+      publicKeyEncoding: { type: "spki", format: "pem" },
+      privateKeyEncoding: { type: "pkcs8", format: "pem" },
     });
 
     const { accessToken, refreshToken } = await createTokenPair({
@@ -79,7 +126,6 @@ class AccessService {
 
     await tokenService.storeToken({
       userId: newUser.id,
-      privateKey: privateKey,
       publicKey: publicKey,
       refreshToken: refreshToken,
     });
@@ -108,7 +154,7 @@ class AccessService {
   /**
    *
    * Login Function
-   *true
+   *
    * @static
    * @param {Credentials} { username, email, password }
    * @memberof AccessService
@@ -127,12 +173,9 @@ class AccessService {
     }
 
     const { publicKey, privateKey } = generateKeyPairSync("rsa", {
-      modulusLength: 4096,
-      publicKeyEncoding: { type: "pkcs1", format: "pem" },
-      privateKeyEncoding: {
-        type: "pkcs8",
-        format: "pem",
-      },
+      modulusLength: 2048,
+      publicKeyEncoding: { type: "spki", format: "pem" },
+      privateKeyEncoding: { type: "pkcs8", format: "pem" },
     });
 
     const { accessToken, refreshToken } = await createTokenPair({
@@ -143,9 +186,10 @@ class AccessService {
       privateKey: privateKey,
     });
 
+    console.log({ publicKey, privateKey });
+
     await tokenService.storeToken({
       userId: loginUser.id,
-      privateKey: privateKey,
       publicKey: publicKey,
       refreshToken: refreshToken,
     });

@@ -19,6 +19,51 @@ enum Permission {
   PERMISSION_2222
 }
 
+enum Category {
+  Clothes
+  Electronic
+  Houseware
+}
+
+model Product {
+  id               Int                @id @default(autoincrement())
+  name             String
+  thumb            String
+  description      String
+  price            Float
+  ProductInventory ProductInventory[]
+}
+
+model ProductInventory {
+  id        Int      @id @default(autoincrement())
+  product   Product  @relation(fields: [productId], references: [id])
+  quantity  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  productId Int
+}
+
+model Clothes {
+  id       Int     @id @default(autoincrement())
+  brand    String
+  size     Int
+  material String?
+}
+
+model Electronic {
+  id       Int     @id @default(autoincrement())
+  brand    String
+  color    String
+  material String?
+}
+
+model Houseware {
+  id       Int     @id @default(autoincrement())
+  brand    String
+  color    Int
+  material String?
+}
+
 model User {
   id       Int    @id @default(autoincrement())
   email    String @unique
@@ -29,7 +74,6 @@ model User {
   verified Boolean   @default(false)
   status   String    @default("INACTIVE")
   roles    String[]
-  posts    Post[]
   KeyToken KeyToken?
 }
 
@@ -39,7 +83,6 @@ model KeyToken {
   user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId           Int      @unique
   publicKey        String
-  privateKey       String
   usedRefreshToken String[]
 }
 
@@ -47,13 +90,4 @@ model ApiKey {
   key        String       @unique
   status     Boolean      @default(true)
   permission Permission[]
-}
-
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
 }

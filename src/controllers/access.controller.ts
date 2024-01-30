@@ -1,10 +1,35 @@
 import { NextFunction, Request, Response } from "express";
-import { BadRequestError } from "../core/error.response";
+import { CustomRequest } from "../auth/auth.utils";
+import { BadRequestError, NotFoundError } from "../core/error.response";
 import { ACCEPTED, CREATE } from "../core/success.response";
 import AccessService from "../services/access.service";
 
 class AccessController {
-  static signUp = async (req: Request, res: Response, next: NextFunction) => {
+  static handleRefreshToken = async (
+    req: CustomRequest,
+    res: Response,
+    next: NextFunction
+  ) => {
+    console.log(req);
+    if (!req.metadata?.extractedClientID && !req.metadata?.usedRefreshToken) {
+      throw new NotFoundError({ message: "Unknown Error" });
+    }
+
+    const { userId, usedRefreshToken } = req.metadata;
+
+    const newToken = await AccessService.HandleRefreshToken({
+      userId,
+      usedRefreshToken,
+    });
+
+    new CREATE({ message: "Token Refreshed", metadata: newToken }).send(res);
+  };
+
+  static signUp = async (
+    req: CustomRequest,
+    res: Response,
+    next: NextFunction
+  ) => {
     console.log(`[P]::SignUp`, req.body);
 
     const newUser = await AccessService.SignUp(req.body);
@@ -26,10 +51,16 @@ class AccessController {
     }).send(res);
   };
 
-  static logout = async (req: Request, res: Response, next: NextFunction) => {
-    console.log(`[P]::Login`, req.body);
+  static logout = async (
+    req: CustomRequest,
+    res: Response,
+    next: NextFunction
+  ) => {
+    console.log(req.metadata);
 
-    const isLoggedOut = await AccessService.Logout(req.body);
+    const isLoggedOut = await AccessService.Logout({
+      userId: parseInt(req.metadata?.extractedClientID),
+    });
 
     if (!isLoggedOut) {
       throw new BadRequestError({ message: "Unknown Error, Cant Logout" });

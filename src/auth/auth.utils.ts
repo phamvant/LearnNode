@@ -1,19 +1,19 @@
 import { NextFunction, Request, Response } from "express";
 import JWT from "jsonwebtoken";
-import { HEADER, Permission } from "..";
+import { HEADER, JwtPayload, Permission } from "..";
 import {
   AuthFailureError,
   BadRequestError,
   ForbiddenError,
   NotFoundError,
 } from "../core/error.response";
+import { prisma } from "../database/init.prisma";
 import { asyncHandler } from "../helpers/async.handler";
 import ApiKeyService from "../services/apikey.service";
 import TokenService from "../services/token.service";
 
-interface CustomRequest extends Request {
-  apiKeyObject?: any;
-  tokenObject?: any;
+export interface CustomRequest extends Request {
+  metadata?: Record<string, any>; //storedApiKey, TokenObj
 }
 
 /**
@@ -75,7 +75,8 @@ export const checkApiKey = async (
     throw new BadRequestError({ message: "API key not sacrificed" });
   }
 
-  req.apiKeyObject = storedApiKey;
+  req.metadata = { ...req.metadata, storedApiKey };
+
   return next();
 };
 
@@ -88,11 +89,12 @@ export const checkApiKey = async (
  */
 export const permissionCheck = (permission: Permission) => {
   return (req: CustomRequest, res: Response, next: NextFunction) => {
-    if (!req.apiKeyObject.permission) {
+    if (!req.metadata?.storedApiKey.permission) {
       throw new ForbiddenError({ message: "No permission included" });
     }
 
-    const validPermission = req.apiKeyObject.permission.includes(permission);
+    const validPermission =
+      req.metadata.storedApiKey.permission.includes(permission);
 
     if (!validPermission) {
       throw new ForbiddenError({ message: "Permission denied" });
@@ -104,38 +106,83 @@ export const permissionCheck = (permission: Permission) => {
 
 export const authenticate = asyncHandler(
   async (req: CustomRequest, res: Response, next: NextFunction) => {
-    const extractedClientID = req.headers[HEADER.CLIENTID];
+    let extractedClientID = req.headers[HEADER.CLIENTID];
 
     if (!extractedClientID) {
       throw new AuthFailureError({ message: "Invalid Request" });
     }
 
+    const userId = parseInt(extractedClientID as string);
+
     const userToken = await TokenService.findKeyById({
-      userId: parseInt(extractedClientID as string),
+      userId: userId,
     });
 
     if (!userToken) {
       throw new NotFoundError({ message: "User not found" });
     }
 
-    const accessToken = req.headers[HEADER.AUTHORIZATION];
+    const [type, token] =
+      req.headers[HEADER.AUTHORIZATION]?.toString().split(" ") ?? [];
+
+    if (!token) {
+      throw new BadRequestError({
+        message: "Invalid Request",
+      });
+    }
+
+    if (type === "Refresh") {
+      if (userToken.usedRefreshToken.includes(token)) {
+        await prisma.keyToken
+          .delete({
+            where: {
+              userId: userId,
+            },
+          })
+          .catch((error) => {
+            console.log(error);
+            throw new BadRequestError({ message: "Cant modify DB" });
+          });
+        throw new AuthFailureError({ message: "Refresh Token Used" });
+      }
+
+      try {
+        const decodedUser = JWT.verify(
+          token.toString(),
+          userToken.publicKey
+        ) as JwtPayload;
+
+        if (decodedUser.userId != extractedClientID) {
+          throw new BadRequestError({ message: "Invalid User" });
+        }
+
+        req.metadata = {
+          ...req.metadata,
+          userId,
+          usedRefreshToken: token,
+        };
+      } catch (error) {
+        throw new BadRequestError({ message: "Invalid User" });
+      }
+    }
 
     try {
       const decodedUser = JWT.verify(
-        accessToken as string,
+        token.toString(),
         userToken.publicKey
-      );
+      ) as JwtPayload;
 
-      console.log(decodedUser);
-
-      if (decodedUser !== extractedClientID) {
-        throw new AuthFailureError({ message: "Invalid User" });
+      if (decodedUser.userId != extractedClientID) {
+        throw new BadRequestError({ message: "Invalid User" });
       }
 
-      req.tokenObject = userToken;
+      req.metadata = { ...req.metadata, extractedClientID };
       return next();
     } catch (e) {
-      throw new AuthFailureError({ message: "Invalid User" });
+      console.log(e);
+      throw new BadRequestError({
+        message: "Invalid User ",
+      });
     }
   }
 );
