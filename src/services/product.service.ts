@@ -1,6 +1,6 @@
 import { BadRequestError } from "../core/error.response";
-import Electronics from "./product/electronic.service";
-import { Clothes } from "./product/index.service";
+import { Clothes } from "./product/clothes.service";
+import { Electronics } from "./product/electronic.service";
 
 export class ProductFactory {
   createProduct = async (type: string, payload: any) => {

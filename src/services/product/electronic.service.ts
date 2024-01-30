@@ -2,7 +2,7 @@ import { BadRequestError } from "../../core/error.response";
 import { prisma } from "../../database/init.prisma";
 import { Product } from "./index.service";
 
-class Electronics extends Product {
+export class Electronics extends Product {
   constructor({
     product_name,
     product_thumbs,
@@ -50,5 +50,3 @@ class Electronics extends Product {
     return newProductName;
   }
 }
-
-export default Electronics;
