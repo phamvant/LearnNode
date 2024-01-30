@@ -26,39 +26,39 @@ enum Category {
 }
 
 model Product {
-  id               Int                @id @default(autoincrement())
+  id               String             @id
   name             String
   thumb            String
   description      String
   price            Float
+  shop_id          Int
   ProductInventory ProductInventory[]
 }
 
 model ProductInventory {
-  id        Int      @id @default(autoincrement())
+  productId String   @id
   product   Product  @relation(fields: [productId], references: [id])
   quantity  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  productId Int
 }
 
 model Clothes {
-  id       Int     @id @default(autoincrement())
+  id       String  @id @default(uuid())
   brand    String
   size     Int
   material String?
 }
 
 model Electronic {
-  id       Int     @id @default(autoincrement())
+  id       String  @id @default(uuid())
   brand    String
   color    String
   material String?
 }
 
 model Houseware {
-  id       Int     @id @default(autoincrement())
+  id       String  @id @default(uuid())
   brand    String
   color    Int
   material String?
