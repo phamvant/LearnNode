@@ -176,7 +176,7 @@ export const authenticate = asyncHandler(
         throw new BadRequestError({ message: "Invalid User" });
       }
 
-      req.metadata = { ...req.metadata, extractedClientID };
+      req.metadata = { ...req.metadata, userId };
       return next();
     } catch (e) {
       console.log(e);

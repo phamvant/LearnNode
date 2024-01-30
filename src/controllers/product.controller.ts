@@ -9,13 +9,14 @@ export class ProductController {
     res: Response,
     next: NextFunction
   ) => {
-    console.log(req.body.product_type);
+    console.log(req.metadata);
     new CREATE({
       message: "Product created",
       metadata: await new ProductFactory().createProduct(
         req.body.product_type,
         {
           ...req.body,
+          product_shop: req.metadata?.userId,
         }
       ),
     }).send(res);
