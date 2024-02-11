@@ -1,0 +1,1 @@
+ALTER TABLE public."KeyToken" ALTER COLUMN "usedrefreshtoken" TYPE TEXT[];

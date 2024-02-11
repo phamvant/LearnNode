@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: local_postgres
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: thuan
+      POSTGRES_PASSWORD: thuan286
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/user/user.init.sql:/docker-entrypoint-initdb.d/01.user.init.sql
+      - ./database/product/product.init.sql:/docker-entrypoint-initdb.d/02.product.init.sql
+      - ./database/product/category/category.init.sql:/docker-entrypoint-initdb.d/03.category.init.sql
+      - ./database/migrate:/usr/migrate
+
+volumes:
+  postgres_data:
