@@ -1,30 +1,26 @@
 import { BadRequestError } from "../core/error.response";
 import { Clothes } from "./product/clothes.service";
 import { Electronics } from "./product/electronic.service";
+import { Houseware } from "./product/houseware.service";
 
 export class ProductFactory {
-  createProduct = async (type: string, payload: any) => {
-    switch (type) {
-      case "Clothes":
-        const newClothesName = new Clothes(payload).createProduct();
-        if (!newClothesName) {
-          throw new BadRequestError({
-            message: "Cant create new product (Clothes)",
-          });
-        }
-        return newClothesName;
+  static productType: Record<string, any> = {};
 
-      case "Electronics":
-        const newDeviceName = new Electronics(payload).createProduct();
-        if (!newDeviceName) {
-          throw new BadRequestError({
-            message: "Cant create new product (Electronics)",
-          });
-        }
-        return newDeviceName;
+  static createProductType = (type: string, classRef: any) => {
+    this.productType[type] = classRef;
+  };
 
-      default:
-        throw new BadRequestError({ message: "Invalid product type" });
+  static createProduct = async (type: string, payload: any) => {
+    const newProductName = new this.productType[type](payload).createProduct();
+    if (!newProductName) {
+      throw new BadRequestError({
+        message: "Cant create new product",
+      });
     }
+    return newProductName;
   };
 }
+
+ProductFactory.createProductType("Clothes", Clothes);
+ProductFactory.createProductType("Electronics", Electronics);
+ProductFactory.createProductType("Houseware", Houseware);

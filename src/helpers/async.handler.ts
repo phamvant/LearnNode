@@ -6,5 +6,6 @@ export const asyncHandler = (
 ) => {
   return (req: CustomRequest, res: Response, next: NextFunction) => {
     fn(req, res, next).catch(next);
+
   };
 };

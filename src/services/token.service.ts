@@ -1,8 +1,5 @@
-import { BadRequestError } from "../core/error.response";
-import { prisma } from "../database/init.prisma";
-
 interface TokenSchema {
-  userId: number;
+  userId: string;
   publicKey: string;
   refreshToken: string;
 }
@@ -13,45 +10,35 @@ class TokenService {
     publicKey,
     refreshToken,
   }: TokenSchema) => {
-    await prisma.keyToken
-      .upsert({
-        create: {
-          userId: userId,
-          publicKey: publicKey,
-          // usedRefreshToken: [refreshToken],
-        },
-        update: {
-          publicKey: publicKey,
-          usedRefreshToken: {
-            push: refreshToken,
-          },
-        },
-        where: {
-          userId: userId,
-        },
-      })
-      .catch((error) => {
-        console.log(error);
-        throw new BadRequestError({
-          message: "Cant save keyToken",
-          details: error as string,
-        });
+    const existedUser = await this.findKeyById({ userId: userId });
+
+    if (!existedUser.rowCount) {
+      const storedToken = await postgres.query({
+        text: `INSERT INTO "KeyToken" (userid, publickey, usedrefreshtoken)
+        VALUES ($1, $2, ARRAY[$3])`,
+        values: [userId, publicKey, refreshToken],
       });
+
+      return storedToken;
+    } else {
+      const updatedToken = await postgres.query({
+        text: `UPDATE "KeyToken"
+        SET usedrefreshtoken = usedrefreshtoken || ARRAY[$1],
+        publickey=$2
+        WHERE user=$3
+        `,
+        values: [refreshToken, publicKey, userId],
+      });
+
+      return updatedToken;
+    }
   };
 
-  static findKeyById = async ({ userId }: { userId: number }) => {
-    const token = await prisma.keyToken
-      .findFirst({
-        where: {
-          userId: userId,
-        },
-      })
-      .catch((error) => {
-        throw new BadRequestError({
-          message: "Cant find keytoken",
-          details: error as string,
-        });
-      });
+  static findKeyById = async ({ userId }: { userId: string }) => {
+    const token = await postgres.query({
+      text: `SELECT * FROM "KeyToken" WHERE userId=$1 LIMIT 1`,
+      values: [userId],
+    });
 
     return token;
   };

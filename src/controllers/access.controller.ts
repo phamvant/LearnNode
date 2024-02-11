@@ -33,6 +33,8 @@ class AccessController {
 
     const newUser = await AccessService.SignUp(req.body);
 
+    console.log({ newUser });
+
     new CREATE({
       message: "New User Created",
       metadata: newUser || {},
@@ -56,7 +58,7 @@ class AccessController {
     next: NextFunction
   ) => {
     const isLoggedOut = await AccessService.Logout({
-      userId: parseInt(req.metadata?.extractedClientID),
+      userId: req.metadata?.userId,
     });
 
     if (!isLoggedOut) {

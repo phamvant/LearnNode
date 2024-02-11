@@ -31,6 +31,7 @@ class SuccessResponse {
   }
 
   send = (res: Response) => {
+    console.log(this.code);
     return res.status(this.code).json(this);
   };
 }

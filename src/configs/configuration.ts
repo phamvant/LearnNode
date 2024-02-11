@@ -2,6 +2,10 @@ interface Config {
   development: {
     DB: {
       HOST: string;
+      PORT: number;
+      DBNAME: string;
+      USERNAME: string;
+      PASSWORD: string;
     };
     APP: {
       PORT: number | undefined;
@@ -9,7 +13,11 @@ interface Config {
   };
   production: {
     DB: {
-      HOST: string | undefined;
+      HOST: string;
+      PORT: number;
+      DBNAME: string;
+      USERNAME: string;
+      PASSWORD: string;
     };
     APP: {
       PORT: number | undefined;
@@ -19,7 +27,13 @@ interface Config {
 
 const development: Config["development"] = {
   DB: {
-    HOST: process.env.DATABASE_TYPE_DEV || "file:./dev.db",
+    HOST: process.env.DATABASE_HOST_DEV || "localhost",
+    PORT: process.env.DATABASE_PORT_DEV
+      ? parseInt(process.env.DATABASE_PORT_DEV, 10)
+      : 5432,
+    DBNAME: process.env.DATABASE_NAME_DEV || "tipjs",
+    USERNAME: process.env.DATABASE_USERNAME_DEV || "phamvant",
+    PASSWORD: process.env.DATABASE_PASSWORD_DEV || "123",
   },
   APP: {
     PORT: process.env.SERVER_PORT_DEV
@@ -30,7 +44,13 @@ const development: Config["development"] = {
 
 const production: Config["production"] = {
   DB: {
-    HOST: process.env.DATABASE_TYPE_PRO,
+    HOST: process.env.DATABASE_TYPE_PRO || "DATABASE_TYPE_PRO",
+    PORT: process.env.DATABASE_PORT_PRO
+      ? parseInt(process.env.DATABASE_PORT_PRO, 10)
+      : 5432,
+    DBNAME: process.env.DATABASE_NAME_PRO || "tipjs",
+    USERNAME: process.env.DATABASE_USERNAME_PRO || "phamvant",
+    PASSWORD: process.env.DATABASE_PASSWORD_PRO || "123",
   },
   APP: {
     PORT: process.env.SERVER_PORT_PRO

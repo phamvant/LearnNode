@@ -1,4 +1,5 @@
 import { generateKeyPairSync } from "node:crypto";
+import { v4 as uuidv4 } from "uuid";
 import { DEBUGING } from "..";
 import createTokenPair from "../auth/auth.utils";
 import {
@@ -7,7 +8,6 @@ import {
   ForbiddenError,
   NotFoundError,
 } from "../core/error.response";
-import { prisma } from "../database/init.prisma";
 import getIntoData from "../utils";
 import ShopService from "./shop.service";
 import tokenService from "./token.service";
@@ -19,6 +19,7 @@ interface Credentials {
 }
 
 export interface SignUpCredential extends Credentials {
+  userId: string;
   name: string;
 }
 
@@ -41,10 +42,9 @@ class AccessService {
     userId,
     usedRefreshToken,
   }: {
-    userId: number;
+    userId: string;
     usedRefreshToken: string;
   }) => {
-    console.log(typeof userId);
     const { publicKey, privateKey } = generateKeyPairSync("rsa", {
       modulusLength: 2048,
       publicKeyEncoding: { type: "spki", format: "pem" },
@@ -99,14 +99,16 @@ class AccessService {
       throw new ConflictRequestError({ message: "Shop already existed" });
     }
 
+    const userId = uuidv4();
     const newUser = await ShopService.storeNewUser({
+      userId: userId,
       email: email,
       username: username,
       name: name,
       password: password,
     });
 
-    if (!newUser) {
+    if (!newUser.rowCount) {
       throw new BadRequestError({ message: "Cant create new user" });
     }
 
@@ -118,32 +120,39 @@ class AccessService {
 
     const { accessToken, refreshToken } = await createTokenPair({
       payload: {
-        userId: newUser.id,
+        userId: userId,
         email: email,
       },
       privateKey: privateKey,
     });
 
-    await tokenService.storeToken({
-      userId: newUser.id,
+    const savedToken = await tokenService.storeToken({
+      userId: userId,
       publicKey: publicKey,
       refreshToken: refreshToken,
     });
 
-    //DEBUGING Delete User After Create
+    if (!savedToken.rowCount) {
+      throw new BadRequestError({ message: "Cant save token" });
+    }
+
     if (DEBUGING) {
-      await prisma.user.delete({
-        where: {
-          id: newUser.id,
-        },
+      //DEBUGING Delete User After Create
+      await postgres.query({
+        text: `DELETE FROM "User" WHERE id: $1`,
+        values: [userId],
       });
     }
 
     return {
-      useData: getIntoData({
-        fields: ["userId", "email", "username"],
-        objects: newUser,
-      }),
+      // useData: getIntoData({
+      //   fields: ["userId", "email", "username"],
+      //   objects: newUser.rows[0],
+      // }),
+      userData: {
+        userId,
+        email,
+      },
       token: {
         accessToken: accessToken,
         refreshToken: refreshToken,
@@ -186,8 +195,6 @@ class AccessService {
       privateKey: privateKey,
     });
 
-    console.log({ publicKey, privateKey });
-
     await tokenService.storeToken({
       userId: loginUser.id,
       publicKey: publicKey,
@@ -206,7 +213,7 @@ class AccessService {
     };
   };
 
-  static Logout = async ({ userId }: { userId: number }) => {
+  static Logout = async ({ userId }: { userId: string }) => {
     const removeToken = await ShopService.removeTokenById({ userId: userId });
 
     if (!removeToken) {

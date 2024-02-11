@@ -22,5 +22,7 @@ export interface JwtPayload {
   jti?: string | undefined;
 }
 
+export const KeyTokenTable = `"public"."KeyToken"`;
+
 // export const DEBUGING = 1;
 export const DEBUGING = 0;

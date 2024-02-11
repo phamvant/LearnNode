@@ -7,7 +7,6 @@ import {
   ForbiddenError,
   NotFoundError,
 } from "../core/error.response";
-import { prisma } from "../database/init.prisma";
 import { asyncHandler } from "../helpers/async.handler";
 import ApiKeyService from "../services/apikey.service";
 import TokenService from "../services/token.service";
@@ -106,19 +105,17 @@ export const permissionCheck = (permission: Permission) => {
 
 export const authenticate = asyncHandler(
   async (req: CustomRequest, res: Response, next: NextFunction) => {
-    let extractedClientID = req.headers[HEADER.CLIENTID];
+    let userId = req.headers[HEADER.CLIENTID]?.toString();
 
-    if (!extractedClientID) {
+    if (!userId) {
       throw new AuthFailureError({ message: "Invalid Request" });
     }
-
-    const userId = parseInt(extractedClientID as string);
 
     const userToken = await TokenService.findKeyById({
       userId: userId,
     });
 
-    if (!userToken) {
+    if (!userToken.rowCount) {
       throw new NotFoundError({ message: "User not found" });
     }
 
@@ -131,28 +128,32 @@ export const authenticate = asyncHandler(
       });
     }
 
+    console.log(userToken.rows[0].publickey);
+
     if (type === "Refresh") {
-      if (userToken.usedRefreshToken.includes(token)) {
-        await prisma.keyToken
-          .delete({
-            where: {
-              userId: userId,
-            },
-          })
-          .catch((error) => {
-            console.log(error);
-            throw new BadRequestError({ message: "Cant modify DB" });
-          });
+      if (userToken.rows[0].usedRefreshToken.includes(token)) {
+        //Remove session
+        const query = {
+          text: `DELETE FROM "KeyToken" WHERE userId = $1}`,
+          value: [userId],
+        };
+
+        const storedKey = await postgres?.query(query);
+
+        if (!storedKey?.rowCount) {
+          throw new BadRequestError({ message: "Cant modify DB" });
+        }
+
         throw new AuthFailureError({ message: "Refresh Token Used" });
       }
 
       try {
         const decodedUser = JWT.verify(
           token.toString(),
-          userToken.publicKey
+          userToken.rows[0].publickey
         ) as JwtPayload;
 
-        if (decodedUser.userId != extractedClientID) {
+        if (decodedUser.userId != userId) {
           throw new BadRequestError({ message: "Invalid User" });
         }
 
@@ -169,10 +170,10 @@ export const authenticate = asyncHandler(
     try {
       const decodedUser = JWT.verify(
         token.toString(),
-        userToken.publicKey
+        userToken.rows[0].publickey
       ) as JwtPayload;
 
-      if (decodedUser.userId != extractedClientID) {
+      if (decodedUser.userId != userId) {
         throw new BadRequestError({ message: "Invalid User" });
       }
 

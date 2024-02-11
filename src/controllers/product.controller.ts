@@ -12,13 +12,10 @@ export class ProductController {
     console.log(req.metadata);
     new CREATE({
       message: "Product created",
-      metadata: await new ProductFactory().createProduct(
-        req.body.product_type,
-        {
-          ...req.body,
-          product_shop: req.metadata?.userId,
-        }
-      ),
+      metadata: await ProductFactory.createProduct(req.body.product_type, {
+        ...req.body,
+        product_shop: req.metadata?.userId,
+      }),
     }).send(res);
   };
 }

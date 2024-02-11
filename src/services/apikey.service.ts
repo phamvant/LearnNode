@@ -1,14 +1,10 @@
-import { prisma } from "../database/init.prisma";
-
 class ApiKeyService {
   static findApiKey = async (apiKey: string) => {
-    const objKey = await prisma.apiKey.findUnique({
-      where: {
-        key: apiKey,
-      },
+    const objKey = await postgres.query({
+      text: `SELECT * FROM "ApiKey"`,
     });
 
-    return objKey;
+    return objKey.rows[0];
   };
 }
 

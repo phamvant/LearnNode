@@ -10,7 +10,7 @@ Content-Type: application/json
 x-api-key: xxx
 
 {
-"email": "thuan",
+    "email": "thuan@gmail.com",
     "name": "pham",
     "username": "pvt",
     "password": "1"
@@ -22,7 +22,7 @@ Content-Type: application/json
 x-api-key: xxx
 
 {
-    "email": "thuan",
+    "email": "thuan@gmail.com",
     "password": "1"
 }
 
@@ -30,9 +30,8 @@ x-api-key: xxx
 POST {{url_dev}}/shop/logout  HTTP/1.1
 Content-Type: application/json
 x-api-key: xxx
-x-client-id: 1
-authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGh1YW4iLCJpYXQiOjE3MDY2MzQwNzgsImV4cCI6MTcwNjgwNjg3OH0.Ftkoosh6pTGvmrtxnrnLfFWfg-hfPUWY9I5MPyP6jeHVrKlAuQ7bXMLtKCJIk9AwJvDfc5HkHjwYsOQNOw7p6x1PGgVGCZJ1Ml3eXEwy6cs6Nd7mLWl13uOUdykho3fC8iUGlhYyBvpKaMyjjwW1y12NrpKJo3939ZhZiqjnIZaRe0f2jJeedLyIXgDPCn4NGu6ldfEi9Qf2SEGBN3ea6emHdSsba-Bw927A7pU09_eTzWTgmvQUsJwwi50qixMuA25SmrptDwwt0fjRZYvWzOwIU-8iMtIthXfMMXiNbjAyRITst3cmiK7djshi9aQJrD2SDsxAx2KvDxrAgk6YgQ
-
+x-client-id: fb4eadea-0b39-414c-a122-c5e205b76bbf
+authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmYjRlYWRlYS0wYjM5LTQxNGMtYTEyMi1jNWUyMDViNzZiYmYiLCJlbWFpbCI6InRodWFuQGdtYWlsLmNvbSIsImlhdCI6MTcwNzYyNzI3MywiZXhwIjoxNzA3ODAwMDczfQ.XrmhZvdlNolXB3tMPKrXC6HaBoGE0cE7CWyRZ3p95mCGborHZ2eBnFmP9jkm65mxZHZfbaapIDRUIRx4VXHxXThH0jzqvjJii-cljpkGou3kwW5RtcM_5orZ6adsFn4Cc3r_t2KlcJQ3Kdh3lmAjZITDKzeNwGsppw2PpiSuHuGDPG_nc_sH6DnQUX17QDtFI5d4E07FjQB7pXfEdu8Vd9wHJd53kLCBpuSidYrpQwSfc4oMprrhgoB0QTkxiRtCXyXjXZttPeMh4W_2NJPVgmxInxPyW3n78ibvT_4w4YTAySKOgKcjMBny7vKMGGeVt62pa4tPdP9wVIIazzcWhA
 ### Refresh
 POST {{url_dev}}/shop/refresh  HTTP/1.1
 Content-Type: application/json

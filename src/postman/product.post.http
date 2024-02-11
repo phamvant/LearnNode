@@ -4,8 +4,8 @@
 POST {{url_dev}}/product/create  HTTP/1.1
 Content-Type: application/json
 x-api-key: xxx
-x-client-id: 1
-Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGh1YW4iLCJpYXQiOjE3MDY2MzQ5NjUsImV4cCI6MTcwNjgwNzc2NX0.KFLfZSQ3GCEo8pvx-bCeesdWYJSRclhGQhxwklVoo5i_Q5rRKjRq45PXJtXQTfW8TQ2_Gj-tp2b2vaQHHKcfmakz1XSwtgN2UENRvr_wl5kTjVLhKU1wuoCEKU8xMRa9Yo8zsOazkIvo_B4IWs9L_Y8BnOwRZtIA7ZNfsVEF89Kw2xeeI00YHI0k7OEdc43NH_rNHC8VAzp5ceV0iTPITQbnIHVPf2EKf_UufSHGdySs948SPY64fAlXp4jgH0N0XskJ96ADFh1AXP-OZJRpaEn5I6atS0dPzueXxjxe0AzJFciiiwEEDQTcQQCvgUP5V9la6qcAG1Vfc_NVx3vjcg
+x-client-id: d959b636-5afe-4eb9-a592-5288463e3a55
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkOTU5YjYzNi01YWZlLTRlYjktYTU5Mi01Mjg4NDYzZTNhNTUiLCJlbWFpbCI6InRodWFuQGdtYWlsLmNvbSIsImlhdCI6MTcwNzYyNzUxNSwiZXhwIjoxNzA3ODAwMzE1fQ.hTs7IIhrdEPwmAkFmRhJIEhjCL6ppn7nIHMIOSJohMvnO6kH80HiApz6CjekJGFHg2AHfXtvGPcNT9OQ5Kp7cFFhV8427vTw3zNFNsCQob-i_Vo8wK-J86zVa47l4ED8QmELrTIvW_yXnl2aIaoH28y2fQQfCUI6kqYG4GW79TpaRnUt9z7hq6ppm8QgPOCOoWY6FgZd2tEfYSgKSPqF5WhlDD2m-MkZ7HhE35tH4om0RT4OA6g0EuHR54XnsU78IuNXDEBddDEf84FPWlPa7nEItLb1_rpEI465I_mQQbFMEOT3oapvog--svUDWJ6QmmAhLm-1Oslq_1TMCprhbQ
 
 {
     "product_type": "Electronics",
@@ -24,8 +24,8 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtY
 POST {{url_dev}}/product/create  HTTP/1.1
 Content-Type: application/json
 x-api-key: xxx
-x-client-id: 1
-Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGh1YW4iLCJpYXQiOjE3MDY2MzQ5NjUsImV4cCI6MTcwNjgwNzc2NX0.KFLfZSQ3GCEo8pvx-bCeesdWYJSRclhGQhxwklVoo5i_Q5rRKjRq45PXJtXQTfW8TQ2_Gj-tp2b2vaQHHKcfmakz1XSwtgN2UENRvr_wl5kTjVLhKU1wuoCEKU8xMRa9Yo8zsOazkIvo_B4IWs9L_Y8BnOwRZtIA7ZNfsVEF89Kw2xeeI00YHI0k7OEdc43NH_rNHC8VAzp5ceV0iTPITQbnIHVPf2EKf_UufSHGdySs948SPY64fAlXp4jgH0N0XskJ96ADFh1AXP-OZJRpaEn5I6atS0dPzueXxjxe0AzJFciiiwEEDQTcQQCvgUP5V9la6qcAG1Vfc_NVx3vjcg
+x-client-id: d959b636-5afe-4eb9-a592-5288463e3a55
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkOTU5YjYzNi01YWZlLTRlYjktYTU5Mi01Mjg4NDYzZTNhNTUiLCJlbWFpbCI6InRodWFuQGdtYWlsLmNvbSIsImlhdCI6MTcwNzYyNzUxNSwiZXhwIjoxNzA3ODAwMzE1fQ.hTs7IIhrdEPwmAkFmRhJIEhjCL6ppn7nIHMIOSJohMvnO6kH80HiApz6CjekJGFHg2AHfXtvGPcNT9OQ5Kp7cFFhV8427vTw3zNFNsCQob-i_Vo8wK-J86zVa47l4ED8QmELrTIvW_yXnl2aIaoH28y2fQQfCUI6kqYG4GW79TpaRnUt9z7hq6ppm8QgPOCOoWY6FgZd2tEfYSgKSPqF5WhlDD2m-MkZ7HhE35tH4om0RT4OA6g0EuHR54XnsU78IuNXDEBddDEf84FPWlPa7nEItLb1_rpEI465I_mQQbFMEOT3oapvog--svUDWJ6QmmAhLm-1Oslq_1TMCprhbQ
 
 {
     "product_type": "Clothes",
@@ -37,5 +37,25 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtY
     "product_attribute": {
         "brand": "Apple",
         "size": 10
+    }
+}
+
+### CREATE Houseware
+POST {{url_dev}}/product/create  HTTP/1.1
+Content-Type: application/json
+x-api-key: xxx
+x-client-id: d959b636-5afe-4eb9-a592-5288463e3a55
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkOTU5YjYzNi01YWZlLTRlYjktYTU5Mi01Mjg4NDYzZTNhNTUiLCJlbWFpbCI6InRodWFuQGdtYWlsLmNvbSIsImlhdCI6MTcwNzYyNzUxNSwiZXhwIjoxNzA3ODAwMzE1fQ.hTs7IIhrdEPwmAkFmRhJIEhjCL6ppn7nIHMIOSJohMvnO6kH80HiApz6CjekJGFHg2AHfXtvGPcNT9OQ5Kp7cFFhV8427vTw3zNFNsCQob-i_Vo8wK-J86zVa47l4ED8QmELrTIvW_yXnl2aIaoH28y2fQQfCUI6kqYG4GW79TpaRnUt9z7hq6ppm8QgPOCOoWY6FgZd2tEfYSgKSPqF5WhlDD2m-MkZ7HhE35tH4om0RT4OA6g0EuHR54XnsU78IuNXDEBddDEf84FPWlPa7nEItLb1_rpEI465I_mQQbFMEOT3oapvog--svUDWJ6QmmAhLm-1Oslq_1TMCprhbQ
+
+{
+    "product_type": "Houseware",
+    "product_name": "Vacum",
+    "product_thumbs": "Image",
+    "product_description": "Expensive",
+    "product_price": 100,
+    "product_quantity": 100,
+    "product_attribute": {
+        "brand": "Apple",
+        "color": "Red"
     }
 }

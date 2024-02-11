@@ -1,5 +1,5 @@
+import { v4 as uuidv4 } from "uuid";
 import { BadRequestError } from "../../core/error.response";
-import { prisma } from "../../database/init.prisma";
 import { Product } from "./index.service";
 
 export class Electronics extends Product {
@@ -24,24 +24,25 @@ export class Electronics extends Product {
   }
 
   async createProduct() {
-    const newDevice = await prisma.electronic
-      .create({
-        data: {
-          brand: this.product_attribute.brand,
-          color: this.product_attribute.color,
-          material: this.product_attribute.material,
-        },
-      })
-      .catch((error) => {
-        console.log(error);
-        throw new BadRequestError({ message: "Cant save device" });
-      });
+    const productId = uuidv4();
 
-    if (!newDevice) {
+    const newDevice = await postgres.query({
+      text: `INSERT INTO "Electronic"(id, brand, color, material)
+     VALUES ($1, $2, $3, $4);
+     `,
+      values: [
+        productId,
+        this.product_attribute.brand,
+        this.product_attribute.color,
+        this.product_attribute.material,
+      ],
+    });
+
+    if (!newDevice.rowCount) {
       throw new BadRequestError({ message: "Cant save device" });
     }
 
-    const newProductName = await super.createProduct(newDevice.id);
+    const newProductName = await super.createProduct(productId);
 
     if (!newProductName) {
       throw new BadRequestError({ message: "Cant save product" });

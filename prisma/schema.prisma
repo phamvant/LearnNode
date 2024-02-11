@@ -60,7 +60,7 @@ model Electronic {
 model Houseware {
   id       String  @id @default(uuid())
   brand    String
-  color    Int
+  color    String
   material String?
 }
 
@@ -82,7 +82,7 @@ model User {
 model KeyToken {
   user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId           Int      @unique
-  publicKey        String
+  publicKey        String?
   usedRefreshToken String[]
 }
 

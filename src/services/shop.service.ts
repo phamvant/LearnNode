@@ -1,5 +1,3 @@
-import { BadRequestError } from "../core/error.response";
-import { prisma } from "../database/init.prisma";
 import { SignUpCredential } from "./access.service";
 
 class ShopService {
@@ -12,17 +10,12 @@ class ShopService {
    * @memberof ShopService
    */
   static findUserByEmail = async ({ email }: { email: string }) => {
-    const user = await prisma.user
-      .findUnique({
-        where: {
-          email: email,
-        },
-      })
-      .catch((error) => {
-        throw new BadRequestError({ message: "DB Error" });
-      });
+    const user = await postgres.query({
+      text: `SELECT * FROM "User" WHERE email=$1 LIMIT 1`,
+      values: [email],
+    });
 
-    return user;
+    return user.rows[0];
   };
 
   /**
@@ -39,27 +32,25 @@ class ShopService {
    * @memberof ShopService
    */
   static storeNewUser = async ({
+    userId,
     email,
     username,
     name,
     password,
   }: SignUpCredential) => {
-    const newUser = await prisma.user
-      .create({
-        data: {
-          email: email,
-          name: name,
-          username: username,
-          password: password,
-          roles: ["0000"],
-        },
-      })
-      .catch((error) => {
-        throw new BadRequestError({
-          message: "Cant save user to DB",
-          details: error as string,
-        });
-      });
+    const newUser = await postgres.query({
+      text: `INSERT INTO "User"(id, email, name, username, password, verified, status, roles) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`,
+      values: [
+        userId,
+        email,
+        name,
+        username,
+        password,
+        false,
+        "active",
+        ["0000"],
+      ],
+    });
 
     return newUser;
   };
@@ -72,21 +63,16 @@ class ShopService {
    * @param {{ userId: number }} { userId }
    * @memberof ShopService
    */
-  static removeTokenById = async ({ userId }: { userId: number }) => {
-    const removeToken = await prisma.keyToken
-      .delete({
-        where: {
-          userId: userId,
-        },
-      })
-      .catch((error) => {
-        throw new BadRequestError({
-          message: "Cant delete user from DB",
-          details: error as string,
-        });
-      });
+  static removeTokenById = async ({ userId }: { userId: string }) => {
+    console.log({ userId });
+    const removeToken = await postgres.query({
+      text: `DELETE FROM "KeyToken" WHERE userId=$1`,
+      values: [userId],
+    });
 
-    return removeToken;
+    console.log({ removeToken });
+
+    return removeToken.rowCount;
   };
 }
 
