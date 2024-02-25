@@ -1,3 +1,5 @@
+import { BadRequestError } from "../core/error.response";
+
 interface TokenSchema {
   userId: string;
   publicKey: string;
@@ -13,32 +15,44 @@ class TokenService {
     const existedUser = await this.findKeyById({ userId: userId });
 
     if (!existedUser.rowCount) {
-      const storedToken = await postgres.query({
-        text: `INSERT INTO "KeyToken" (userid, publickey, usedrefreshtoken)
+      const storedToken = await postgres
+        .query({
+          text: `INSERT INTO "KeyToken" (userid, publickey, usedrefreshtoken)
         VALUES ($1, $2, ARRAY[$3])`,
-        values: [userId, publicKey, refreshToken],
-      });
+          values: [userId, publicKey, refreshToken],
+        })
+        .catch((error) => {
+          throw new BadRequestError({ message: "Query failed at storeToken" });
+        });
 
       return storedToken;
     } else {
-      const updatedToken = await postgres.query({
-        text: `UPDATE "KeyToken"
+      const updatedToken = await postgres
+        .query({
+          text: `UPDATE "KeyToken"
         SET usedrefreshtoken = usedrefreshtoken || ARRAY[$1],
         publickey=$2
-        WHERE user=$3
+        WHERE userid=$3
         `,
-        values: [refreshToken, publicKey, userId],
-      });
+          values: [refreshToken, publicKey, userId],
+        })
+        .catch((error) => {
+          throw new BadRequestError({ message: "Query failed at storeToken" });
+        });
 
       return updatedToken;
     }
   };
 
   static findKeyById = async ({ userId }: { userId: string }) => {
-    const token = await postgres.query({
-      text: `SELECT * FROM "KeyToken" WHERE userId=$1 LIMIT 1`,
-      values: [userId],
-    });
+    const token = await postgres
+      .query({
+        text: `SELECT * FROM "KeyToken" WHERE userId=$1 LIMIT 1`,
+        values: [userId],
+      })
+      .catch((error) => {
+        throw new BadRequestError({ message: "Query failed at findKeyById" });
+      });
 
     return token;
   };

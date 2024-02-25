@@ -12,6 +12,7 @@ import ApiKeyService from "../services/apikey.service";
 import TokenService from "../services/token.service";
 
 export interface CustomRequest extends Request {
+  userId: string;
   metadata?: Record<string, any>; //storedApiKey, TokenObj
 }
 
@@ -127,8 +128,6 @@ export const authenticate = asyncHandler(
         message: "Invalid Request",
       });
     }
-
-    console.log(userToken.rows[0].publickey);
 
     if (type === "Refresh") {
       if (userToken.rows[0].usedRefreshToken.includes(token)) {

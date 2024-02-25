@@ -33,8 +33,6 @@ class AccessController {
 
     const newUser = await AccessService.SignUp(req.body);
 
-    console.log({ newUser });
-
     new CREATE({
       message: "New User Created",
       metadata: newUser || {},
