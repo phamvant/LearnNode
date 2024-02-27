@@ -70,3 +70,13 @@ export class NotFoundError extends ErrorResponse {
     super({ code, message, details });
   }
 }
+
+export class ServerUnavailableError extends ErrorResponse {
+  constructor({
+    message = HttpResponse.Reason.SERVICE_UNAVAILABLE,
+    code = HttpResponse.Code.SERVICE_UNAVAILABLE,
+    details = "",
+  }) {
+    super({ code, message, details });
+  }
+}

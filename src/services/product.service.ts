@@ -1,13 +1,14 @@
 import { BadRequestError } from "../core/error.response";
-import { Clothes } from "./product/clothes.service";
-import { Electronics } from "./product/electronic.service";
-import { Houseware } from "./product/houseware.service";
+import { productTypeList } from "./product/product.type.config";
 
 export class ProductFactory {
   static productType: Record<string, any> = {};
 
-  static createProductType = (type: string, classRef: any) => {
-    this.productType[type] = classRef;
+  static createProductType = async () => {
+    productTypeList.forEach(async (productType, index) => {
+      this.productType[Object.keys(productType)[0]] =
+        Object.values(productType)[0];
+    });
   };
 
   static createProduct = async (type: string, payload: any) => {
@@ -21,6 +22,4 @@ export class ProductFactory {
   };
 }
 
-ProductFactory.createProductType("Clothes", Clothes);
-ProductFactory.createProductType("Electronics", Electronics);
-ProductFactory.createProductType("Houseware", Houseware);
+ProductFactory.createProductType();

@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { HttpResponse } from "./http.response/index.status";
 
-class SuccessResponse {
+export class SuccessResponse {
   status: string;
   message: string;
   code: number;
@@ -31,7 +31,6 @@ class SuccessResponse {
   }
 
   send = (res: Response) => {
-    console.log(this.code);
     return res.status(this.code).json(this);
   };
 }
@@ -76,56 +75,22 @@ export class ACCEPTED extends SuccessResponse {
   }
 }
 
-// interface SuccessParams {
-//   status?: string;
-//   message?: string;
-//   code?: number;
-//   reason?: string;
-//   metadata?: Record<string, any>;
-//   options?: Record<string, any>;
-// }
-
-// interface SuccessResponseObject {
-//   status: string;
-//   message: string;
-//   code: number;
-//   metadata: Record<string, any>;
-//   options: any;
-// }
-
-// const CreateSuccessResponse = ({
-//   status = "success",
-//   message,
-//   code = HttpResponse.Code.OK,
-//   reason = HttpResponse.Reason.OK,
-//   metadata = {},
-//   options = {},
-// }: SuccessParams): SuccessResponseObject => ({
-//   status: status,
-//   code: code,
-//   message: message || reason,
-//   metadata: metadata,
-//   options: options || {},
-// });
-
-// export const CREATE = ({
-//   message,
-//   metadata,
-// }: {
-//   message?: string;
-//   metadata?: Record<string, any>;
-// }) => {
-//   return CreateSuccessResponse({
-//     message,
-//     metadata,
-//     code: HttpResponse.Code.CREATED,
-//     reason: HttpResponse.Reason.CREATED,
-//   });
-// };
-
-// export const SendRespone = (
-//   res: Response,
-//   ResponseData: SuccessResponseObject
-// ) => {
-//   return res.status(ResponseData.code).json(ResponseData);
-// };
+export class OK extends SuccessResponse {
+  constructor({
+    message,
+    metadata = {},
+    options = {},
+  }: {
+    message: string;
+    metadata: Record<string, any> | undefined;
+    options?: Record<string, any>;
+  }) {
+    super({
+      message,
+      metadata,
+      code: HttpResponse.Code.OK,
+      reasonStatusCode: HttpResponse.Reason.OK,
+      options,
+    });
+  }
+}

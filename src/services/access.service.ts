@@ -8,7 +8,7 @@ import {
   ForbiddenError,
   NotFoundError,
 } from "../core/error.response";
-import getIntoData from "../utils";
+import { getIntoData } from "../utils";
 import ShopService from "./shop.service";
 import tokenService from "./token.service";
 
