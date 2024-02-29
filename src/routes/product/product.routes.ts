@@ -11,4 +11,9 @@ router.get(
   asyncHandler(ProductController.getAllDradtProduct)
 );
 
+router.post(
+  "/product/publishProduct",
+  asyncHandler(ProductController.publishProduct)
+);
+
 export default router;

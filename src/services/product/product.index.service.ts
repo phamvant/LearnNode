@@ -1,6 +1,10 @@
 import _ from "lodash";
 import { v4 as uuidv4 } from "uuid";
-import { ServerUnavailableError } from "../../core/error.response";
+import {
+  BadRequestError,
+  NotFoundError,
+  ServerUnavailableError,
+} from "../../core/error.response";
 import { getQueryParams } from "../../utils";
 
 export class Product {
@@ -101,17 +105,44 @@ export class Product {
   }
 
   static getAllDraftOfShop = async ({ shop_id }: { shop_id: string }) => {
-    const draftProduct = await postgres.query({
-      text: `SELECT "Product".*
-      FROM "Product"
-      LEFT JOIN "User" ON 
-      "Product"."shop_id" = "User"."id"
-      WHERE "Product"."shop_id" = $1`,
-      values: [shop_id],
-    });
+    const draftProduct = await postgres
+      .query({
+        text: `SELECT "Product".*
+      FROM "Product", "User"
+      WHERE "Product"."shop_id" = "User"."id"
+      AND "Product"."shop_id" = $1`,
+        values: [shop_id],
+      })
+      .catch((error) => {
+        console.log(error);
+        throw new NotFoundError({ message: "Not found draft" });
+      });
 
     const { isdraft, ispublished, ...rest } = draftProduct.rows[0];
 
     return rest;
+  };
+
+  static publishProduct = async ({
+    shop_id,
+    product_id,
+  }: {
+    shop_id: string;
+    product_id: string;
+  }) => {
+    await postgres
+      .query({
+        text: `UPDATE "Product"
+        SET "ispublished" = TRUE
+        WHERE "shop_id" = $1 
+        AND "id" = $2`,
+        values: [shop_id, product_id],
+      })
+      .catch((error) => {
+        console.log(error);
+        throw new BadRequestError({ message: "Cant publish product" });
+      });
+
+    return { product_id };
   };
 }

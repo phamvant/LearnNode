@@ -2,7 +2,7 @@ import { NextFunction, Response } from "express";
 import { CustomRequest } from "../auth/auth.utils";
 import { CREATE, OK } from "../core/success.response";
 import { ProductFactory } from "../services/product.service";
-import { Product } from "../services/product/index.service";
+import { Product } from "../services/product/product.index.service";
 
 export class ProductController {
   static createProduct = async (
@@ -25,9 +25,25 @@ export class ProductController {
     next: NextFunction
   ) => {
     new OK({
-      message: "ok",
+      message: "Data queried",
       metadata: await Product.getAllDraftOfShop({
         shop_id: req.metadata?.userId,
+      }),
+    }).send(res);
+  };
+
+  static publishProduct = async (
+    req: CustomRequest,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const product_id = req.body.product_id;
+
+    new CREATE({
+      message: "Product published",
+      metadata: await Product.publishProduct({
+        shop_id: req.metadata?.userId,
+        product_id: product_id,
       }),
     }).send(res);
   };

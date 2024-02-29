@@ -14,7 +14,7 @@ class TokenService {
   }: TokenSchema) => {
     const existedUser = await this.findKeyById({ userId: userId });
 
-    if (!existedUser.rowCount) {
+    if (!existedUser) {
       const storedToken = await postgres
         .query({
           text: `INSERT INTO "KeyToken" (userid, publickey, usedrefreshtoken)
@@ -22,6 +22,7 @@ class TokenService {
           values: [userId, publicKey, refreshToken],
         })
         .catch((error) => {
+          console.log(error);
           throw new BadRequestError({ message: "Query failed at storeToken" });
         });
 
@@ -37,6 +38,7 @@ class TokenService {
           values: [refreshToken, publicKey, userId],
         })
         .catch((error) => {
+          console.log(error);
           throw new BadRequestError({ message: "Query failed at storeToken" });
         });
 
@@ -54,7 +56,7 @@ class TokenService {
         throw new BadRequestError({ message: "Query failed at findKeyById" });
       });
 
-    return token;
+    return token.rows[0];
   };
 }
 

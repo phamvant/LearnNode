@@ -12,7 +12,6 @@ import ApiKeyService from "../services/apikey.service";
 import TokenService from "../services/token.service";
 
 export interface CustomRequest extends Request {
-  userId: string;
   metadata?: Record<string, any>; //storedApiKey, TokenObj
 }
 
@@ -116,7 +115,7 @@ export const authenticate = asyncHandler(
       userId: userId,
     });
 
-    if (!userToken.rowCount) {
+    if (!userToken) {
       throw new NotFoundError({ message: "User not found" });
     }
 
@@ -130,16 +129,16 @@ export const authenticate = asyncHandler(
     }
 
     if (type === "Refresh") {
-      if (userToken.rows[0].usedRefreshToken.includes(token)) {
+      if (userToken.usedRefreshToken.includes(token)) {
         //Remove session
         const query = {
           text: `DELETE FROM "KeyToken" WHERE userId = $1}`,
           value: [userId],
         };
 
-        const storedKey = await postgres?.query(query);
+        const storedKey = await postgres.query(query);
 
-        if (!storedKey?.rowCount) {
+        if (!storedKey) {
           throw new BadRequestError({ message: "Cant modify DB" });
         }
 
@@ -149,11 +148,11 @@ export const authenticate = asyncHandler(
       try {
         const decodedUser = JWT.verify(
           token.toString(),
-          userToken.rows[0].publickey
+          userToken.publickey
         ) as JwtPayload;
 
         if (decodedUser.userId != userId) {
-          throw new BadRequestError({ message: "Invalid User" });
+          throw new AuthFailureError({ message: "Invalid User" });
         }
 
         req.metadata = {
@@ -162,26 +161,26 @@ export const authenticate = asyncHandler(
           usedRefreshToken: token,
         };
       } catch (error) {
-        throw new BadRequestError({ message: "Invalid User" });
+        throw new AuthFailureError({ message: "Invalid User" });
       }
     }
 
     try {
       const decodedUser = JWT.verify(
         token.toString(),
-        userToken.rows[0].publickey
+        userToken.publickey
       ) as JwtPayload;
 
       if (decodedUser.userId != userId) {
-        throw new BadRequestError({ message: "Invalid User" });
+        throw new AuthFailureError({ message: "Invalid User" });
       }
 
       req.metadata = { ...req.metadata, userId };
       return next();
     } catch (e) {
       console.log(e);
-      throw new BadRequestError({
-        message: "Invalid User ",
+      throw new AuthFailureError({
+        message: "Invalid User",
       });
     }
   }

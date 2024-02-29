@@ -1,4 +1,4 @@
-import { Product } from "./index.service";
+import { Product } from "./product.index.service";
 
 export class Electronics extends Product {
   constructor({
