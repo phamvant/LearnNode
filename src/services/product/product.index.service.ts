@@ -110,7 +110,7 @@ export class Product {
         text: `SELECT "Product".*
       FROM "Product", "User"
       WHERE "Product"."shop_id" = "User"."id"
-      AND "Product"."shop_id" = $1`,
+      AND "Product"."shop_id" = $1 AND "Product"."isdraft" = TRUE`,
         values: [shop_id],
       })
       .catch((error) => {
@@ -118,9 +118,39 @@ export class Product {
         throw new NotFoundError({ message: "Not found draft" });
       });
 
-    const { isdraft, ispublished, ...rest } = draftProduct.rows[0];
+    const products = draftProduct.rows.reduce((previousValue, currentValue) => {
+      const { isdraft, ispublished, ...rest } = currentValue;
+      previousValue.push(rest);
+      return previousValue;
+    }, []);
 
-    return rest;
+    return { length: draftProduct.rowCount, products: products };
+  };
+
+  static getAllPublishedOfShop = async ({ shop_id }: { shop_id: string }) => {
+    const publishedProduct = await postgres
+      .query({
+        text: `SELECT "Product".*
+      FROM "Product", "User"
+      WHERE "Product"."shop_id" = "User"."id"
+      AND "Product"."shop_id" = $1 AND "Product"."ispublished" = TRUE`,
+        values: [shop_id],
+      })
+      .catch((error) => {
+        console.log(error);
+        throw new NotFoundError({ message: "Not found published" });
+      });
+
+    const products = publishedProduct.rows.reduce(
+      (previousValue, currentValue) => {
+        const { isdraft, ispublished, ...rest } = currentValue;
+        previousValue.push(rest);
+        return previousValue;
+      },
+      []
+    );
+
+    return { length: publishedProduct.rowCount, products: products };
   };
 
   static publishProduct = async ({
@@ -133,7 +163,7 @@ export class Product {
     await postgres
       .query({
         text: `UPDATE "Product"
-        SET "ispublished" = TRUE
+        SET "ispublished" = TRUE, "isdraft" = FALSE
         WHERE "shop_id" = $1 
         AND "id" = $2`,
         values: [shop_id, product_id],
@@ -141,6 +171,29 @@ export class Product {
       .catch((error) => {
         console.log(error);
         throw new BadRequestError({ message: "Cant publish product" });
+      });
+
+    return { product_id };
+  };
+
+  static unPublishProduct = async ({
+    shop_id,
+    product_id,
+  }: {
+    shop_id: string;
+    product_id: string;
+  }) => {
+    await postgres
+      .query({
+        text: `UPDATE "Product"
+        SET "ispublished" = FALSE, "isdraft" = TRUE
+        WHERE "shop_id" = $1 
+        AND "id" = $2`,
+        values: [shop_id, product_id],
+      })
+      .catch((error) => {
+        console.log(error);
+        throw new BadRequestError({ message: "Cant unpublish product" });
       });
 
     return { product_id };

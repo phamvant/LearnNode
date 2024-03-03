@@ -32,6 +32,19 @@ export class ProductController {
     }).send(res);
   };
 
+  static getAllPublishedProduct = async (
+    req: CustomRequest,
+    res: Response,
+    next: NextFunction
+  ) => {
+    new OK({
+      message: "Data queried",
+      metadata: await Product.getAllPublishedOfShop({
+        shop_id: req.metadata?.userId,
+      }),
+    }).send(res);
+  };
+
   static publishProduct = async (
     req: CustomRequest,
     res: Response,
@@ -42,6 +55,22 @@ export class ProductController {
     new CREATE({
       message: "Product published",
       metadata: await Product.publishProduct({
+        shop_id: req.metadata?.userId,
+        product_id: product_id,
+      }),
+    }).send(res);
+  };
+
+  static unPublishProduct = async (
+    req: CustomRequest,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const product_id = req.body.product_id;
+
+    new CREATE({
+      message: "Product unpublished",
+      metadata: await Product.unPublishProduct({
         shop_id: req.metadata?.userId,
         product_id: product_id,
       }),
