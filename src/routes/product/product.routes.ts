@@ -1,28 +1,29 @@
 import express from "express";
+import { authenticate } from "../../auth/auth.utils";
 import { ProductController } from "../../controllers/product.controller";
 import { asyncHandler } from "../../helpers/async.handler";
 
 const router = express.Router();
 
-router.post("/product/create", asyncHandler(ProductController.createProduct));
+//-----------------NoAuthen-----------------//
+router.get("/:searchText", asyncHandler(ProductController.searchPublicProduct));
+
+//-----------------Authen-----------------//
+router.use(authenticate);
+
+router.post("/create", asyncHandler(ProductController.createProduct));
+
+router.get("/get_draft", asyncHandler(ProductController.getAllDradtProduct));
 
 router.get(
-  "/product/get_draft",
-  asyncHandler(ProductController.getAllDradtProduct)
-);
-
-router.get(
-  "/product/get_published",
+  "/get_published",
   asyncHandler(ProductController.getAllPublishedProduct)
 );
 
-router.post(
-  "/product/publishProduct",
-  asyncHandler(ProductController.publishProduct)
-);
+router.post("/publishProduct", asyncHandler(ProductController.publishProduct));
 
 router.post(
-  "/product/unpublishProduct",
+  "/unpublishProduct",
   asyncHandler(ProductController.unPublishProduct)
 );
 

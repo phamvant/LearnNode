@@ -3,7 +3,7 @@ CREATE TABLE public."Product" (
   id VARCHAR(36) PRIMARY KEY,
   category_id INT NOT NULL,
   shop_id VARCHAR NOT NULL,
-  name VARCHAR(30) NOT NULL,
+  name TEXT NOT NULL,
   thumb TEXT NOT NULL,
   description TEXT NOT NULL,
   variation_id INT,
@@ -75,3 +75,9 @@ ALTER TABLE public."ProductVariation"
 ADD CONSTRAINT "product_variation_fk" FOREIGN KEY (product_id) REFERENCES public."Product" (id) ON DELETE CASCADE;
 ALTER TABLE public."ProductVariation"
 ADD CONSTRAINT "variation_type_fk" FOREIGN KEY (variation_id) REFERENCES public."Variation" (id) ON DELETE CASCADE;
+----------------------ProductIndex----------------------
+--gin (Generalized Inverted Index)
+--to_tsvector (Special data type optimized for full-text search. The tsvector contains lexemes (words) from the document along with their positions and weights.)
+CREATE INDEX idx_product_fts ON "Product" USING gin(
+  to_tsvector('english', name || ' ' || description)
+);

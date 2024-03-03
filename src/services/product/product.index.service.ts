@@ -40,6 +40,33 @@ export class Product {
     this.product_variations = product_variations;
   }
 
+  //-----------------NoAuthen-----------------//
+  static searchPublicProduct = async (searchText: string) => {
+    const products = await postgres
+      .query({
+        text: `SELECT *
+      FROM "Product"
+      WHERE to_tsvector(name) @@ plainto_tsquery($1)
+      AND ispublished = TRUE
+      ORDER BY ts_rank(to_tsvector(name), plainto_tsquery($1)) DESC
+      LIMIT 50; `,
+        values: [searchText],
+      })
+      .catch((error) => {
+        console.log(error);
+        throw new NotFoundError({ message: "Cant find product" });
+      });
+
+    const ret = products.rows.reduce((previousValue, currentValue) => {
+      const { isdraft, ispublished, ...rest } = currentValue;
+      previousValue.push(rest);
+      return previousValue;
+    }, []);
+
+    return ret;
+  };
+
+  //-----------------Authen-----------------//
   /**
    * Create new product
    */
@@ -96,6 +123,8 @@ export class Product {
       await client.query("COMMIT");
     } catch (error) {
       await client.query("ROLLBACK");
+
+      console.log(error);
       throw new ServerUnavailableError({
         message: "Query failed at createProduct",
       });

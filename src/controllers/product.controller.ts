@@ -5,6 +5,18 @@ import { ProductFactory } from "../services/product.service";
 import { Product } from "../services/product/product.index.service";
 
 export class ProductController {
+  //-----------------NoAuthen-----------------//
+  static searchPublicProduct = async (
+    req: CustomRequest,
+    res: Response,
+    next: NextFunction
+  ) => {
+    new OK({
+      message: "Data queried",
+      metadata: await Product.searchPublicProduct(req.params.searchText),
+    }).send(res);
+  };
+  //-----------------Authen-----------------//
   static createProduct = async (
     req: CustomRequest,
     res: Response,

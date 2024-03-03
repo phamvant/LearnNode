@@ -27,8 +27,8 @@ router.get(
   }
 );
 
-router.use("/v1/api", AccressRouter);
+router.use("/v1/api/shop", AccressRouter);
 
-router.use("/v1/api", ProductRouter);
+router.use("/v1/api/product", ProductRouter);
 
 export default router;

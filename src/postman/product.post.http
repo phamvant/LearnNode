@@ -8,14 +8,15 @@ x-client-id: ee7d979e-7c31-4aa4-b9fc-1822137ddce5
 Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZTdkOTc5ZS03YzMxLTRhYTQtYjlmYy0xODIyMTM3ZGRjZTUiLCJlbWFpbCI6InRodWFuQGdtYWlsLmNvbSIsImlhdCI6MTcwOTM1NTk2NCwiZXhwIjoxNzA5NTI4NzY0fQ.PVko2GYyybR9crzRnABSJSVUgvyhxV5LZu6du9Q8pOxtWWoL-saTKLb4SysAco2KNGWu4hdXcWLZ_MAq6pirgQV0VliXedVCwvPoz31HJN-8oSLCvg0NYODFEuwGrt0nbTzJFHSorxO2sSfszF9iTfNV6v35yW7_xAWNiPHW_nO1nhuXCZuHHe8YwVS6qa7vTgp43eSH0jg4vyRjW30PrZPVjOBqNBWBwULGmlUOXtznW2HFUUopKcedhSAV7eKbII_wvGO5j0HFdWC5xjrDFa15X7rYbjejh6e479jbgk_-vOkDITE7U92SFBfFpIxre1LstqKfLmef5ZRIMxrwtg
 
 {
-    "product_type": "Electronics",
-    "product_name": "IPhone",
-    "product_thumbs": "Image",
-    "product_description": "Expensive",
-    "product_price": 100,
-    "product_quantity": 100,
-    "product_variations": [1, 4]
+  "product_type": "Electronics",
+  "product_name": "Smart Air Purifier with True HEPA Filter, removes 99.97% of airborne allergens",
+  "product_thumbs": "Image",
+  "product_description": "Enjoy cleaner air with this smart air purifier. It features a True HEPA filter that removes 99.97% of airborne allergens as small as 0.3 microns, including dust, pollen, smoke, and pet dander.  Control it remotely with your smartphone or voice assistant.",
+  "product_price": 150,
+  "product_quantity": 50,
+  "product_variations": [1, 2]
 }
+
 
 ### CREATE Clothes
 POST {{url_dev}}/product/create  HTTP/1.1
@@ -51,6 +52,10 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZTdkO
     "product_variations": [1, 4]
 }
 
+### GET public product
+GET {{url_dev}}/product/amazon  HTTP/1.1
+x-api-key: xxx
+
 ### GET All draft product 
 GET {{url_dev}}/product/get_draft  HTTP/1.1
 x-api-key: xxx
@@ -73,5 +78,5 @@ x-client-id: ee7d979e-7c31-4aa4-b9fc-1822137ddce5
 Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZTdkOTc5ZS03YzMxLTRhYTQtYjlmYy0xODIyMTM3ZGRjZTUiLCJlbWFpbCI6InRodWFuQGdtYWlsLmNvbSIsImlhdCI6MTcwOTM1NTk2NCwiZXhwIjoxNzA5NTI4NzY0fQ.PVko2GYyybR9crzRnABSJSVUgvyhxV5LZu6du9Q8pOxtWWoL-saTKLb4SysAco2KNGWu4hdXcWLZ_MAq6pirgQV0VliXedVCwvPoz31HJN-8oSLCvg0NYODFEuwGrt0nbTzJFHSorxO2sSfszF9iTfNV6v35yW7_xAWNiPHW_nO1nhuXCZuHHe8YwVS6qa7vTgp43eSH0jg4vyRjW30PrZPVjOBqNBWBwULGmlUOXtznW2HFUUopKcedhSAV7eKbII_wvGO5j0HFdWC5xjrDFa15X7rYbjejh6e479jbgk_-vOkDITE7U92SFBfFpIxre1LstqKfLmef5ZRIMxrwtg
 
 {
-    "product_id": "07c0e0f5-ce36-4895-a38b-5c277e6de30e"
+    "product_id": "b090c3c8-66ac-40ae-a269-8dfe4eca1a72"
 }

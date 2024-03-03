@@ -5,17 +5,17 @@ import { asyncHandler } from "../../helpers/async.handler";
 
 const router = express.Router();
 
-router.post("/shop/signup", asyncHandler(accessController.signUp));
+router.post("/signup", asyncHandler(accessController.signUp));
 
-router.post("/shop/login", asyncHandler(accessController.login));
+router.post("/login", asyncHandler(accessController.login));
 
 /**
  * authentication
  */
 router.use(authenticate);
 
-router.post("/shop/refresh", asyncHandler(accessController.handleRefreshToken));
+router.post("/refresh", asyncHandler(accessController.handleRefreshToken));
 
-router.post("/shop/logout", asyncHandler(accessController.logout));
+router.post("/logout", asyncHandler(accessController.logout));
 
 export default router;
