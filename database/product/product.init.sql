@@ -49,7 +49,6 @@ CREATE TABLE public."Inventory" (
   id SERIAL PRIMARY KEY,
   product_id VARCHAR(36) NOT NULL,
   quantity INTEGER NOT NULL,
-  product_id VARCHAR(36) NOT NULL,
   "createdAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
   "updatedAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
