@@ -5,7 +5,7 @@ import {
   NotFoundError,
   ServerUnavailableError,
 } from "../../core/error.response";
-import { getQueryParams } from "../../utils";
+import { getIntoData, getQueryParams } from "../../utils";
 
 export class Product {
   product_name: string;
@@ -41,6 +41,35 @@ export class Product {
   }
 
   //-----------------NoAuthen-----------------//
+
+  static getAllProduct = async ({
+    limit,
+    page,
+  }: {
+    limit: number;
+    page: number;
+  }) => {
+    const products = await postgres
+      .query({
+        text: `SELECT name, thumb, price, rating
+      FROM "Product"
+      WHERE ispublished = TRUE
+      ORDER BY rating DESC
+      LIMIT $1 OFFSET $2`,
+        values: [limit, (page - 1) * limit],
+      })
+      .catch((error) => {
+        console.log(error);
+        throw new NotFoundError({ message: "Cant get products" });
+      });
+
+    return products.rows;
+  };
+  /**
+   * Find product by search box
+   * @param searchText
+   * @returns
+   */
   static searchPublicProduct = async (searchText: string) => {
     const products = await postgres
       .query({
@@ -58,8 +87,13 @@ export class Product {
       });
 
     const ret = products.rows.reduce((previousValue, currentValue) => {
-      const { isdraft, ispublished, ...rest } = currentValue;
-      previousValue.push(rest);
+      previousValue.push(
+        getIntoData({
+          fields: ["isdraft", "ispublished"],
+          objects: currentValue,
+          unSelect: true,
+        })
+      );
       return previousValue;
     }, []);
 
@@ -133,6 +167,11 @@ export class Product {
     return { product_name: this.product_name };
   }
 
+  /**
+   * Get all draft product of shop
+   * @param shop_id
+   * @returns
+   */
   static getAllDraftOfShop = async ({ shop_id }: { shop_id: string }) => {
     const draftProduct = await postgres
       .query({
@@ -148,14 +187,24 @@ export class Product {
       });
 
     const products = draftProduct.rows.reduce((previousValue, currentValue) => {
-      const { isdraft, ispublished, ...rest } = currentValue;
-      previousValue.push(rest);
+      previousValue.push(
+        getIntoData({
+          fields: ["isdraft", "ispublished"],
+          objects: currentValue,
+          unSelect: true,
+        })
+      );
       return previousValue;
     }, []);
 
     return { length: draftProduct.rowCount, products: products };
   };
 
+  /**
+   * Get all public product of shop
+   * @param shop_id
+   * @returns
+   */
   static getAllPublishedOfShop = async ({ shop_id }: { shop_id: string }) => {
     const publishedProduct = await postgres
       .query({
@@ -172,8 +221,13 @@ export class Product {
 
     const products = publishedProduct.rows.reduce(
       (previousValue, currentValue) => {
-        const { isdraft, ispublished, ...rest } = currentValue;
-        previousValue.push(rest);
+        previousValue.push(
+          getIntoData({
+            fields: ["isdraft", "ispublished"],
+            objects: currentValue,
+            unSelect: true,
+          })
+        );
         return previousValue;
       },
       []
@@ -182,6 +236,11 @@ export class Product {
     return { length: publishedProduct.rowCount, products: products };
   };
 
+  /**
+   * Publish a product of shop
+   * @param shop_id
+   * @returns
+   */
   static publishProduct = async ({
     shop_id,
     product_id,
@@ -205,6 +264,11 @@ export class Product {
     return { product_id };
   };
 
+  /**
+   * Unpublish a product of shop
+   * @param shop_id
+   * @returns
+   */
   static unPublishProduct = async ({
     shop_id,
     product_id,

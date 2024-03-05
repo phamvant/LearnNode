@@ -8,10 +8,15 @@ import _ from "lodash";
 export const getIntoData = ({
   fields,
   objects,
+  unSelect = false,
 }: {
   fields: string[];
   objects: {};
+  unSelect?: boolean;
 }) => {
+  if (unSelect) {
+    return _.omit(objects, fields);
+  }
   return _.pick(objects, fields);
 };
 

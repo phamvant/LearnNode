@@ -6,8 +6,12 @@ import { asyncHandler } from "../../helpers/async.handler";
 const router = express.Router();
 
 //-----------------NoAuthen-----------------//
-router.get("/:searchText", asyncHandler(ProductController.searchPublicProduct));
+router.get(
+  "/search/:searchText",
+  asyncHandler(ProductController.searchPublicProduct)
+);
 
+router.get("/", asyncHandler(ProductController.getAllProduct));
 //-----------------Authen-----------------//
 router.use(authenticate);
 

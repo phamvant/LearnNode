@@ -15,12 +15,13 @@ services:
       - ./database/product/product.init.sql:/docker-entrypoint-initdb.d/02.product.init.sql
       - ./database/product/category/category.init.sql:/docker-entrypoint-initdb.d/03.category.init.sql
       - ./database/migrate:/usr/migrate
+
   bun:
     image: oven/bun:latest
     build: ./docker-bun
     container_name: bun
     ports:
-        - 3000:3000
+      - 3000:3000
     volumes:
-        - ./:/home/bun
+      - ./:/home/bun
     tty: true

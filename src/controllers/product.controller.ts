@@ -16,6 +16,17 @@ export class ProductController {
       metadata: await Product.searchPublicProduct(req.params.searchText),
     }).send(res);
   };
+
+  static getAllProduct = async (
+    req: CustomRequest,
+    res: Response,
+    next: NextFunction
+  ) => {
+    new OK({
+      message: "Products queried",
+      metadata: await Product.getAllProduct({ limit: 5, page: 1 }),
+    }).send(res);
+  };
   //-----------------Authen-----------------//
   static createProduct = async (
     req: CustomRequest,
