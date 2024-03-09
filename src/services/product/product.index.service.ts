@@ -5,7 +5,8 @@ import {
   NotFoundError,
   ServerUnavailableError,
 } from "../../core/error.response";
-import { getIntoData, getQueryParams } from "../../utils";
+import { checkNullField, getIntoData, getQueryParams } from "../../utils";
+import { findProductById } from "../repository/product.repo";
 
 export class Product {
   product_name: string;
@@ -106,6 +107,18 @@ export class Product {
    */
   async createProduct(category_id: number) {
     const product_id = uuidv4();
+    const insertProduct = getQueryParams([
+      "id",
+      "category_id",
+      "shop_id",
+      "name",
+      "thumb",
+      "description",
+      "price",
+      "slug",
+    ]);
+
+    const insertVariant = getQueryParams(["product_id", "variation_id"], 2);
 
     //Create connect for transaction
     const client = await postgres.connect().catch((e) => {
@@ -119,8 +132,8 @@ export class Product {
        * Create Product Record
        */
       await client.query({
-        text: `INSERT INTO "Product"(id, category_id, shop_id, name, thumb, description, price, slug)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8);
+        text: `INSERT INTO "Product" ${insertProduct.columnList}
+        VALUES ${insertProduct.valueList}; 
         `,
         values: [
           product_id,
@@ -138,8 +151,8 @@ export class Product {
        * Create Product_Variation Record
        */
       await client.query({
-        text: `INSERT INTO "ProductVariation" (product_id, variation_id)
-      VALUES ${getQueryParams(this.product_variations.length, 2)}`,
+        text: `INSERT INTO "ProductVariation" ${insertVariant.columnList}
+      VALUES ${insertVariant.valueList}`,
         values: this.product_variations.reduce((returnValue, currentValue) => {
           return [...returnValue, ...[product_id, currentValue]];
         }, [] as any[]),
@@ -290,5 +303,37 @@ export class Product {
       });
 
     return { product_id };
+  };
+
+  static modifyProduct = async ({
+    product_id,
+    shop_id,
+    payload,
+  }: {
+    product_id: string;
+    shop_id: string;
+    payload: Record<string, string | number>;
+  }) => {
+    const product = await findProductById(product_id);
+    const nullField = checkNullField(payload);
+
+    if (!product) {
+      throw new BadRequestError({ message: "No product with queried id" });
+    }
+
+    if (product.product_shop != shop_id) {
+      throw new BadRequestError({ message: "Product not belong to this shop" });
+    }
+
+    if (!nullField) {
+      throw new BadRequestError({ message: "Null field contained" });
+    }
+
+    await postgres.query({
+      text: `UPDATE "Product"
+      
+      `,
+      values: [],
+    });
   };
 }
