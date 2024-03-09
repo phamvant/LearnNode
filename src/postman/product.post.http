@@ -1,17 +1,19 @@
 @url_dev=http://localhost:3000/v1/api
+@client-id=ee7d979e-7c31-4aa4-b9fc-1822137ddce5
+@token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZTdkOTc5ZS03YzMxLTRhYTQtYjlmYy0xODIyMTM3ZGRjZTUiLCJlbWFpbCI6InRodWFuQGdtYWlsLmNvbSIsImlhdCI6MTcwOTk4NjA4MywiZXhwIjoxNzEwMTU4ODgzfQ.Sa8QZNwDaJlPzw-X09GMf6A6C3rG6I7Ps-YSe328N-Wn04UOiM6xZsIC4_-rZw7WUmPDMNZtIOl46CVGFOURSZThWdY0fWMj6Prkn0QORgz3Ra2Km9opd56qLQqjmf6kN87c1_8yQQL63maH8a-NLET9DcgYy_Kb1sEtOJkCI0w13Dxbe9LfqsjIHL2BPh23CwRZu_jsPfcfer_RJi2vRSXhCdVJVlU8gn6SzSYmZ9eKQoGGiF0XCZ7c7eZC7N7upm7Ac7m35ux5qpb80WTpyj6lkr3ary1CTIMPXs8Niklgun5jXk-fhbbwYPPoAujkt3JTx39Hen4sKWAN7FJN5w
 
 ### CREATE Electronic
 POST {{url_dev}}/product/create  HTTP/1.1
 Content-Type: application/json
 x-api-key: xxx
-x-client-id: ee7d979e-7c31-4aa4-b9fc-1822137ddce5
-Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZTdkOTc5ZS03YzMxLTRhYTQtYjlmYy0xODIyMTM3ZGRjZTUiLCJlbWFpbCI6InRodWFuQGdtYWlsLmNvbSIsImlhdCI6MTcwOTM1NTk2NCwiZXhwIjoxNzA5NTI4NzY0fQ.PVko2GYyybR9crzRnABSJSVUgvyhxV5LZu6du9Q8pOxtWWoL-saTKLb4SysAco2KNGWu4hdXcWLZ_MAq6pirgQV0VliXedVCwvPoz31HJN-8oSLCvg0NYODFEuwGrt0nbTzJFHSorxO2sSfszF9iTfNV6v35yW7_xAWNiPHW_nO1nhuXCZuHHe8YwVS6qa7vTgp43eSH0jg4vyRjW30PrZPVjOBqNBWBwULGmlUOXtznW2HFUUopKcedhSAV7eKbII_wvGO5j0HFdWC5xjrDFa15X7rYbjejh6e479jbgk_-vOkDITE7U92SFBfFpIxre1LstqKfLmef5ZRIMxrwtg
+x-client-id: {{client-id}}
+Authorization: Bearer {{token}}
 
 {
   "product_type": "Electronics",
   "product_name": "Smart Air Purifier with True HEPA Filter, removes 99.97% of airborne allergens",
   "product_thumbs": "Image",
-  "product_description": "Enjoy cleaner air with this smart air purifier. It features a True HEPA filter that removes 99.97% of airborne allergens as small as 0.3 microns, including dust, pollen, smoke, and pet dander.  Control it remotely with your smartphone or voice assistant.",
+  "product_description": "Enjoy cleaner air with this smart air purifier",
   "product_price": 150,
   "product_quantity": 50,
   "product_variations": [1, 2]
@@ -22,8 +24,8 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZTdkO
 POST {{url_dev}}/product/create  HTTP/1.1
 Content-Type: application/json
 x-api-key: xxx
-x-client-id: ee7d979e-7c31-4aa4-b9fc-1822137ddce5
-Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZTdkOTc5ZS03YzMxLTRhYTQtYjlmYy0xODIyMTM3ZGRjZTUiLCJlbWFpbCI6InRodWFuQGdtYWlsLmNvbSIsImlhdCI6MTcwOTM1NTk2NCwiZXhwIjoxNzA5NTI4NzY0fQ.PVko2GYyybR9crzRnABSJSVUgvyhxV5LZu6du9Q8pOxtWWoL-saTKLb4SysAco2KNGWu4hdXcWLZ_MAq6pirgQV0VliXedVCwvPoz31HJN-8oSLCvg0NYODFEuwGrt0nbTzJFHSorxO2sSfszF9iTfNV6v35yW7_xAWNiPHW_nO1nhuXCZuHHe8YwVS6qa7vTgp43eSH0jg4vyRjW30PrZPVjOBqNBWBwULGmlUOXtznW2HFUUopKcedhSAV7eKbII_wvGO5j0HFdWC5xjrDFa15X7rYbjejh6e479jbgk_-vOkDITE7U92SFBfFpIxre1LstqKfLmef5ZRIMxrwtg
+x-client-id: {{client-id}}
+Authorization: Bearer {{token}}
 
 {
     "product_type": "Clothes",
@@ -39,8 +41,8 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZTdkO
 POST {{url_dev}}/product/create  HTTP/1.1
 Content-Type: application/json
 x-api-key: xxx
-x-client-id: ee7d979e-7c31-4aa4-b9fc-1822137ddce5Amazon
-Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZTdkOTc5ZS03YzMxLTRhYTQtYjlmYy0xODIyMTM3ZGRjZTUiLCJlbWFpbCI6InRodWFuQGdtYWlsLmNvbSIsImlhdCI6MTcwOTIxNDEyNiwiZXhwIjoxNzA5Mzg2OTI2fQ.MVi2IG38VNDg1O8iA2ieb_fvdDPLTYUJoaNENWRUK53kZ_Awn_dm52Pry930wzCOgJDAW2E02m62pIkeKQILC9ImAC7AINmvWzmMfoBT_D5CgM0BzbXGJilOoyIyyB30DKF0tMATCfZX0B4p67hY3kL0olCT_3k29Ij2wNWR-dCj6nPc5fR5fXCWayVWqeaj6sEf_ZcbhqROoiwZ7zcstSxaEWqQuaysrG2Ea7tQHzuktW1BclKgRhc8pkhr1NRv4-tArAEmkZEKcLi61X5LQ1yiwUVo9ua95RqjxFj7eQeCnCa1wGYQi83ZS4jS4PIwvcjA3qT1NtHeQu2LdRedjQ
+x-client-id: {{client-id}}
+Authorization: Bearer {{token}}
 
 {
     "product_type": "Houseware",
@@ -63,23 +65,23 @@ x-api-key: xxx
 ### GET All draft product 
 GET {{url_dev}}/product/get_draft  HTTP/1.1
 x-api-key: xxx
-x-client-id: ee7d979e-7c31-4aa4-b9fc-1822137ddce5
-Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZTdkOTc5ZS03YzMxLTRhYTQtYjlmYy0xODIyMTM3ZGRjZTUiLCJlbWFpbCI6InRodWFuQGdtYWlsLmNvbSIsImlhdCI6MTcwOTM1NTk2NCwiZXhwIjoxNzA5NTI4NzY0fQ.PVko2GYyybR9crzRnABSJSVUgvyhxV5LZu6du9Q8pOxtWWoL-saTKLb4SysAco2KNGWu4hdXcWLZ_MAq6pirgQV0VliXedVCwvPoz31HJN-8oSLCvg0NYODFEuwGrt0nbTzJFHSorxO2sSfszF9iTfNV6v35yW7_xAWNiPHW_nO1nhuXCZuHHe8YwVS6qa7vTgp43eSH0jg4vyRjW30PrZPVjOBqNBWBwULGmlUOXtznW2HFUUopKcedhSAV7eKbII_wvGO5j0HFdWC5xjrDFa15X7rYbjejh6e479jbgk_-vOkDITE7U92SFBfFpIxre1LstqKfLmef5ZRIMxrwtg
+x-client-id: {{client-id}}
+Authorization: Bearer {{token}}
 
 ### GET Published product 
 GET {{url_dev}}/product/get_published  HTTP/1.1
 Content-Type: application/json
 x-api-key: xxx
-x-client-id: ee7d979e-7c31-4aa4-b9fc-1822137ddce5
-Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZTdkOTc5ZS03YzMxLTRhYTQtYjlmYy0xODIyMTM3ZGRjZTUiLCJlbWFpbCI6InRodWFuQGdtYWlsLmNvbSIsImlhdCI6MTcwOTY1MDg2MywiZXhwIjoxNzA5ODIzNjYzfQ.YWdoBDBQrLzvB3BszceLdgzGStH80cQZot5sqfaBK66_bWfis5rLV8DtjaRiRvBs_5C2SuIvUVfzeRkpqJXNJe0qYc6r19RBJBgGrXvkoznZ3pBgZlRej4G1AvhgrNsZDuURa3Mp-LBQlP9hqRui0qp_1O_L6JWTb1En0zqQbyRyBAmaU4iNV8yrkEDON3R0zASJ6MGlliIxFZBjTwepyaveWFHQx30aQUbLf84KwgvjMkbE8azUOGUrOcWRFt3EIxsP4cFYpnlFoGcpaRUuAyfRXEbZTWMC2kVfozvdhhJrZb_7yuwwIC_9OQnb3H4S1Cb2T-EMShI9VluTaLNtZw
+x-client-id: {{client-id}}
+Authorization: Bearer {{token}}
 
 
 ### POST Publish product 
 POST {{url_dev}}/product/publishProduct  HTTP/1.1
 Content-Type: application/json
 x-api-key: xxx
-x-client-id: ee7d979e-7c31-4aa4-b9fc-1822137ddce5
-Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZTdkOTc5ZS03YzMxLTRhYTQtYjlmYy0xODIyMTM3ZGRjZTUiLCJlbWFpbCI6InRodWFuQGdtYWlsLmNvbSIsImlhdCI6MTcwOTM1NTk2NCwiZXhwIjoxNzA5NTI4NzY0fQ.PVko2GYyybR9crzRnABSJSVUgvyhxV5LZu6du9Q8pOxtWWoL-saTKLb4SysAco2KNGWu4hdXcWLZ_MAq6pirgQV0VliXedVCwvPoz31HJN-8oSLCvg0NYODFEuwGrt0nbTzJFHSorxO2sSfszF9iTfNV6v35yW7_xAWNiPHW_nO1nhuXCZuHHe8YwVS6qa7vTgp43eSH0jg4vyRjW30PrZPVjOBqNBWBwULGmlUOXtznW2HFUUopKcedhSAV7eKbII_wvGO5j0HFdWC5xjrDFa15X7rYbjejh6e479jbgk_-vOkDITE7U92SFBfFpIxre1LstqKfLmef5ZRIMxrwtg
+x-client-id: {{client-id}}
+Authorization: Bearer {{token}}
 
 {
     "product_id": "b090c3c8-66ac-40ae-a269-8dfe4eca1a72"
