@@ -86,3 +86,18 @@ Authorization: Bearer {{token}}
 {
     "product_id": "b090c3c8-66ac-40ae-a269-8dfe4eca1a72"
 }
+
+### POST Modify product 
+POST {{url_dev}}/product/modifyProduct  HTTP/1.1
+Content-Type: application/json
+x-api-key: xxx
+x-client-id: {{client-id}}
+Authorization: Bearer {{token}}
+
+{
+    "product_id": "b090c3c8-66ac-40ae-a269-8dfe4eca1a72",
+    "product_name": "Smart Air Purifier with True HEPA Filter, removes 99.97% of airborne allergens",
+    "product_thumb": "Image",
+    "product_description": "Enjoy cleaner air with this smart air purifier",
+    "product_price": 150
+}

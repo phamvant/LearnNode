@@ -20,28 +20,6 @@ export const getIntoData = ({
   return _.pick(objects, fields);
 };
 
-// /**
-//  * @description Create VALUES $ for Query Command
-//  * @param paramsNumber
-//  * @param valueNumber
-//  * @returns
-//  */
-// export const getQueryParams = (paramsNumber: number, valueNumber: number) => {
-//   const ret = [];
-//   for (let i = 0; i < paramsNumber; i++) {
-//     const params = (index: number) => {
-//       const values = [];
-//       for (let j = 1; j <= valueNumber; j++) {
-//         values.push(`$${index * valueNumber + j}`);
-//       }
-//       return `(${values.join(",")})`;
-//     };
-
-//     ret.push(`${params(i)}`);
-//   }
-//   return ret.join(",");
-// };
-
 export const getQueryParams = (params: string[], numberOfRecord = 1) => {
   let columnList: string[] = [];
   let valueList: string[] = [];
@@ -64,6 +42,18 @@ export const getQueryParams = (params: string[], numberOfRecord = 1) => {
   return {
     columnList: `(${columnList.join(",")})`,
     valueList: `${valueList.join(",")}`,
+  };
+};
+
+export const getUpdateQueryParams = (params: Record<string, any>) => {
+  return {
+    params: Object.keys(params)
+      .reduce((previousValue, currentValue, currentIndex) => {
+        previousValue.push(`"${currentValue}"=$${currentIndex + 1}`);
+        return previousValue;
+      }, [] as string[])
+      .join(","),
+    length: Object.keys(params).length,
   };
 };
 

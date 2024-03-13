@@ -1,7 +1,6 @@
 import { NextFunction, Response } from "express";
 import { CustomRequest } from "../auth/auth.utils";
 import { CREATE, OK } from "../core/success.response";
-import { ProductFactory } from "../services/product.service";
 import { Product } from "../services/product/product.index.service";
 
 export class ProductController {
@@ -35,7 +34,7 @@ export class ProductController {
   ) => {
     new CREATE({
       message: "Product created",
-      metadata: await ProductFactory.createProduct(req.body.product_type, {
+      metadata: await Product.createProduct({
         ...req.body,
         product_shop: req.metadata?.userId,
       }),
@@ -96,6 +95,23 @@ export class ProductController {
       metadata: await Product.unPublishProduct({
         shop_id: req.metadata?.userId,
         product_id: product_id,
+      }),
+    }).send(res);
+  };
+
+  static modifyProduct = async (
+    req: CustomRequest,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const product_id = req.body.id;
+
+    new CREATE({
+      message: "Product unpublished",
+      metadata: await Product.modifyProduct({
+        shop_id: req.metadata?.userId,
+        product_id: product_id,
+        payload: req.body,
       }),
     }).send(res);
   };

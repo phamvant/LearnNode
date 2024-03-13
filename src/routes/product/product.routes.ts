@@ -31,4 +31,6 @@ router.post(
   asyncHandler(ProductController.unPublishProduct)
 );
 
+router.post("/modifyProduct", asyncHandler(ProductController.modifyProduct));
+
 export default router;

@@ -1,15 +1,5 @@
-import { Clothes } from "./clothes.service";
-import { Electronics } from "./electronic.service";
-import { Houseware } from "./houseware.service";
-
-export const productTypeList = [
-  {
-    Clothes: Clothes,
-  },
-  {
-    Electronics: Electronics,
-  },
-  {
-    Houseware: Houseware,
-  },
-];
+export const productTypeList: Record<string, number> = {
+  Clothes: 1,
+  Electronics: 2,
+  Houseware: 3,
+};

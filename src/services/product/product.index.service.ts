@@ -5,42 +5,31 @@ import {
   NotFoundError,
   ServerUnavailableError,
 } from "../../core/error.response";
-import { checkNullField, getIntoData, getQueryParams } from "../../utils";
+import {
+  checkNullField,
+  getIntoData,
+  getQueryParams,
+  getUpdateQueryParams,
+} from "../../utils";
 import { findProductById } from "../repository/product.repo";
+import { productTypeList } from "./product.type.config";
 
-export class Product {
+interface CommonProduct {
+  product_type: string;
   product_name: string;
   product_thumbs: string;
   product_description: string;
   product_price: number;
   product_quantity: number;
+  product_variations: number[];
   product_shop: number;
   product_slug?: string;
   product_rating?: number;
-  product_variations: number[];
-
   isDraft?: boolean;
   isPublished?: boolean;
-  //Top Comment
+}
 
-  constructor({
-    product_name,
-    product_thumbs,
-    product_description,
-    product_price,
-    product_quantity,
-    product_variations,
-    product_shop,
-  }: any) {
-    this.product_shop = product_shop;
-    this.product_name = product_name;
-    this.product_thumbs = product_thumbs;
-    this.product_description = product_description;
-    this.product_price = product_price;
-    this.product_quantity = product_quantity;
-    this.product_variations = product_variations;
-  }
-
+export class Product {
   //-----------------NoAuthen-----------------//
 
   static getAllProduct = async ({
@@ -105,7 +94,7 @@ export class Product {
   /**
    * Create new product
    */
-  async createProduct(category_id: number) {
+  static async createProduct(payload: CommonProduct) {
     const product_id = uuidv4();
     const insertProduct = getQueryParams([
       "id",
@@ -131,19 +120,20 @@ export class Product {
       /**
        * Create Product Record
        */
+
       await client.query({
         text: `INSERT INTO "Product" ${insertProduct.columnList}
         VALUES ${insertProduct.valueList}; 
         `,
         values: [
           product_id,
-          category_id,
-          this.product_shop,
-          this.product_name,
-          this.product_thumbs,
-          this.product_description,
-          this.product_price,
-          _.kebabCase(this.product_name).toString(),
+          productTypeList[payload.product_type],
+          payload.product_shop,
+          payload.product_name,
+          payload.product_thumbs,
+          payload.product_description,
+          payload.product_price,
+          _.kebabCase(payload.product_name).toString(),
         ],
       });
 
@@ -153,9 +143,12 @@ export class Product {
       await client.query({
         text: `INSERT INTO "ProductVariation" ${insertVariant.columnList}
       VALUES ${insertVariant.valueList}`,
-        values: this.product_variations.reduce((returnValue, currentValue) => {
-          return [...returnValue, ...[product_id, currentValue]];
-        }, [] as any[]),
+        values: payload.product_variations.reduce(
+          (returnValue, currentValue) => {
+            return [...returnValue, ...[product_id, currentValue]];
+          },
+          [] as any[]
+        ),
       });
 
       /**
@@ -164,7 +157,7 @@ export class Product {
       await client.query({
         text: `INSERT INTO "Inventory"(product_id, quantity)
            VALUES ($1, $2)`,
-        values: [product_id, this.product_quantity],
+        values: [product_id, payload.product_quantity],
       });
 
       await client.query("COMMIT");
@@ -177,7 +170,7 @@ export class Product {
       });
     }
 
-    return { product_name: this.product_name };
+    return { product_name: payload.product_name };
   }
 
   /**
@@ -321,7 +314,7 @@ export class Product {
       throw new BadRequestError({ message: "No product with queried id" });
     }
 
-    if (product.product_shop != shop_id) {
+    if (product.shop_id != shop_id) {
       throw new BadRequestError({ message: "Product not belong to this shop" });
     }
 
@@ -329,11 +322,27 @@ export class Product {
       throw new BadRequestError({ message: "Null field contained" });
     }
 
-    await postgres.query({
-      text: `UPDATE "Product"
-      
-      `,
-      values: [],
+    const queryData = getIntoData({
+      fields: ["id"],
+      objects: payload,
+      unSelect: true,
     });
+
+    const params = getUpdateQueryParams(queryData);
+
+    await postgres
+      .query({
+        text: `UPDATE "Product"
+      SET ${params.params}
+      WHERE "id" = $${params.length + 1}
+      `,
+        values: [...Object.values(queryData), product_id],
+      })
+      .catch((error) => {
+        console.log(error);
+        throw new BadRequestError({ message: "Cant modify product" });
+      });
+
+    return { modifiedProduct: product_id };
   };
 }
