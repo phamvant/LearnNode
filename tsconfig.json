@@ -3,6 +3,8 @@
     "lib": ["ESNext"],
     "module": "esnext",
     "target": "esnext",
+    "rootDir": "./src",
+    "outDir": "./dist",
     "moduleResolution": "bundler",
     "moduleDetection": "force",
     "allowImportingTsExtensions": true,

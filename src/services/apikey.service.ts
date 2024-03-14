@@ -1,4 +1,5 @@
 import { BadRequestError } from "../core/error.response";
+import { postgresSingleton } from "../database/init.postgres";
 
 class ApiKeyService {
   static findApiKey = async (apiKey: string) => {
@@ -6,7 +7,8 @@ class ApiKeyService {
       .query({
         text: `SELECT * FROM "ApiKey"`,
       })
-      .catch((error) => {
+      .catch((error: any) => {
+        console.log(error);
         throw new BadRequestError({ message: "Query failed" });
       });
 

@@ -17,11 +17,17 @@ services:
       - ./database/migrate:/usr/migrate
 
   bun:
-    image: oven/bun:latest
-    build: ./docker-bun
     container_name: bun
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - PORT=${SERVER_PORT_DEV}
     ports:
-      - 3000:3000
-    volumes:
-      - ./:/home/bun
-    tty: true
+      - 3000:${SERVER_PORT_DEV}
+    env_file:
+      - .env
+    # volumes:
+    #   - ./:/usr/local/api
+    # working_dir: /usr/local/api
+    # command: bun start:dev
