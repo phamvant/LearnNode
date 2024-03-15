@@ -20,14 +20,15 @@ services:
     container_name: bun
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
       args:
         - PORT=${SERVER_PORT_DEV}
     ports:
       - 3000:${SERVER_PORT_DEV}
     env_file:
       - .env
-    # volumes:
-    #   - ./:/usr/local/api
-    # working_dir: /usr/local/api
-    # command: bun start:dev
+    volumes:
+      - ./:/usr/local/bun
+      - ignore:/usr/local/bun/node_modules
+volumes:
+  ignore:

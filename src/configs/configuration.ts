@@ -27,7 +27,7 @@ interface Config {
 
 const development: Config["development"] = {
   DB: {
-    HOST: process.env.DATABASE_HOST_DEV || "localhost",
+    HOST: process.env.DATABASE_HOST_DEV || "postgres",
     PORT: process.env.DATABASE_PORT_DEV
       ? parseInt(process.env.DATABASE_PORT_DEV, 10)
       : 5432,

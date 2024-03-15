@@ -1,11 +1,11 @@
 import { BadRequestError } from "../core/error.response";
-import { postgresSingleton } from "../database/init.postgres";
 
 class ApiKeyService {
   static findApiKey = async (apiKey: string) => {
     const objKey = await postgres
       .query({
-        text: `SELECT * FROM "ApiKey"`,
+        text: `SELECT * FROM "public"."ApiKey" WHERE "key"=$1`,
+        values: [apiKey],
       })
       .catch((error: any) => {
         console.log(error);

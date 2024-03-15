@@ -6,7 +6,7 @@ COPY package.json ./
 RUN bun install
 
 COPY bun.lockb ./
-COPY src ./
+COPY src ./src
 COPY tsconfig.json  ./
 COPY .env ./
 

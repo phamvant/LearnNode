@@ -1,0 +1,15 @@
+FROM oven/bun:canary-alpine
+
+WORKDIR /usr/local/bun
+
+COPY package.json ./
+
+RUN bun install
+
+COPY .env ./
+COPY tsconfig.json ./
+COPY src ./src
+
+EXPOSE ${PORT}
+
+CMD ["bun", "start:dev"]

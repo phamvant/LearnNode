@@ -3,7 +3,6 @@
     "lib": ["ESNext"],
     "module": "esnext",
     "target": "esnext",
-    "rootDir": "./src",
     "outDir": "./dist",
     "moduleResolution": "bundler",
     "moduleDetection": "force",
@@ -18,7 +17,7 @@
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
     "types": [
-      "bun-types" // add Bun global
+      "bun-types"
     ]
   }
 }
