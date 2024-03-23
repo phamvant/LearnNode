@@ -129,14 +129,13 @@ export const authenticate = asyncHandler(
     }
 
     if (type === "Refresh") {
-      if (userToken.usedRefreshToken.includes(token)) {
+      if (userToken.usedrefreshtoken.includes(token)) {
         //Remove session
-        const query = {
-          text: `DELETE FROM "KeyToken" WHERE userId = $1}`,
-          value: [userId],
-        };
 
-        const storedKey = await postgres.query(query);
+        const storedKey = await postgres.query({
+          text: `DELETE FROM "KeyToken" WHERE "userid"=$1`,
+          values: [userId],
+        });
 
         if (!storedKey) {
           throw new BadRequestError({ message: "Cant modify DB" });
