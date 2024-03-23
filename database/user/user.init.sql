@@ -5,46 +5,50 @@ CREATE TYPE permission AS ENUM (
 );
 ----------------------ApiKey----------------------
 CREATE TABLE public."ApiKey" (
-  key VARCHAR(100) PRIMARY KEY,
-  status BOOLEAN DEFAULT TRUE,
-  permission permission []
+  apikey_key VARCHAR(100) PRIMARY KEY,
+  apikey_status BOOLEAN DEFAULT TRUE,
+  apikey_permission permission []
 );
-INSERT INTO "public"."ApiKey" ("key", "status", "permission")
+INSERT INTO "public"."ApiKey" (
+    apikey_key,
+    apikey_status,
+    apikey_permission
+  )
 VALUES (
     'xxx',
     TRUE,
     ARRAY ['PERMISSION_0000']::permission []
   );
 UPDATE public."ApiKey"
-SET "permission" = array_append("permission", 'PERMISSION_1111')
-WHERE "key" = 'xxx';
+SET "apikey_permission" = array_append("apikey_permission", 'PERMISSION_1111')
+WHERE "apikey_key" = 'xxx';
 ----------------------User----------------------
 CREATE TABLE public."User" (
-  id VARCHAR(36) NOT NULL,
-  email VARCHAR(30) NOT NULL,
-  name VARCHAR(30) NOT NULL,
-  password VARCHAR(50) NOT NULL,
-  username VARCHAR(30) NOT NULL,
-  verified BOOLEAN NOT NULL,
-  status VARCHAR(10) NOT NULL,
-  roles VARCHAR(15) [] NULL
+  user_id VARCHAR(36) NOT NULL,
+  user_email VARCHAR(30) NOT NULL,
+  user_name VARCHAR(30) NOT NULL,
+  user_password VARCHAR(50) NOT NULL,
+  user_username VARCHAR(30) NOT NULL,
+  user_verified BOOLEAN NOT NULL,
+  user_status VARCHAR(10) NOT NULL,
+  user_roles VARCHAR(15) [] NULL
 );
 ALTER TABLE public."User"
-ADD CONSTRAINT "User_pkey" PRIMARY KEY (id);
+ADD CONSTRAINT "User_pkey" PRIMARY KEY (user_id);
 ----------------------KeyToken----------------------
 CREATE TABLE public."KeyToken" (
-  userId VARCHAR(36) NOT NULL,
-  publicKey TEXT NOT NULL,
-  usedRefreshToken TEXT []
+  keytoken_user_id VARCHAR(36) NOT NULL,
+  keytoken_public_key TEXT NOT NULL,
+  keytoken_used_refresh_token TEXT []
 );
 ALTER TABLE public."KeyToken"
-ADD CONSTRAINT "KeyToken_pkey" PRIMARY KEY (userId);
+ADD CONSTRAINT "KeyToken_pkey" PRIMARY KEY (keytoken_user_id);
 ALTER TABLE public."KeyToken"
-ADD CONSTRAINT "KeyToken_fkey" FOREIGN KEY (userId) REFERENCES "User"(id) ON DELETE CASCADE;
+ADD CONSTRAINT "KeyToken_fkey" FOREIGN KEY (keytoken_user_id) REFERENCES "User"(user_id) ON DELETE CASCADE;
 ----------------------Index----------------------
 -- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+CREATE UNIQUE INDEX "User_email_key" ON "User"(user_email);
 -- CreateIndex
-CREATE UNIQUE INDEX "KeyToken_userId_key" ON "KeyToken"(userId);
+CREATE UNIQUE INDEX "KeyToken_userId_key" ON "KeyToken"(keytoken_user_id);
 -- CreateIndex
-CREATE UNIQUE INDEX "ApiKey_key_key" ON "ApiKey"("key");
+CREATE UNIQUE INDEX "ApiKey_key_key" ON "ApiKey"(apikey_key);
