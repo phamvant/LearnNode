@@ -16,19 +16,20 @@ services:
       - ./database/product/category/category.init.sql:/docker-entrypoint-initdb.d/03.category.init.sql
       - ./database/migrate:/usr/migrate
 
-  bun:
-    container_name: bun
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-      args:
-        - PORT=${SERVER_PORT_DEV}
-    ports:
-      - 3000:${SERVER_PORT_DEV}
-    env_file:
-      - .env
-    volumes:
-      - ./:/usr/local/bun
-      - ignore:/usr/local/bun/node_modules
-volumes:
-  ignore:
+#   bun:
+#     container_name: bun
+#     build:
+#       context: .
+#       dockerfile: Dockerfile.dev
+#       args:
+#         - PORT=${SERVER_PORT_DEV}
+#     ports:
+#       - 3000:${SERVER_PORT_DEV}
+#       - 6499:6499
+#     env_file:
+#       - .env
+#     volumes:
+#       - ./:/usr/local/bun
+#       - ignore:/usr/local/bun/node_modules
+# volumes:
+#   ignore:

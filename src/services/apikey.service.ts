@@ -1,4 +1,5 @@
 import { BadRequestError } from "../core/error.response";
+import postgres from "../database/init.postgres";
 
 class ApiKeyService {
   static findApiKey = async (apiKey: string) => {

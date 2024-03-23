@@ -1,8 +1,8 @@
-import { Pool } from "pg";
+import pg from "pg";
 import configuration from "../configs/configuration";
 
 const postgresSingleton = () => {
-  return new Pool({
+  return new pg.Pool({
     host: configuration.DB.HOST,
     port: configuration.DB.PORT,
     database: configuration.DB.DBNAME,
@@ -11,6 +11,8 @@ const postgresSingleton = () => {
     query_timeout: 2000,
   });
 };
+
+console.log(configuration.DB);
 
 declare global {
   var postgres: ReturnType<typeof postgresSingleton>;

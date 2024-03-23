@@ -1,14 +1,10 @@
 {
-  "sqltools.connections": [
-    {
-      "previewLimit": 50,
-      "server": "localhost",
-      "port": 5432,
-      "driver": "PostgreSQL",
-      "name": "local",
-      "database": "postgres",
-      "username": "thuan",
-      "password": "thuan286"
-    }
-  ]
+  // The path to the `bun` executable.
+  "bun.runtime": "/Users/phamvant/.bun/bin/bun",
+
+  // If support for Bun should be added to the default "JavaScript Debug Terminal".
+  "bun.debugTerminal.enabled": true,
+  
+  // If the debugger should stop on the first line of the program.
+  "bun.debugTerminal.stopOnEntry": true,
 }
