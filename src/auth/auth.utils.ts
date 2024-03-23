@@ -10,6 +10,7 @@ import {
 import { asyncHandler } from "../helpers/async.handler";
 import ApiKeyService from "../services/apikey.service";
 import TokenService from "../services/token.service";
+import { toCamel } from "../utils";
 
 export interface CustomRequest extends Request {
   metadata?: Record<string, any>; //storedApiKey, TokenObj
@@ -88,12 +89,12 @@ export const checkApiKey = async (
  */
 export const permissionCheck = (permission: Permission) => {
   return (req: CustomRequest, res: Response, next: NextFunction) => {
-    if (!req.metadata?.storedApiKey.apikey_permission) {
+    if (!req.metadata?.storedApiKey.apikeyPermission) {
       throw new ForbiddenError({ message: "No permission included" });
     }
 
     const validPermission =
-      req.metadata.storedApiKey.apikey_permission.includes(permission);
+      req.metadata.storedApiKey.apikeyPermission.includes(permission);
 
     if (!validPermission) {
       throw new ForbiddenError({ message: "Permission denied" });
@@ -111,9 +112,13 @@ export const authenticate = asyncHandler(
       throw new AuthFailureError({ message: "Invalid Request" });
     }
 
-    const userToken = await TokenService.findKeyById({
+    const userToken = (await TokenService.findKeyById({
       userId: userId,
-    });
+    })) as {
+      keytokenUserId: string;
+      keytokenPublicKey: string;
+      keytokenUsedRefreshToken: string;
+    };
 
     if (!userToken) {
       throw new NotFoundError({ message: "User not found" });
@@ -129,13 +134,15 @@ export const authenticate = asyncHandler(
     }
 
     if (type === "Refresh") {
-      if (userToken.keytoken_used_refresh_token.includes(token)) {
+      if (userToken.keytokenUsedRefreshToken.includes(token)) {
         //Remove session
 
         const storedKey = await postgres.query({
           text: `DELETE FROM "KeyToken" WHERE keytoken_user_id=$1`,
           values: [userId],
         });
+
+        toCamel(storedKey);
 
         if (!storedKey) {
           throw new BadRequestError({ message: "Cant modify DB" });
@@ -147,7 +154,7 @@ export const authenticate = asyncHandler(
       try {
         const decodedUser = JWT.verify(
           token.toString(),
-          userToken.keytoken_public_key
+          userToken.keytokenPublicKey
         ) as JwtPayload;
 
         if (decodedUser.userId != userId) {
@@ -167,7 +174,7 @@ export const authenticate = asyncHandler(
     try {
       const decodedUser = JWT.verify(
         token.toString(),
-        userToken.keytoken_public_key
+        userToken.keytokenPublicKey
       ) as JwtPayload;
 
       if (decodedUser.userId != userId) {

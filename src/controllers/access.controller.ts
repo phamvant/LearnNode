@@ -17,11 +17,11 @@ class AccessController {
       throw new NotFoundError({ message: "Unknown Error" });
     }
 
-    const { userId, keytoken_used_refresh_token } = req.metadata;
+    const { user_id, keytoken_used_refresh_token } = req.metadata;
 
     const newToken = await AccessService.HandleRefreshToken({
-      userId,
-      keytoken_used_refresh_token,
+      userId: user_id,
+      usedRefreshToken: keytoken_used_refresh_token,
     });
 
     new CREATE({ message: "Token Refreshed", metadata: newToken }).send(res);

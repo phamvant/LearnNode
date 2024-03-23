@@ -31,19 +31,19 @@ class AccessService {
    * @static
    * @param {{
    *     userId: number;
-   *     keytoken_user_id: string;
+   *     usedRefreshToken: string;
    *   }} {
    *     extractedClientID,
-   *     keytoken_user_id,
+   *     usedRefreshToken,
    *   }
    * @memberof AccessService
    */
   static HandleRefreshToken = async ({
     userId,
-    keytoken_user_id,
+    usedRefreshToken,
   }: {
     userId: string;
-    keytoken_user_id: string;
+    usedRefreshToken: string;
   }) => {
     const { publicKey, privateKey } = generateKeyPairSync("rsa", {
       modulusLength: 2048,
@@ -61,7 +61,7 @@ class AccessService {
     await tokenService.storeToken({
       userId: userId,
       publicKey: publicKey,
-      refreshToken: keytoken_user_id,
+      refreshToken: usedRefreshToken,
     });
 
     return {
@@ -108,7 +108,7 @@ class AccessService {
       password: password,
     });
 
-    if (!newUser.rowCount) {
+    if (!newUser[0]) {
       throw new BadRequestError({ message: "Cant create new user" });
     }
 

@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _, { camelCase, snakeCase } from "lodash";
 
 /**
  * @description Get specific field in object
@@ -69,4 +69,32 @@ export const checkNullField = (payload: any): boolean => {
     }
   }
   return true;
+};
+
+export const toCamel = (
+  payload: Record<string, any>[]
+): Record<string, any>[] => {
+  if (!payload) {
+    return payload;
+  }
+
+  return payload.map((field: Record<string, any>) =>
+    Object.fromEntries(
+      Object.entries(field).map(([key, value]) => [camelCase(key), value])
+    )
+  );
+};
+
+export const toSnake = (
+  payload: Record<string, any>[]
+): Record<string, any>[] => {
+  if (!payload) {
+    return payload;
+  }
+
+  return payload.map((field: Record<string, any>) =>
+    Object.fromEntries(
+      Object.entries(field).map(([key, value]) => [snakeCase(key), value])
+    )
+  );
 };

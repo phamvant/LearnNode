@@ -1,4 +1,5 @@
 import { BadRequestError } from "../core/error.response";
+import { toCamel } from "../utils";
 import { SignUpCredential } from "./access.service";
 
 class ShopService {
@@ -22,7 +23,7 @@ class ShopService {
         });
       });
 
-    return user.rows[0];
+    return toCamel(user.rows)[0];
   };
 
   /**
@@ -63,7 +64,7 @@ class ShopService {
         throw new BadRequestError({ message: "Query failed at storeNewUser" });
       });
 
-    return newUser;
+    return toCamel(newUser.rows)[0];
   };
 
   /**

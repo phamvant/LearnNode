@@ -1,4 +1,5 @@
 import { BadRequestError } from "../core/error.response";
+import { toCamel } from "../utils";
 
 interface TokenSchema {
   userId: string;
@@ -56,7 +57,7 @@ class TokenService {
         throw new BadRequestError({ message: "Query failed at findKeyById" });
       });
 
-    return token.rows[0];
+    return toCamel(token.rows)[0];
   };
 }
 

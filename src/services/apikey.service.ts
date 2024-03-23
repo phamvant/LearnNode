@@ -1,5 +1,6 @@
 import { BadRequestError } from "../core/error.response";
 import postgres from "../database/init.postgres";
+import { toCamel } from "../utils";
 
 class ApiKeyService {
   static findApiKey = async (apiKey: string) => {
@@ -13,7 +14,7 @@ class ApiKeyService {
         throw new BadRequestError({ message: "Query failed" });
       });
 
-    return objKey.rows[0];
+    return toCamel(objKey.rows)[0];
   };
 }
 

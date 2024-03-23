@@ -1,4 +1,5 @@
 import { BadRequestError } from "../../core/error.response";
+import { toCamel } from "../../utils";
 
 export const findProductById = async (
   product_id: string,
@@ -27,5 +28,5 @@ export const findProductById = async (
       throw new BadRequestError({ message: "Cant find product by Id" });
     });
 
-  return product.rows[0];
+  return toCamel(product.rows)[0];
 };

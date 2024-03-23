@@ -10,6 +10,8 @@ import {
   getIntoData,
   getQueryParams,
   getUpdateQueryParams,
+  toCamel,
+  toSnake,
 } from "../../utils";
 import { findProductById } from "../repository/product.repo";
 import { productTypeList } from "./product.type.config";
@@ -71,23 +73,26 @@ export class Product {
       LIMIT 50; `,
         values: [searchText],
       })
+
       .catch((error) => {
         console.log(error);
         throw new NotFoundError({ message: "Cant find product" });
       });
 
-    const ret = products.rows.reduce((previousValue, currentValue) => {
+    const productCamel = toCamel(products.rows);
+
+    const ret = productCamel.reduce((previousValue, currentValue) => {
       previousValue.push(
         getIntoData({
-          fields: ["isdraft", "ispublished"],
+          fields: ["productIsdraft", "productIspublished"],
           objects: currentValue,
           unSelect: true,
         })
       );
       return previousValue;
-    }, []);
+    }, []) as Record<string, any>[];
 
-    return ret;
+    return toSnake(ret);
   };
 
   //-----------------Authen-----------------//
@@ -315,7 +320,7 @@ export class Product {
       throw new BadRequestError({ message: "No product with queried id" });
     }
 
-    if (product.product_shop_id != shop_id) {
+    if (product.productShopId != shop_id) {
       throw new BadRequestError({ message: "Product not belong to this shop" });
     }
 
@@ -324,7 +329,7 @@ export class Product {
     }
 
     const queryData = getIntoData({
-      fields: ["id"],
+      fields: ["product_id"],
       objects: payload,
       unSelect: true,
     });
