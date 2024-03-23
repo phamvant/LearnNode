@@ -5,7 +5,7 @@ class ApiKeyService {
   static findApiKey = async (apiKey: string) => {
     const objKey = await postgres
       .query({
-        text: `SELECT * FROM "public"."ApiKey" WHERE "key"=$1`,
+        text: `SELECT * FROM "ApiKey" WHERE apikey_key=$1`,
         values: [apiKey],
       })
       .catch((error: any) => {

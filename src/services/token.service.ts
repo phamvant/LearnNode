@@ -17,7 +17,7 @@ class TokenService {
     if (!existedUser) {
       const storedToken = await postgres
         .query({
-          text: `INSERT INTO "KeyToken" (userid, publickey, usedrefreshtoken)
+          text: `INSERT INTO "KeyToken" (keytoken_user_id, keytoken_public_key, keytoken_used_refresh_token)
         VALUES ($1, $2, ARRAY[$3])`,
           values: [userId, publicKey, refreshToken],
         })
@@ -31,9 +31,9 @@ class TokenService {
       const updatedToken = await postgres
         .query({
           text: `UPDATE "KeyToken"
-        SET usedrefreshtoken = usedrefreshtoken || ARRAY[$1],
-        publickey=$2
-        WHERE userid=$3
+        SET keytoken_used_refresh_token = keytoken_used_refresh_token || ARRAY[$1],
+        keytoken_public_key=$2
+        WHERE keytoken_user_id=$3
         `,
           values: [refreshToken, publicKey, userId],
         })
@@ -49,7 +49,7 @@ class TokenService {
   static findKeyById = async ({ userId }: { userId: string }) => {
     const token = await postgres
       .query({
-        text: `SELECT * FROM "KeyToken" WHERE userId=$1 LIMIT 1`,
+        text: `SELECT * FROM "KeyToken" WHERE keytoken_user_id=$1 LIMIT 1`,
         values: [userId],
       })
       .catch((error) => {

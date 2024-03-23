@@ -88,12 +88,12 @@ export const checkApiKey = async (
  */
 export const permissionCheck = (permission: Permission) => {
   return (req: CustomRequest, res: Response, next: NextFunction) => {
-    if (!req.metadata?.storedApiKey.permission) {
+    if (!req.metadata?.storedApiKey.apikey_permission) {
       throw new ForbiddenError({ message: "No permission included" });
     }
 
     const validPermission =
-      req.metadata.storedApiKey.permission.includes(permission);
+      req.metadata.storedApiKey.apikey_permission.includes(permission);
 
     if (!validPermission) {
       throw new ForbiddenError({ message: "Permission denied" });
@@ -129,11 +129,11 @@ export const authenticate = asyncHandler(
     }
 
     if (type === "Refresh") {
-      if (userToken.usedrefreshtoken.includes(token)) {
+      if (userToken.keytoken_used_refresh_token.includes(token)) {
         //Remove session
 
         const storedKey = await postgres.query({
-          text: `DELETE FROM "KeyToken" WHERE "userid"=$1`,
+          text: `DELETE FROM "KeyToken" WHERE keytoken_user_id=$1`,
           values: [userId],
         });
 
@@ -147,7 +147,7 @@ export const authenticate = asyncHandler(
       try {
         const decodedUser = JWT.verify(
           token.toString(),
-          userToken.publickey
+          userToken.keytoken_public_key
         ) as JwtPayload;
 
         if (decodedUser.userId != userId) {
@@ -157,7 +157,7 @@ export const authenticate = asyncHandler(
         req.metadata = {
           ...req.metadata,
           userId,
-          usedRefreshToken: token,
+          keytoken_used_refresh_token: token,
         };
       } catch (error) {
         throw new AuthFailureError({ message: "Invalid User" });
@@ -167,7 +167,7 @@ export const authenticate = asyncHandler(
     try {
       const decodedUser = JWT.verify(
         token.toString(),
-        userToken.publickey
+        userToken.keytoken_public_key
       ) as JwtPayload;
 
       if (decodedUser.userId != userId) {

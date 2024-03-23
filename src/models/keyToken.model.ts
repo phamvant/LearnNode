@@ -1,5 +1,5 @@
 export interface KeyToken {
-  userId: number;
-  publicKey: string;
-  usedRefreshToken: string[];
+  keytoken_user_id: number;
+  keytoken_public_key: string;
+  keytoken_used_refresh_token: string[];
 }

@@ -13,7 +13,7 @@ class ShopService {
   static findUserByEmail = async ({ email }: { email: string }) => {
     const user = await postgres
       .query({
-        text: `SELECT * FROM "User" WHERE email=$1 LIMIT 1`,
+        text: `SELECT * FROM "User" WHERE user_email=$1 LIMIT 1`,
         values: [email],
       })
       .catch((error) => {
@@ -47,7 +47,7 @@ class ShopService {
   }: SignUpCredential) => {
     const newUser = await postgres
       .query({
-        text: `INSERT INTO "User"(id, email, name, username, password, verified, status, roles) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`,
+        text: `INSERT INTO "User"(user_id, user_email, user_name, user_username, user_password, user_verified, user_status, user_roles) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`,
         values: [
           userId,
           email,
@@ -78,7 +78,7 @@ class ShopService {
     console.log({ userId });
     const removeToken = await postgres
       .query({
-        text: `DELETE FROM "KeyToken" WHERE userId=$1`,
+        text: `DELETE FROM "KeyToken" WHERE keytoken_user_id=$1`,
         values: [userId],
       })
       .catch((error) => {

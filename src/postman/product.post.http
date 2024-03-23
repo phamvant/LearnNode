@@ -1,6 +1,6 @@
 @url_dev=http://localhost:3000/v1/api
-@client-id=c1c1dc76-8d1d-4139-a020-273725803e80
-@token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjMWMxZGM3Ni04ZDFkLTQxMzktYTAyMC0yNzM3MjU4MDNlODAiLCJlbWFpbCI6InRodWFuQGdtYWlsLmNvbSIsImlhdCI6MTcxMDUwMTQ0NCwiZXhwIjoxNzEwNjc0MjQ0fQ.Rz4PtI4OTYR-5gB4TJrJsZ9wzKnVDgFNoZiTy83f-T58U62Dm65uniOs2_od67KQrQueb5diUNMz7sjeVyfsoW_If2VCCTJ9kACoIQP-Q7Ri-K1RCE9Wm6kzG2bIKF3WrAMaxU4Sg2uq6tacdA9n4IwJhhD2BTws2TcVuMNledssVbh-QOeHrL5yTjs4Ui0opwEttaEEhS9A8DFMRUtFDtUDk8j1y_j1rGmnJ7OgaJM8Ne6Dw0ggOx8KimZcd2uPjFyhc--LtFHobJIWjv2848Eg3bqdXEVdlaTp_jrS5WEcWkTOAENKBG4YMghPfNFf8JuTGWWQ1Ig6OlacpZc1Aw
+@client-id=de0ddf07-9873-44d0-9695-7cc8394ac1bb
+@token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkZTBkZGYwNy05ODczLTQ0ZDAtOTY5NS03Y2M4Mzk0YWMxYmIiLCJlbWFpbCI6InRodWFuQGdtYWlsLmNvbSIsImlhdCI6MTcxMTE3Nzk3MiwiZXhwIjoxNzExMzUwNzcyfQ.zEV5xvq8mvDfF7Bte8kKgWQuyhlDI1SwPDwXhvSCUC6ST1c88FUT4KvTv-7j01OIFhiRnTQfuoEp2vcbSKTYrEz7x2wqL2RiSrjaSjGxrrCSVcld150nTKlNy9-BhHAGVXwLIx9Ir8reSzKdhccvHAFEoN0wlgWs9omZ23BUUp3Fzu7pmrPxSC8ZLvEPo0VmCoI-XoLVxHsQ2HqGESM3nmXw0RXxKNJvAGgsTHYxwbcEggD8y0r8NfSGTFiVMQKF1irJXKKkdbp834r81PgqPmqU1ot6aYCCx_xoyvqFQd9M9c_ICdMQ3g4LUchWrrJZzHgTQ4ptCju8gro-6qGuwQ
 
 ### CREATE Electronic
 POST {{url_dev}}/product/create  HTTP/1.1
@@ -59,7 +59,7 @@ GET {{url_dev}}/product  HTTP/1.1
 x-api-key: xxx
 
 ### GET public product by search box
-GET {{url_dev}}/product/search/amazon  HTTP/1.1
+GET {{url_dev}}/product/search/remove  HTTP/1.1
 x-api-key: xxx
 
 ### GET All draft product 
@@ -84,7 +84,7 @@ x-client-id: {{client-id}}
 Authorization: Bearer {{token}}
 
 {
-    "product_id": "b090c3c8-66ac-40ae-a269-8dfe4eca1a72"
+    "product_id": "78afe790-05b8-4b75-970d-98825fc99344"
 }
 
 ### POST Modify product 
@@ -95,7 +95,7 @@ x-client-id: {{client-id}}
 Authorization: Bearer {{token}}
 
 {
-    "product_id": "b090c3c8-66ac-40ae-a269-8dfe4eca1a72",
+    "product_id": "78afe790-05b8-4b75-970d-98825fc99344",
     "product_name": "Smart Air Purifier with True HEPA Filter, removes 99.97% of airborne allergens",
     "product_thumb": "Image",
     "product_description": "Enjoy cleaner air with this smart air purifier",

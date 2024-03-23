@@ -41,10 +41,10 @@ export class Product {
   }) => {
     const products = await postgres
       .query({
-        text: `SELECT name, thumb, price, rating
+        text: `SELECT product_name, product_thumb, product_price, product_rating
       FROM "Product"
-      WHERE ispublished = TRUE
-      ORDER BY rating DESC
+      WHERE product_ispublished = TRUE
+      ORDER BY product_rating DESC
       LIMIT $1 OFFSET $2`,
         values: [limit, (page - 1) * limit],
       })
@@ -65,9 +65,9 @@ export class Product {
       .query({
         text: `SELECT *
       FROM "Product"
-      WHERE to_tsvector(name) @@ plainto_tsquery($1)
-      AND ispublished = TRUE
-      ORDER BY ts_rank(to_tsvector(name), plainto_tsquery($1)) DESC
+      WHERE to_tsvector(product_name) @@ plainto_tsquery($1)
+      AND product_ispublished = TRUE
+      ORDER BY ts_rank(to_tsvector(product_name), plainto_tsquery($1)) DESC
       LIMIT 50; `,
         values: [searchText],
       })
@@ -97,17 +97,20 @@ export class Product {
   static async createProduct(payload: CommonProduct) {
     const product_id = uuidv4();
     const insertProduct = getQueryParams([
-      "id",
-      "category_id",
-      "shop_id",
-      "name",
-      "thumb",
-      "description",
-      "price",
-      "slug",
+      "product_id",
+      "product_category_id",
+      "product_shop_id",
+      "product_name",
+      "product_thumb",
+      "product_description",
+      "product_price",
+      "product_slug",
     ]);
 
-    const insertVariant = getQueryParams(["product_id", "variation_id"], 2);
+    const insertVariant = getQueryParams(
+      ["product_variation_product_id", "product_variation_variation_id"],
+      2
+    );
 
     //Create connect for transaction
     const client = await postgres.connect().catch((e) => {
@@ -155,7 +158,7 @@ export class Product {
        * Create Inventory Record
        */
       await client.query({
-        text: `INSERT INTO "Inventory"(product_id, quantity)
+        text: `INSERT INTO "Inventory"(inventory_product_id, inventory_quantity)
            VALUES ($1, $2)`,
         values: [product_id, payload.product_quantity],
       });
@@ -183,8 +186,8 @@ export class Product {
       .query({
         text: `SELECT "Product".*
       FROM "Product", "User"
-      WHERE "Product"."shop_id" = "User"."id"
-      AND "Product"."shop_id" = $1 AND "Product"."isdraft" = TRUE`,
+      WHERE "Product".product_shop_id = "User".user_id
+      AND "Product".product_shop_id = $1 AND "Product".product_isdraft= TRUE`,
         values: [shop_id],
       })
       .catch((error) => {
@@ -195,7 +198,7 @@ export class Product {
     const products = draftProduct.rows.reduce((previousValue, currentValue) => {
       previousValue.push(
         getIntoData({
-          fields: ["isdraft", "ispublished"],
+          fields: ["product_isdraft", "product_ispublished"],
           objects: currentValue,
           unSelect: true,
         })
@@ -216,8 +219,8 @@ export class Product {
       .query({
         text: `SELECT "Product".*
       FROM "Product", "User"
-      WHERE "Product"."shop_id" = "User"."id"
-      AND "Product"."shop_id" = $1 AND "Product"."ispublished" = TRUE`,
+      WHERE "Product".product_shop_id = "User".user_id
+      AND "Product".product_shop_id = $1 AND "Product".product_ispublished = TRUE`,
         values: [shop_id],
       })
       .catch((error) => {
@@ -229,7 +232,7 @@ export class Product {
       (previousValue, currentValue) => {
         previousValue.push(
           getIntoData({
-            fields: ["isdraft", "ispublished"],
+            fields: ["product_isdraft", "product_ispublished"],
             objects: currentValue,
             unSelect: true,
           })
@@ -257,9 +260,9 @@ export class Product {
     await postgres
       .query({
         text: `UPDATE "Product"
-        SET "ispublished" = TRUE, "isdraft" = FALSE
-        WHERE "shop_id" = $1 
-        AND "id" = $2`,
+        SET product_ispublished = TRUE, product_isdraft = FALSE
+        WHERE product_shop_id = $1 
+        AND product_id = $2`,
         values: [shop_id, product_id],
       })
       .catch((error) => {
@@ -285,9 +288,9 @@ export class Product {
     await postgres
       .query({
         text: `UPDATE "Product"
-        SET "ispublished" = FALSE, "isdraft" = TRUE
-        WHERE "shop_id" = $1 
-        AND "id" = $2`,
+        SET product_ispublished = FALSE, product_isdraft = TRUE
+        WHERE product_shop_id = $1 
+        AND product_id = $2`,
         values: [shop_id, product_id],
       })
       .catch((error) => {
@@ -299,22 +302,20 @@ export class Product {
   };
 
   static modifyProduct = async ({
-    product_id,
     shop_id,
     payload,
   }: {
-    product_id: string;
     shop_id: string;
     payload: Record<string, string | number>;
   }) => {
-    const product = await findProductById(product_id);
     const nullField = checkNullField(payload);
+    const product = await findProductById(payload.product_id as string);
 
     if (!product) {
       throw new BadRequestError({ message: "No product with queried id" });
     }
 
-    if (product.shop_id != shop_id) {
+    if (product.product_shop_id != shop_id) {
       throw new BadRequestError({ message: "Product not belong to this shop" });
     }
 
@@ -334,15 +335,15 @@ export class Product {
       .query({
         text: `UPDATE "Product"
       SET ${params.params}
-      WHERE "id" = $${params.length + 1}
+      WHERE "product_id" = $${params.length + 1}
       `,
-        values: [...Object.values(queryData), product_id],
+        values: [...Object.values(queryData), payload.product_id],
       })
       .catch((error) => {
         console.log(error);
         throw new BadRequestError({ message: "Cant modify product" });
       });
 
-    return { modifiedProduct: product_id };
+    return { modifiedProduct: payload.product_id };
   };
 }

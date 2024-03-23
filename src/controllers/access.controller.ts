@@ -10,15 +10,18 @@ class AccessController {
     res: Response,
     next: NextFunction
   ) => {
-    if (!req.metadata?.extractedClientID && !req.metadata?.usedRefreshToken) {
+    if (
+      !req.metadata?.extractedClientID &&
+      !req.metadata?.keytoken_used_refresh_token
+    ) {
       throw new NotFoundError({ message: "Unknown Error" });
     }
 
-    const { userId, usedRefreshToken } = req.metadata;
+    const { userId, keytoken_used_refresh_token } = req.metadata;
 
     const newToken = await AccessService.HandleRefreshToken({
       userId,
-      usedRefreshToken,
+      keytoken_used_refresh_token,
     });
 
     new CREATE({ message: "Token Refreshed", metadata: newToken }).send(res);

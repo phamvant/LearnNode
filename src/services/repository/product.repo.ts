@@ -2,7 +2,13 @@ import { BadRequestError } from "../../core/error.response";
 
 export const findProductById = async (
   product_id: string,
-  fields = ["name", "thumb", "price", "rating", "shop_id"]
+  fields = [
+    "product_name",
+    "product_thumb",
+    "product_price",
+    "product_rating",
+    "product_shop_id",
+  ]
 ) => {
   const columns = fields.reduce((sum, current) => {
     sum.push(current);
@@ -13,7 +19,7 @@ export const findProductById = async (
     .query({
       text: `SELECT ${columns.join(",")}
     FROM "Product" 
-    WHERE "id" = $1`,
+    WHERE product_id = $1`,
       values: [product_id],
     })
     .catch((error) => {

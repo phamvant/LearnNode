@@ -104,13 +104,10 @@ export class ProductController {
     res: Response,
     next: NextFunction
   ) => {
-    const product_id = req.body.id;
-
     new CREATE({
-      message: "Product unpublished",
+      message: "Product modfied",
       metadata: await Product.modifyProduct({
         shop_id: req.metadata?.userId,
-        product_id: product_id,
         payload: req.body,
       }),
     }).send(res);

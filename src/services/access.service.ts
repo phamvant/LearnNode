@@ -31,19 +31,19 @@ class AccessService {
    * @static
    * @param {{
    *     userId: number;
-   *     usedRefreshToken: string;
+   *     keytoken_user_id: string;
    *   }} {
    *     extractedClientID,
-   *     usedRefreshToken,
+   *     keytoken_user_id,
    *   }
    * @memberof AccessService
    */
   static HandleRefreshToken = async ({
     userId,
-    usedRefreshToken,
+    keytoken_user_id,
   }: {
     userId: string;
-    usedRefreshToken: string;
+    keytoken_user_id: string;
   }) => {
     const { publicKey, privateKey } = generateKeyPairSync("rsa", {
       modulusLength: 2048,
@@ -61,7 +61,7 @@ class AccessService {
     await tokenService.storeToken({
       userId: userId,
       publicKey: publicKey,
-      refreshToken: usedRefreshToken,
+      refreshToken: keytoken_user_id,
     });
 
     return {
@@ -139,7 +139,7 @@ class AccessService {
     if (DEBUGING) {
       //DEBUGING Delete User After Create
       await postgres.query({
-        text: `DELETE FROM "User" WHERE id: $1`,
+        text: `DELETE FROM "User" WHERE user_id: $1`,
         values: [userId],
       });
     }
@@ -175,7 +175,7 @@ class AccessService {
       throw new BadRequestError({ message: "Cant find User" });
     }
 
-    const isMatch = password === loginUser.password ? true : false;
+    const isMatch = password === loginUser.user_password ? true : false;
 
     if (!isMatch) {
       throw new ForbiddenError({ message: "Password Incorrect" });
@@ -189,14 +189,14 @@ class AccessService {
 
     const { accessToken, refreshToken } = await createTokenPair({
       payload: {
-        userId: loginUser.id,
-        email: loginUser.email,
+        userId: loginUser.user_id,
+        email: loginUser.user_email,
       },
       privateKey: privateKey,
     });
 
     await tokenService.storeToken({
-      userId: loginUser.id,
+      userId: loginUser.user_id,
       publicKey: publicKey,
       refreshToken: refreshToken,
     });
@@ -204,7 +204,7 @@ class AccessService {
     return {
       userData: getIntoData({
         objects: loginUser,
-        fields: ["userId", "email", "username"],
+        fields: ["user_id", "user_email", "user_username"],
       }),
       token: {
         accessToken,

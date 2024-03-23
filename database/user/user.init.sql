@@ -9,7 +9,7 @@ CREATE TABLE public."ApiKey" (
   apikey_status BOOLEAN DEFAULT TRUE,
   apikey_permission permission []
 );
-INSERT INTO "public"."ApiKey" (
+INSERT INTO public."ApiKey" (
     apikey_key,
     apikey_status,
     apikey_permission
