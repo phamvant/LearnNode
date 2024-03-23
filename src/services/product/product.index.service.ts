@@ -16,19 +16,19 @@ import {
 import { findProductById } from "../repository/product.repo";
 import { productTypeList } from "./product.type.config";
 
-interface CommonProduct {
-  product_type: string;
-  product_name: string;
-  product_thumbs: string;
-  product_description: string;
-  product_price: number;
-  product_quantity: number;
-  product_variations: number[];
-  product_shop: number;
-  product_slug?: string;
-  product_rating?: number;
-  isDraft?: boolean;
-  isPublished?: boolean;
+export interface CommonProduct {
+  productType: string;
+  productName: string;
+  productThumbs: string;
+  productDescription: string;
+  productPrice: number;
+  productQuantity: number;
+  productVariations: number[];
+  productShop: number;
+  productSlug?: string;
+  productRating?: number;
+  productIsdraft?: boolean;
+  productIspublished?: boolean;
 }
 
 export class Product {
@@ -100,7 +100,8 @@ export class Product {
    * Create new product
    */
   static async createProduct(payload: CommonProduct) {
-    const product_id = uuidv4();
+    const productId = uuidv4();
+
     const insertProduct = getQueryParams([
       "product_id",
       "product_category_id",
@@ -134,14 +135,14 @@ export class Product {
         VALUES ${insertProduct.valueList}; 
         `,
         values: [
-          product_id,
-          productTypeList[payload.product_type],
-          payload.product_shop,
-          payload.product_name,
-          payload.product_thumbs,
-          payload.product_description,
-          payload.product_price,
-          _.kebabCase(payload.product_name).toString(),
+          productId,
+          productTypeList[payload.productType],
+          payload.productShop,
+          payload.productName,
+          payload.productThumbs,
+          payload.productDescription,
+          payload.productPrice,
+          _.kebabCase(payload.productName).toString(),
         ],
       });
 
@@ -151,9 +152,9 @@ export class Product {
       await client.query({
         text: `INSERT INTO "ProductVariation" ${insertVariant.columnList}
       VALUES ${insertVariant.valueList}`,
-        values: payload.product_variations.reduce(
+        values: payload.productVariations.reduce(
           (returnValue, currentValue) => {
-            return [...returnValue, ...[product_id, currentValue]];
+            return [...returnValue, ...[productId, currentValue]];
           },
           [] as any[]
         ),
@@ -165,7 +166,7 @@ export class Product {
       await client.query({
         text: `INSERT INTO "Inventory"(inventory_product_id, inventory_quantity)
            VALUES ($1, $2)`,
-        values: [product_id, payload.product_quantity],
+        values: [productId, payload.productQuantity],
       });
 
       await client.query("COMMIT");
@@ -178,7 +179,7 @@ export class Product {
       });
     }
 
-    return { product_name: payload.product_name };
+    return { product_name: payload.productName };
   }
 
   /**
@@ -320,7 +321,7 @@ export class Product {
       throw new BadRequestError({ message: "No product with queried id" });
     }
 
-    if (product.productShopId != shop_id) {
+    if (product.product_shop_id != shop_id) {
       throw new BadRequestError({ message: "Product not belong to this shop" });
     }
 
@@ -329,7 +330,7 @@ export class Product {
     }
 
     const queryData = getIntoData({
-      fields: ["product_id"],
+      fields: ["id"],
       objects: payload,
       unSelect: true,
     });
