@@ -4,7 +4,7 @@
   "main": "index.ts",
   "scripts": {
     "build": "bun build ./src/app/index.ts --outdir ./dist --target bun",
-    "start:dev": "NODE_ENV=development bun index.ts",
+    "start:dev": "NODE_ENV=development bun src/app/index.ts",
     "start:devbuild": "bun ./dist/index.js",
     "start:pro": "NODE_ENV=production bun index.ts"
   },

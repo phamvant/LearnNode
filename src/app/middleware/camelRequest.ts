@@ -6,6 +6,6 @@ export const camelRequest = (
   res: Response,
   next: NextFunction
 ) => {
-  toCamel(req.body);
+  req.body = toCamel(req.body);
   return next();
 };

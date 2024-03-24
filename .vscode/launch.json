@@ -13,7 +13,7 @@
       "args": [],
 
       // The working directory of the program.
-      "cwd": "${workspaceFolder}",
+      "cwd": "${workspaceFolder}/src/app",
 
       // The environment variables to pass to the program.
       "env": {},
