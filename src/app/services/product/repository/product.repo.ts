@@ -1,5 +1,5 @@
-import { BadRequestError } from "../../core/error.response";
-import { toCamel } from "../../utils";
+import { BadRequestError } from "../../../core/error.response";
+import { toCamel } from "../../../utils";
 
 export const findProductById = async (
   product_id: string,

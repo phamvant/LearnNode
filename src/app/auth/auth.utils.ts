@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import JWT from "jsonwebtoken";
-import { HEADER, JwtPayload, Permission } from "..";
+import JWT, { JwtPayload } from "jsonwebtoken";
 import {
   AuthFailureError,
   BadRequestError,
@@ -8,8 +7,9 @@ import {
   NotFoundError,
 } from "../core/error.response";
 import { asyncHandler } from "../helpers/async.handler";
-import ApiKeyService from "../services/apikey.service";
-import TokenService from "../services/token.service";
+import ApiKeyService from "../services/access/apikey.service";
+import TokenService from "../services/access/token.service";
+import { HEADER, Permission } from "../type.index";
 import { toCamel } from "../utils";
 
 export interface CustomRequest extends Request {

@@ -1,12 +1,12 @@
 import express, { NextFunction, Response } from "express";
 
-import { Permission } from "..";
 import {
   CustomRequest,
   checkApiKey,
   permissionCheck,
 } from "../auth/auth.utils";
 import { asyncHandler } from "../helpers/async.handler";
+import { Permission } from "../type.index";
 import AccressRouter from "./access/access.routes";
 import ProductRouter from "./product/product.routes";
 

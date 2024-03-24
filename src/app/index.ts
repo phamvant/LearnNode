@@ -1,5 +1,5 @@
-import app from "./src/app";
-import CONFIG from "./src/configs/configuration";
+import app from "./app";
+import CONFIG from "./configs/configuration";
 
 const server = app.listen(CONFIG.APP.PORT, () => {
   console.log(`Listening on port ${CONFIG.APP.PORT}...`);
