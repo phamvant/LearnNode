@@ -175,7 +175,7 @@ class AccessService {
       throw new BadRequestError({ message: "Cant find User" });
     }
 
-    const isMatch = password === loginUser.user_password ? true : false;
+    const isMatch = password === loginUser.userPassword ? true : false;
 
     if (!isMatch) {
       throw new ForbiddenError({ message: "Password Incorrect" });
@@ -189,14 +189,14 @@ class AccessService {
 
     const { accessToken, refreshToken } = await createTokenPair({
       payload: {
-        userId: loginUser.user_id,
-        email: loginUser.user_email,
+        userId: loginUser.userId,
+        email: loginUser.userEmail,
       },
       privateKey: privateKey,
     });
 
     await tokenService.storeToken({
-      userId: loginUser.user_id,
+      userId: loginUser.userId,
       publicKey: publicKey,
       refreshToken: refreshToken,
     });
@@ -204,7 +204,7 @@ class AccessService {
     return {
       userData: getIntoData({
         objects: loginUser,
-        fields: ["user_id", "user_email", "user_username"],
+        fields: ["userId", "userEmail", "userUsername"],
       }),
       token: {
         accessToken,

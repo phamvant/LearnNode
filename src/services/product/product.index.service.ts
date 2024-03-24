@@ -79,7 +79,7 @@ export class Product {
         throw new NotFoundError({ message: "Cant find product" });
       });
 
-    const productCamel = toCamel(products.rows);
+    const productCamel = toCamel(products.rows) as Record<string, any>[];
 
     const ret = productCamel.reduce((previousValue, currentValue) => {
       previousValue.push(
@@ -321,7 +321,7 @@ export class Product {
       throw new BadRequestError({ message: "No product with queried id" });
     }
 
-    if (product.product_shop_id != shop_id) {
+    if (product.productShopId != shop_id) {
       throw new BadRequestError({ message: "Product not belong to this shop" });
     }
 

@@ -71,30 +71,39 @@ export const checkNullField = (payload: any): boolean => {
   return true;
 };
 
-export const toCamel = (
-  payload: Record<string, any>[]
-): Record<string, any>[] => {
-  if (!payload) {
-    return payload;
-  }
-
-  return payload.map((field: Record<string, any>) =>
-    Object.fromEntries(
-      Object.entries(field).map(([key, value]) => [camelCase(key), value])
-    )
-  );
+const transformJson = <T extends Record<string, any>>(
+  object: T,
+  transformFn: (key: string) => string
+): T => {
+  return Object.fromEntries(
+    Object.entries(object).map(([key, value]) => [transformFn(key), value])
+  ) as T;
 };
 
-export const toSnake = (
-  payload: Record<string, any>[]
-): Record<string, any>[] => {
+export const toCamel = <T extends Record<string, any>>(
+  payload: T[] | T
+): T[] | T => {
   if (!payload) {
     return payload;
   }
 
-  return payload.map((field: Record<string, any>) =>
-    Object.fromEntries(
-      Object.entries(field).map(([key, value]) => [snakeCase(key), value])
-    )
-  );
+  if (Array.isArray(payload)) {
+    return payload.map((field) => transformJson(field, camelCase) as T);
+  }
+
+  return transformJson(payload, camelCase);
+};
+
+export const toSnake = <T extends Record<string, any>>(
+  payload: T[] | T
+): T[] | T => {
+  if (!payload) {
+    return payload;
+  }
+
+  if (Array.isArray(payload)) {
+    return payload.map((field) => transformJson(field, snakeCase) as T);
+  }
+
+  return transformJson(payload, snakeCase);
 };

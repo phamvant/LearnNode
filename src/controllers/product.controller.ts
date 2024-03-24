@@ -1,11 +1,7 @@
 import { NextFunction, Response } from "express";
 import { CustomRequest } from "../auth/auth.utils";
 import { CREATE, OK } from "../core/success.response";
-import {
-  CommonProduct,
-  Product,
-} from "../services/product/product.index.service";
-import { toCamel } from "../utils";
+import { Product } from "../services/product/product.index.service";
 
 export class ProductController {
   //-----------------NoAuthen-----------------//
@@ -38,14 +34,10 @@ export class ProductController {
   ) => {
     new CREATE({
       message: "Product created",
-      metadata: await Product.createProduct(
-        toCamel([
-          {
-            ...req.body,
-            productShop: req.metadata?.userId,
-          },
-        ])[0] as CommonProduct
-      ),
+      metadata: await Product.createProduct({
+        ...req.body,
+        productShop: req.metadata?.userId,
+      }),
     }).send(res);
   };
 

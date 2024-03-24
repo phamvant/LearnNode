@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import { ErrorResponse } from "./core/error.response";
+import { camelRequest } from "./middleware/camelRequest";
 import router from "./routes/index.routes";
 
 const app = express();
@@ -24,6 +25,8 @@ app.use(
     extended: true,
   })
 );
+
+app.use(camelRequest);
 
 //------Middleware------//
 
