@@ -1,6 +1,6 @@
 @url_dev=http://localhost:3000/v1/api
-@client-id=de0ddf07-9873-44d0-9695-7cc8394ac1bb
-@token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkZTBkZGYwNy05ODczLTQ0ZDAtOTY5NS03Y2M4Mzk0YWMxYmIiLCJlbWFpbCI6InRodWFuQGdtYWlsLmNvbSIsImlhdCI6MTcxMTI2ODc5NSwiZXhwIjoxNzExNDQxNTk1fQ.ABeRBkiFr__-3AeiiAuyIuQ9my3SaFFxAslBybyx2ShC9yDcKyGt_iqv3LTjVjoPjRQBHSvjOulg60MrfkMtZNiajUB04cQhxtdaG5nBlr3V6cajf4E3y6wsVhtzNNlJqKOaeng5Tq3EcjWvwdFZyCZdJhgCUyW2SA1ryWPDOjTiM-9UKiGLFHmbsYuiPhqxs9a9jQg23me94kLBBFLTlUgpRNpOHg7hvnvZ_izZknS69IsjoWGIj1SswzB323tb47QzqNBBR3bezfhzGxc8NzNfQH06T1gjtnAsWjwh5yBkcag6xvCXD9niMRAoJ9HDPCCTcwAUNg2gAuzlfUN23w
+@client-id=d14b3c28-d213-4e46-a72c-4dc79e3a79b9
+@token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkMTRiM2MyOC1kMjEzLTRlNDYtYTcyYy00ZGM3OWUzYTc5YjkiLCJlbWFpbCI6InRodWFuQGdtYWlsLmNvbSIsImlhdCI6MTcxMTI4MjM3MSwiZXhwIjoxNzExNDU1MTcxfQ.DXae5L7R1q_sYAHj85lZ1INL4fKvS0N3_E4NIezuk_aJpNr3ESNWr8-CKx5-iHrRg_ZmWhcTk6Ura9LSNHp0mUHbiz2-rxMtrTqDEwb487UcMTtlVQFSzNi6GBUBKrgnLyulq1jPbqLdgIFe9q1dFhrst4vK2s1XiVrQcBSiTiCNQCOHYOPz8jG8bhX0A6CV_soWlUvvLujWwtFXNOS63zCv-3l-fJP3UiR112Zc_b3kZHPWfv356ctNtMb9fh8ZrqeIIv49tBw7IWaM1zmyd5VzLnhHrBzFImFnXz6SY1fzU7wh3XscvtGE0d9gW4o2JOMb2anTQWlBtpfqN8lg7Q
 
 ### CREATE Electronic
 POST {{url_dev}}/product/create  HTTP/1.1
@@ -36,6 +36,7 @@ Authorization: Bearer {{token}}
     "product_quantity": 100,
     "product_variations": [1, 4]
 }
+
 
 ### CREATE Houseware
 POST {{url_dev}}/product/create  HTTP/1.1
@@ -84,7 +85,7 @@ x-client-id: {{client-id}}
 Authorization: Bearer {{token}}
 
 {
-    "product_id": "78afe790-05b8-4b75-970d-98825fc99344"
+    "product_id": "42641fb0-b7bb-4a9f-89a7-e3f449cffd51"
 }
 
 ### POST Unpublish product 
@@ -106,7 +107,7 @@ x-client-id: {{client-id}}
 Authorization: Bearer {{token}}
 
 {
-    "product_id": "78afe790-05b8-4b75-970d-98825fc99344",
+    "product_id": "42641fb0-b7bb-4a9f-89a7-e3f449cffd51",
     "product_name": "Smart Air Purifier with True HEPA Filter, removes 99.97% of airborne allergens",
     "product_thumb": "Image",
     "product_description": "Enjoy cleaner air with this smart air purifier",

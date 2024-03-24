@@ -107,7 +107,7 @@ const SignUp = async ({
     password: password,
   });
 
-  if (!newUser[0]) {
+  if (!newUser.rowCount) {
     throw new BadRequestError({ message: "Cant create new user" });
   }
 

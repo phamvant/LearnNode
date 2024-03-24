@@ -1,5 +1,4 @@
 import { BadRequestError } from "../../core/error.response";
-import { toCamel } from "../../utils";
 import { SignUpCredential } from "../access/access.service";
 
 /**
@@ -40,7 +39,7 @@ export const storeNewUser = async ({
       throw new BadRequestError({ message: "Query failed at storeNewUser" });
     });
 
-  return toCamel(newUser.rows)[0];
+  return newUser;
 };
 
 /**
