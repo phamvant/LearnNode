@@ -77,7 +77,18 @@ Authorization: Bearer {{token}}
 
 
 ### POST Publish product 
-POST {{url_dev}}/product/publishProduct  HTTP/1.1
+PATCH  {{url_dev}}/product/publishProduct  HTTP/1.1
+Content-Type: application/json
+x-api-key: xxx
+x-client-id: {{client-id}}
+Authorization: Bearer {{token}}
+
+{
+    "product_id": "78afe790-05b8-4b75-970d-98825fc99344"
+}
+
+### POST Unpublish product 
+PATCH  {{url_dev}}/product/unPublishProduct  HTTP/1.1
 Content-Type: application/json
 x-api-key: xxx
 x-client-id: {{client-id}}
@@ -88,7 +99,7 @@ Authorization: Bearer {{token}}
 }
 
 ### POST Modify product 
-POST {{url_dev}}/product/modifyProduct  HTTP/1.1
+PATCH  {{url_dev}}/product/modifyProduct  HTTP/1.1
 Content-Type: application/json
 x-api-key: xxx
 x-client-id: {{client-id}}

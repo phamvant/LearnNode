@@ -22,13 +22,13 @@ const publishProduct = async (
   res: Response,
   next: NextFunction
 ) => {
-  const product_id = req.body.product_id;
+  const productId = req.body.productId;
 
   new CREATE({
     message: "Product published",
     metadata: await ProductModifyService.publishProduct({
-      shop_id: req.metadata?.userId,
-      product_id: product_id,
+      shopId: req.metadata?.userId,
+      productId: productId,
     }),
   }).send(res);
 };
@@ -38,13 +38,13 @@ const unPublishProduct = async (
   res: Response,
   next: NextFunction
 ) => {
-  const product_id = req.body.product_id;
+  const productId = req.body.productId;
 
   new CREATE({
     message: "Product unpublished",
     metadata: await ProductModifyService.unPublishProduct({
-      shop_id: req.metadata?.userId,
-      product_id: product_id,
+      shopId: req.metadata?.userId,
+      productId: productId,
     }),
   }).send(res);
 };

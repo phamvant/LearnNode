@@ -25,17 +25,17 @@ router.get(
   asyncHandler(ProductGetController.getAllPublishedProduct)
 );
 
-router.post(
+router.patch(
   "/publishProduct",
   asyncHandler(ProductModifyController.publishProduct)
 );
 
-router.post(
+router.patch(
   "/unpublishProduct",
   asyncHandler(ProductModifyController.unPublishProduct)
 );
 
-router.post(
+router.patch(
   "/modifyProduct",
   asyncHandler(ProductModifyController.modifyProduct)
 );

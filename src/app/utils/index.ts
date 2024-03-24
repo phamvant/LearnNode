@@ -47,7 +47,7 @@ export const getQueryParams = (params: string[], numberOfRecord = 1) => {
 
 export const getUpdateQueryParams = (params: Record<string, any>) => {
   return {
-    params: Object.keys(params)
+    params: Object.keys(toSnake(params))
       .reduce((previousValue, currentValue, currentIndex) => {
         previousValue.push(`"${currentValue}"=$${currentIndex + 1}`);
         return previousValue;

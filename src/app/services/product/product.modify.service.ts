@@ -117,11 +117,11 @@ export const createProduct = async (payload: CommonProduct) => {
  * @returns
  */
 export const publishProduct = async ({
-  shop_id,
-  product_id,
+  shopId,
+  productId,
 }: {
-  shop_id: string;
-  product_id: string;
+  shopId: string;
+  productId: string;
 }) => {
   await postgres
     .query({
@@ -129,14 +129,14 @@ export const publishProduct = async ({
         SET product_ispublished = TRUE, product_isdraft = FALSE
         WHERE product_shop_id = $1 
         AND product_id = $2`,
-      values: [shop_id, product_id],
+      values: [shopId, productId],
     })
     .catch((error) => {
       console.log(error);
       throw new BadRequestError({ message: "Cant publish product" });
     });
 
-  return { product_id };
+  return { productId };
 };
 
 /**
@@ -145,11 +145,11 @@ export const publishProduct = async ({
  * @returns
  */
 export const unPublishProduct = async ({
-  shop_id,
-  product_id,
+  shopId,
+  productId,
 }: {
-  shop_id: string;
-  product_id: string;
+  shopId: string;
+  productId: string;
 }) => {
   await postgres
     .query({
@@ -157,14 +157,14 @@ export const unPublishProduct = async ({
         SET product_ispublished = FALSE, product_isdraft = TRUE
         WHERE product_shop_id = $1 
         AND product_id = $2`,
-      values: [shop_id, product_id],
+      values: [shopId, productId],
     })
     .catch((error) => {
       console.log(error);
       throw new BadRequestError({ message: "Cant unpublish product" });
     });
 
-  return { product_id };
+  return { productId };
 };
 
 export const modifyProduct = async ({
@@ -175,7 +175,7 @@ export const modifyProduct = async ({
   payload: Record<string, string | number>;
 }) => {
   const nullField = checkNullField(payload);
-  const product = await findProductById(payload.product_id as string);
+  const product = await findProductById(payload.productId as string);
 
   if (!product) {
     throw new BadRequestError({ message: "No product with queried id" });
@@ -190,7 +190,7 @@ export const modifyProduct = async ({
   }
 
   const queryData = getIntoData({
-    fields: ["id"],
+    fields: ["productId"],
     objects: payload,
     unSelect: true,
   });
@@ -203,14 +203,14 @@ export const modifyProduct = async ({
       SET ${params.params}
       WHERE "product_id" = $${params.length + 1}
       `,
-      values: [...Object.values(queryData), payload.product_id],
+      values: [...Object.values(queryData), payload.productId],
     })
     .catch((error) => {
       console.log(error);
       throw new BadRequestError({ message: "Cant modify product" });
     });
 
-  return { modifiedProduct: payload.product_id };
+  return { modifiedProduct: payload.productId };
 };
 
 const ProductModifyService = {
