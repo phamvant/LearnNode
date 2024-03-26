@@ -8,6 +8,7 @@ import {
 import { asyncHandler } from "../helpers/async.handler";
 import { Permission } from "../type.index";
 import AccressRouter from "./access/access.routes";
+import DiscountRouter from "./discount/discount.routes";
 import ProductRouter from "./product/product.routes";
 
 const router = express.Router();
@@ -26,5 +27,7 @@ router.use(permissionCheck(Permission.PERMISSION_0000));
 router.use("/v1/api/shop", AccressRouter);
 
 router.use("/v1/api/product", ProductRouter);
+
+router.use("/v1/api/discount", DiscountRouter);
 
 export default router;

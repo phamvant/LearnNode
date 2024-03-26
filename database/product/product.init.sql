@@ -1,4 +1,8 @@
 ----------------------Product----------------------
+--                                               --
+--                                               --
+--                                               --
+----------------------Product----------------------
 CREATE TABLE public."Product" (
   product_id VARCHAR(36) PRIMARY KEY,
   product_category_id INT NOT NULL,
@@ -12,7 +16,11 @@ CREATE TABLE public."Product" (
   product_isdraft BOOLEAN DEFAULT TRUE,
   product_ispublished BOOLEAN DEFAULT FALSE
 );
-----------------------Category----------------------
+----------------------Category---------------------
+--                                               --
+--                                               --
+--                                               --
+----------------------Category---------------------
 CREATE TABLE public."Category" (
   category_id SERIAL PRIMARY KEY,
   category_name VARCHAR(50) NOT NULL,
@@ -22,7 +30,11 @@ INSERT INTO public."Category" (category_name)
 VALUES ('Clothes');
 INSERT INTO public."Category" (category_name)
 VALUES ('Electronics');
-----------------------Variation----------------------
+----------------------Variation--------------------
+--                                               --
+--                                               --
+--                                               --
+----------------------Variation--------------------
 CREATE TABLE public."Variation" (
   variation_id SERIAL PRIMARY KEY,
   variation_name VARCHAR(100) NOT NULL,
@@ -42,11 +54,19 @@ VALUES ('size', 'M');
 INSERT INTO public."Variation" ("variation_name", "variation_value")
 VALUES ('size', 'L');
 ----------------------ProductVariation----------------------
+--                                                        --
+--                                                        --
+--                                                        --
+----------------------ProductVariation----------------------
 CREATE TABLE public."ProductVariation" (
   product_variation_id SERIAL PRIMARY KEY,
   product_variation_product_id VARCHAR(36),
   product_variation_variation_id INT NOT NULL
 );
+----------------------CategoryVariation----------------------
+--                                                         --
+--                                                         --
+--                                                         --
 ----------------------CategoryVariation----------------------
 CREATE TABLE public."CategoryVariation" (
   category_variation_id SERIAL PRIMARY KEY,
@@ -84,34 +104,62 @@ INSERT INTO "CategoryVariation" (
   )
 VALUES (2, 6);
 ----------------------Inventory----------------------
+--                                                 --
+--                                                 --
+--                                                 --
+----------------------Inventory----------------------
 CREATE TABLE public."Inventory" (
   inventory_id SERIAL PRIMARY KEY,
   inventory_product_id VARCHAR(36) NOT NULL,
   inventory_quantity INTEGER NOT NULL,
-  inventory_created_at timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-  inventory_updated_at timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+  inventory_created_at TIMESTAMP(3) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  inventory_updated_at TIMESTAMP(3) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
+----------------------ProductConstraint----------------------
+--                                                         --
+--                                                         --
+--                                                         --
 ----------------------ProductConstraint----------------------
 ALTER TABLE public."Product"
 ADD CONSTRAINT "product_shop_fk" FOREIGN KEY (product_shop_id) REFERENCES "User"(user_id);
 ALTER TABLE public."Product"
 ADD CONSTRAINT "product_category_fk" FOREIGN KEY (product_category_id) REFERENCES "Category"(category_id);
-----------------------CategoryVariationConstrain----------------------k
+----------------------CategoryVariationConstrain----------------------
+--                                                                  --
+--                                                                  --
+--                                                                  --
+----------------------CategoryVariationConstrain----------------------
 ALTER TABLE public."CategoryVariation"
 ADD CONSTRAINT "category_variation_fk" FOREIGN KEY (category_variation_category_id) REFERENCES public."Category" (category_id) ON DELETE CASCADE;
 ALTER TABLE public."CategoryVariation"
 ADD CONSTRAINT "category_variation_fk_2" FOREIGN KEY (category_variation_variation_id) REFERENCES public."Variation" (variation_id) ON DELETE CASCADE;
 ----------------------InventoryConstrain----------------------
+--                                                          --
+--                                                          --
+--                                                          --
+----------------------InventoryConstrain----------------------
 ALTER TABLE public."Inventory"
 ADD CONSTRAINT "product_inventory_fkey" FOREIGN KEY (inventory_product_id) REFERENCES public."Product" (product_id) ON DELETE CASCADE;
 ----------------------VariationConstrain----------------------
+--                                                          --
+--                                                          --
+--                                                          --
+----------------------VariationConstrain----------------------
 ALTER TABLE public."Variation"
 ADD CONSTRAINT "variation_shop_fk" FOREIGN KEY (variation_shop_id) REFERENCES "User"(user_id);
-----------------------ProductVariationConstrain----------------------k
+----------------------ProductVariationConstrain----------------------
+--                                                                 --
+--                                                                 --
+--                                                                 --
+----------------------ProductVariationConstrain----------------------
 ALTER TABLE public."ProductVariation"
 ADD CONSTRAINT "product_variation_fk" FOREIGN KEY (product_variation_product_id) REFERENCES public."Product" (product_id) ON DELETE CASCADE;
 ALTER TABLE public."ProductVariation"
 ADD CONSTRAINT "product_variation_fk_2" FOREIGN KEY (product_variation_variation_id) REFERENCES public."Variation" (variation_id) ON DELETE CASCADE;
+----------------------ProductIndex----------------------
+--                                                    --
+--                                                    --
+--                                                    --
 ----------------------ProductIndex----------------------
 --gin (Generalized Inverted Index)
 --to_tsvector (Special data type optimized for full-text search. The tsvector contains lexemes (words) from the document along with their positions and weights.)

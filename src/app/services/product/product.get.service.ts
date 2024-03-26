@@ -1,5 +1,6 @@
 import { NotFoundError } from "../../core/error.response";
 import { getIntoData, toCamel, toSnake } from "../../utils";
+import ProductRepo from "./repository/product.get.repo";
 
 //-----------------NoAuthen-----------------//
 
@@ -10,21 +11,8 @@ const getAllProduct = async ({
   limit: number;
   page: number;
 }) => {
-  const products = await postgres
-    .query({
-      text: `SELECT product_name, product_thumb, product_price, product_rating
-      FROM "Product"
-      WHERE product_ispublished = TRUE
-      ORDER BY product_rating DESC
-      LIMIT $1 OFFSET $2`,
-      values: [limit, (page - 1) * limit],
-    })
-    .catch((error) => {
-      console.log(error);
-      throw new NotFoundError({ message: "Cant get products" });
-    });
-
-  return products.rows;
+  const products = await ProductRepo.getAllProduct({ limit, page });
+  return toSnake(products);
 };
 /**
  * Find product by search box
@@ -32,23 +20,9 @@ const getAllProduct = async ({
  * @returns
  */
 const searchPublicProduct = async (searchText: string) => {
-  const products = await postgres
-    .query({
-      text: `SELECT *
-      FROM "Product"
-      WHERE to_tsvector(product_name) @@ plainto_tsquery($1)
-      AND product_ispublished = TRUE
-      ORDER BY ts_rank(to_tsvector(product_name), plainto_tsquery($1)) DESC
-      LIMIT 50; `,
-      values: [searchText],
-    })
+  const products = await ProductRepo.searchPublicProduct(searchText);
 
-    .catch((error) => {
-      console.log(error);
-      throw new NotFoundError({ message: "Cant find product" });
-    });
-
-  const productCamel = toCamel(products.rows) as Record<string, any>[];
+  const productCamel = toCamel(products) as Record<string, any>[];
 
   const ret = productCamel.reduce((previousValue, currentValue) => {
     previousValue.push(
@@ -69,21 +43,10 @@ const searchPublicProduct = async (searchText: string) => {
  * @param shop_id
  * @returns
  */
-const getAllDraftOfShop = async ({ shop_id }: { shop_id: string }) => {
-  const draftProduct = await postgres
-    .query({
-      text: `SELECT "Product".*
-      FROM "Product", "User"
-      WHERE "Product".product_shop_id = "User".user_id
-      AND "Product".product_shop_id = $1 AND "Product".product_isdraft= TRUE`,
-      values: [shop_id],
-    })
-    .catch((error) => {
-      console.log(error);
-      throw new NotFoundError({ message: "Not found draft" });
-    });
+const getAllDraftOfShop = async ({ shopId }: { shopId: string }) => {
+  const draftProducts = await ProductRepo.getAllDraftOfShop(shopId);
 
-  const products = draftProduct.rows.reduce((previousValue, currentValue) => {
+  const products = draftProducts.reduce((previousValue, currentValue) => {
     previousValue.push(
       getIntoData({
         fields: ["product_isdraft", "product_ispublished"],
@@ -92,9 +55,9 @@ const getAllDraftOfShop = async ({ shop_id }: { shop_id: string }) => {
       })
     );
     return previousValue;
-  }, []);
+  }, [] as any[]);
 
-  return { length: draftProduct.rowCount, products: products };
+  return { length: draftProducts.length, products: products };
 };
 
 /**

@@ -4,7 +4,7 @@ import { OK } from "../../core/success.response";
 import ProductGetService from "../../services/product/product.get.service";
 
 //-----------------NoAuthen-----------------//
-export const searchPublicProduct = async (
+const searchPublicProduct = async (
   req: CustomRequest,
   res: Response,
   next: NextFunction
@@ -17,7 +17,7 @@ export const searchPublicProduct = async (
   }).send(res);
 };
 
-export const getAllProduct = async (
+const getAllProduct = async (
   req: CustomRequest,
   res: Response,
   next: NextFunction
@@ -30,7 +30,7 @@ export const getAllProduct = async (
 
 //-----------------Authen-----------------//
 
-export const getAllDradtProduct = async (
+const getAllDradtProduct = async (
   req: CustomRequest,
   res: Response,
   next: NextFunction
@@ -38,12 +38,12 @@ export const getAllDradtProduct = async (
   new OK({
     message: "Data queried",
     metadata: await ProductGetService.getAllDraftOfShop({
-      shop_id: req.metadata?.userId,
+      shopId: req.metadata?.userId,
     }),
   }).send(res);
 };
 
-export const getAllPublishedProduct = async (
+const getAllPublishedProduct = async (
   req: CustomRequest,
   res: Response,
   next: NextFunction

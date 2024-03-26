@@ -12,7 +12,7 @@ const createProduct = async (
     message: "Product created",
     metadata: await ProductModifyService.createProduct({
       ...req.body,
-      productShop: req.metadata?.userId,
+      productShopId: req.metadata?.userId,
     }),
   }).send(res);
 };
