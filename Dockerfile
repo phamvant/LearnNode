@@ -7,8 +7,8 @@ RUN bun install
 
 COPY bun.lockb ./
 COPY src ./src
+# COPY .env ./
 COPY tsconfig.json  ./
-COPY .env ./
 
 EXPOSE ${SERVER_PORT_DEV}
 
