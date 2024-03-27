@@ -7,4 +7,16 @@
   
   // If the debugger should stop on the first line of the program.
   "bun.debugTerminal.stopOnEntry": true,
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "postgres",
+      "database": "postgres",
+      "username": "thuan",
+      "password": "thuan286"
+    }
+  ],
 }

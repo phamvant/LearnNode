@@ -1,6 +1,6 @@
 @url_dev=http://localhost:3000/v1/api
-@token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTdlN2VmMi04ZTA3LTQ5YTMtOWUzOC04Y2RkZDdmMTlmZGIiLCJlbWFpbCI6InRodWFuQGdtYWlsLmNvbSIsImlhdCI6MTcxMTQ2Mzk2MiwiZXhwIjoxNzExNjM2NzYyfQ.GEFkfARFh6H9Ome5hR4Wmq75A0UVXcAj4WrWwo4X-p6I6UJ3_tmpMSpgVmg-yJJFIZAUUjGGlU-pyZgsXYuXsLfhJGSaZxU-v56jHO9oy2DRGBwKrpnbo8l75znwXdj0idlDL-gL7eA0Km3eFyVySsFS9AnFsurLY1BozPfPzwOtEVLw3BXSBwL1TmuWh7X1d0CwWChx634vQWONdXtS985-fEa-SLiaQ1Pbw3DlXzSDXsKDjbSOj3kgRdKeTdrBU75x_Y6ddiDd6Qca6kH2wgpgwq2M1fmOac0xGV2Wc7zlFvU0uv3_ZzQuW6fOIGSV7IixjyBA024E9HqX9dZgVA
-@client-id=697e7ef2-8e07-49a3-9e38-8cddd7f19fdb
+@token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMDI3MGUzNS1lYTFhLTRkMGItYTE0My1hZjg5ODgxMDE0YzIiLCJlbWFpbCI6InRodWFuQGdtYWlsLmNvbSIsImlhdCI6MTcxMTU0MDgxNywiZXhwIjoxNzExNzEzNjE3fQ.OyhAga_kPth32JlljTkSII9ZFjm35syN0qNDOsfdFRw1N97YmbHkZwzXDB7WybH5p4ULQy0qrRyCklYiy2i8Tghr_NoEbbpGBNGTObZtXeR08jg4xZUpdC_CdzLShMpSMziFu_4NV79pyJdWQc6_CKgFWm1vu81Y3MU-sRCKZNX6abyiKxqFUWKP1tUyTOUyE1109R9H3lNi_tZLdGrb0wa_-qtyp1v3aETgC2GLO4w3aer2P9buXwQlvPYRsmkSB51BFnUijgD4bNcmMAi7tOS1trxRB3lpQmqDBF9ZrnF5m2F6SFMsWfCPHNobG76mDVcrCpzk82OdUI-6ezCWaQ
+@client-id=00270e35-ea1a-4d0b-a143-af89881014c2
 
 ### Create Discount
 POST {{url_dev}}/discount/create  HTTP/1.1
@@ -22,8 +22,7 @@ Authorization: Bearer {{token}}
   "usersUsed" : 0,
   "discount_max_uses_per_user": 1000,
   "discount_min_order_value": 10,
-  "discount_shop_id": "697e7ef2-8e07-49a3-9e38-8cddd7f19fdb",
+  "discount_shop_id": "00270e35-ea1a-4d0b-a143-af89881014c2",
   "discount_is_active": true,
-  "discount_applies_to": "all",
-  "discount_product_id": "61c0eea0-487b-42d5-9a82-eb4f50bdd2c3"
+  "discount_applies_to": "all"
 }

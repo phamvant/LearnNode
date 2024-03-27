@@ -19,7 +19,6 @@ const createDiscount = async (payload: Discount) => {
     "discount_shop_id",
     "discount_is_active",
     "discount_applies_to",
-    "discount_product_id",
   ]);
 
   const newDiscount = await postgres

@@ -9,7 +9,9 @@ import {
 } from "../../core/error.response";
 import { DEBUGING } from "../../type.index";
 import { getIntoData } from "../../utils";
+import CartModfyService from "../cart/cart.modify.service";
 import { ShopGetService, ShopModifyService } from "../shop/shop.index.service";
+import UserModifyRepo from "./repository/user.modify.repo";
 import TokenService from "./token.service";
 
 interface Credentials {
@@ -137,11 +139,23 @@ const SignUp = async ({
 
   if (DEBUGING) {
     //DEBUGING Delete User After Create
-    await postgres.query({
-      text: `DELETE FROM "User" WHERE user_id: $1`,
-      values: [userId],
-    });
+    await UserModifyRepo.deleteUserById(userId);
   }
+
+  const newCart = await CartModfyService.createCart(userId).catch(
+    async (error) => {
+      console.log(error);
+      await UserModifyRepo.deleteUserById(userId).catch((error) => {
+        console.log(error);
+        throw new BadRequestError({
+          message: "Cant delete user due to cant create cart",
+        });
+      });
+      throw new BadRequestError({
+        message: "Cant create user due to cant create cart",
+      });
+    }
+  );
 
   return {
     // useData: getIntoData({

@@ -14,8 +14,9 @@ services:
     volumes:
       - ./database/user/user.init.sql:/docker-entrypoint-initdb.d/01.user.init.sql
       - ./database/product/product.init.sql:/docker-entrypoint-initdb.d/02.product.init.sql
-      - ./database/product/category/category.init.sql:/docker-entrypoint-initdb.d/03.category.init.sql
-      - ./database/discount/discount.init.sql:/docker-entrypoint-initdb.d/04.product.init.sql
+      - ./database/discount/discount.init.sql:/docker-entrypoint-initdb.d/03.discount.init.sql
+      - ./database/mock/mock.init.sql:/docker-entrypoint-initdb.d/04.mock.init.sql
+      - ./database/cart/cart.init.sql:/docker-entrypoint-initdb.d/05.cart.init.sql
       - ./database/migrate:/usr/migrate
 
 #   bun:

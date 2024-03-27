@@ -21,8 +21,7 @@ CREATE TABLE public."Discount" (
   discount_min_order_value INT,
   discount_shop_id VARCHAR(36) NOT NULL,
   discount_is_active BOOLEAN DEFAULT FALSE NOT NULL,
-  discount_applies_to t_discount_applies_to NOT NULL,
-  discount_product_id VARCHAR(36) NOT NULL
+  discount_applies_to t_discount_applies_to NOT NULL
 );
 ----------------------DiscountConstrain-----------------------
 --                                                          --
@@ -31,5 +30,22 @@ CREATE TABLE public."Discount" (
 ----------------------DiscountConstrain-----------------------
 ALTER TABLE public."Discount"
 ADD CONSTRAINT "discount_fk_1" FOREIGN KEY (discount_shop_id) REFERENCES "User"(user_id);
-ALTER TABLE public."Discount"
-ADD CONSTRAINT "discount_fk_2" FOREIGN KEY (discount_product_id) REFERENCES "Product"(product_id);
+------------------DiscountProduct------------------
+--                                               --
+--                                               --
+--                                               --
+------------------DiscountProduct------------------
+CREATE TABLE public."DiscountProduct" (
+  discount_product_id SERIAL PRIMARY KEY,
+  discount_product_discount_id INT NOT NULL,
+  discount_product_product_id VARCHAR(36) NOT NULL
+);
+--------------DiscountProductConstrain-------------
+--                                               --
+--                                               --
+--                                               --
+--------------DiscountProductConstrain-------------
+ALTER TABLE public."DiscountProduct"
+ADD CONSTRAINT "discount_product_fk1" FOREIGN KEY (discount_product_product_id) REFERENCES "Product"(product_id);
+ALTER TABLE public."DiscountProduct"
+ADD CONSTRAINT "discount_product_fk2" FOREIGN KEY (discount_product_discount_id) REFERENCES "Discount"(discount_id);

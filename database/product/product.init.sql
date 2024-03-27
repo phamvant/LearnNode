@@ -26,10 +26,6 @@ CREATE TABLE public."Category" (
   category_name VARCHAR(50) NOT NULL,
   category_parent_id INT REFERENCES "Category"(category_id) ON DELETE CASCADE
 );
-INSERT INTO public."Category" (category_name)
-VALUES ('Clothes');
-INSERT INTO public."Category" (category_name)
-VALUES ('Electronics');
 ----------------------Variation--------------------
 --                                               --
 --                                               --
@@ -41,18 +37,6 @@ CREATE TABLE public."Variation" (
   variation_value varchar(50) NOT NULL,
   variation_shop_id VARCHAR(36)
 );
-INSERT INTO public."Variation" ("variation_name", "variation_value")
-VALUES ('color', 'red');
-INSERT INTO public."Variation" ("variation_name", "variation_value")
-VALUES ('color', 'green');
-INSERT INTO public."Variation" ("variation_name", "variation_value")
-VALUES ('color', 'blue');
-INSERT INTO public."Variation" ("variation_name", "variation_value")
-VALUES ('size', 'S');
-INSERT INTO public."Variation" ("variation_name", "variation_value")
-VALUES ('size', 'M');
-INSERT INTO public."Variation" ("variation_name", "variation_value")
-VALUES ('size', 'L');
 ----------------------ProductVariation----------------------
 --                                                        --
 --                                                        --
@@ -73,36 +57,6 @@ CREATE TABLE public."CategoryVariation" (
   category_variation_category_id INT NOT NULL,
   category_variation_variation_id INT NOT NULL
 );
-INSERT INTO "CategoryVariation" (
-    category_variation_category_id,
-    category_variation_variation_id
-  )
-VALUES (1, 1);
-INSERT INTO "CategoryVariation" (
-    category_variation_category_id,
-    category_variation_variation_id
-  )
-VALUES (1, 2);
-INSERT INTO "CategoryVariation" (
-    category_variation_category_id,
-    category_variation_variation_id
-  )
-VALUES (1, 3);
-INSERT INTO "CategoryVariation" (
-    category_variation_category_id,
-    category_variation_variation_id
-  )
-VALUES (2, 4);
-INSERT INTO "CategoryVariation" (
-    category_variation_category_id,
-    category_variation_variation_id
-  )
-VALUES (2, 5);
-INSERT INTO "CategoryVariation" (
-    category_variation_category_id,
-    category_variation_variation_id
-  )
-VALUES (2, 6);
 ----------------------Inventory----------------------
 --                                                 --
 --                                                 --
