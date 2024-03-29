@@ -6,20 +6,29 @@ import { Discount } from "../../models/discount.model";
 import DiscountGetRepo from "./repository/discount.get.repo";
 import DiscountModifyRepo from "./repository/discount.modify.repo";
 
-const createDiscount = async (payload: Discount) => {
-  if (Date.parse(payload.startDate) > Date.parse(payload.endDate)) {
+const createDiscount = async ({
+  payload,
+  userId,
+}: {
+  payload: Discount;
+  userId: string;
+}) => {
+  if (
+    Date.parse(payload.discountStartDate) > Date.parse(payload.discountEndDate)
+  ) {
     throw new BadRequestError({ message: "Start date must before end date" });
   }
 
   const isDiscountExisted = await DiscountGetRepo.findDiscountByCode({
     discountCode: payload.discountCode,
+    discountShopId: userId,
   });
 
-  if (isDiscountExisted && isDiscountExisted.isActive) {
+  if (isDiscountExisted && isDiscountExisted.discountIsActive) {
     throw new ConflictRequestError({ message: "Discount Existed" });
   }
 
-  const newDiscount = await DiscountModifyRepo.createDiscount(payload);
+  await DiscountModifyRepo.createDiscount(payload);
 
   return { discount_id: payload.discountId };
 };

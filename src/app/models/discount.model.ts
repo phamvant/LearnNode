@@ -5,15 +5,15 @@ export interface Discount {
   discountType: string;
   discountValue: number;
   discountCode: string;
-  startDate: string;
-  endDate: string;
-  maxUses: number;
+  discountStartDate: string;
+  discountEndDate: string;
+  discountMaxUses: number;
   usesCount?: number;
   usersUsed?: number;
-  maxUsesPerUser: number;
-  minOrderValue: number;
-  shopId: string;
-  isActive: boolean;
-  appliesTo: string;
-  productId: string;
+  discountMaxUsesPerUser: number;
+  discountMinOrderValue: number;
+  discountShopId: string;
+  discountIsActive: boolean;
+  discountAppliesTo: string;
+  discountProductId: string;
 }

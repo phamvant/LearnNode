@@ -10,7 +10,7 @@ const findApiKey = async (apiKey: string) => {
     })
     .catch((error: any) => {
       console.log(error);
-      throw new BadRequestError({ message: "Query failed" });
+      throw new BadRequestError({ message: "Query failed at Get ApiKey" });
     });
 
   return toCamel(objKey.rows)[0];

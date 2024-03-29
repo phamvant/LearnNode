@@ -18,13 +18,15 @@ const findDiscountById = async ({ discountId }: { discountId: number }) => {
 
 const findDiscountByCode = async ({
   discountCode,
+  discountShopId,
 }: {
   discountCode: string;
+  discountShopId: string;
 }) => {
   const discount = await postgres
     .query({
-      text: `SELECT * FROM "Discount" WHERE discount_code = $1`,
-      values: [discountCode],
+      text: `SELECT * FROM "Discount" WHERE discount_code = $1 AND discount_shop_id = $2`,
+      values: [discountCode, discountShopId],
     })
     .catch((error) => {
       console.log(error);
@@ -34,5 +36,27 @@ const findDiscountByCode = async ({
   return toCamel(discount.rows)[0] as Discount;
 };
 
-const DiscountGetRepo = { findDiscountById, findDiscountByCode };
+const getAllDiscountCodeByShop = async (shopId: string) => {
+  const discounts = await postgres
+    .query({
+      text: `SELECT * FROM "Discount" WHERE discount_shop_id = $1 AND discount_is_active=TRUE`,
+      values: [shopId],
+    })
+    .catch((error) => {
+      console.log(error);
+      throw new BadRequestError({ message: "Cant get Discount" });
+    });
+
+  return toCamel(discounts.rows) as Discount[];
+};
+
+const CartGetRepo = {
+  getAllDiscountCodeByShop,
+};
+
+const DiscountGetRepo = {
+  findDiscountById,
+  findDiscountByCode,
+  getAllDiscountCodeByShop,
+};
 export default DiscountGetRepo;

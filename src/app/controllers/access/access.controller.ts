@@ -11,16 +11,16 @@ const handleRefreshToken = async (
 ) => {
   if (
     !req.metadata?.extractedClientID &&
-    !req.metadata?.keytoken_used_refresh_token
+    !req.metadata?.keytokenUsedRefreshToken
   ) {
     throw new NotFoundError({ message: "Unknown Error" });
   }
 
-  const { user_id, keytoken_used_refresh_token } = req.metadata;
+  const { userId, keytokenUsedRefreshToken } = req.metadata;
 
   const newToken = await AccessService.HandleRefreshToken({
-    userId: user_id,
-    usedRefreshToken: keytoken_used_refresh_token,
+    userId: userId,
+    usedRefreshToken: keytokenUsedRefreshToken,
   });
 
   new CREATE({ message: "Token Refreshed", metadata: newToken }).send(res);

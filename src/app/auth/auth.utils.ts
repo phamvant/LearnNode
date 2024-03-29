@@ -164,7 +164,7 @@ export const authenticate = asyncHandler(
         req.metadata = {
           ...req.metadata,
           userId,
-          keytoken_used_refresh_token: token,
+          keytokenUsedRefreshToken: token,
         };
       } catch (error) {
         throw new AuthFailureError({ message: "Invalid User" });

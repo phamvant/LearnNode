@@ -10,7 +10,10 @@ const createDiscount = async (
 ) => {
   new CREATE({
     message: "Discount created",
-    metadata: await DiscountModifyService.createDiscount(req.body),
+    metadata: await DiscountModifyService.createDiscount({
+      payload: req.body,
+      userId: req.metadata?.userId,
+    }),
   }).send(res);
 };
 

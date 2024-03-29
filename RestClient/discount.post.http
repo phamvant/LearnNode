@@ -1,9 +1,9 @@
-@url_dev=http://localhost:3000/v1/api
-@token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMDI3MGUzNS1lYTFhLTRkMGItYTE0My1hZjg5ODgxMDE0YzIiLCJlbWFpbCI6InRodWFuQGdtYWlsLmNvbSIsImlhdCI6MTcxMTU0MDgxNywiZXhwIjoxNzExNzEzNjE3fQ.OyhAga_kPth32JlljTkSII9ZFjm35syN0qNDOsfdFRw1N97YmbHkZwzXDB7WybH5p4ULQy0qrRyCklYiy2i8Tghr_NoEbbpGBNGTObZtXeR08jg4xZUpdC_CdzLShMpSMziFu_4NV79pyJdWQc6_CKgFWm1vu81Y3MU-sRCKZNX6abyiKxqFUWKP1tUyTOUyE1109R9H3lNi_tZLdGrb0wa_-qtyp1v3aETgC2GLO4w3aer2P9buXwQlvPYRsmkSB51BFnUijgD4bNcmMAi7tOS1trxRB3lpQmqDBF9ZrnF5m2F6SFMsWfCPHNobG76mDVcrCpzk82OdUI-6ezCWaQ
+@url_dev=http://localhost:3000/v1/api/discount
+@token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMDI3MGUzNS1lYTFhLTRkMGItYTE0My1hZjg5ODgxMDE0YzIiLCJlbWFpbCI6InRodWFuQGdtYWlsLmNvbSIsImlhdCI6MTcxMTcyMDU1NSwiZXhwIjoxNzExODkzMzU1fQ.Ju-tcgtZakic711uG5IbU2esb1HiogYotwEULxh9J4WctTobsKnrrFa7y6zOiGKtPANXoS0rAwtgtMY7G--b7z3haHGpuklxBflDCB8VLx-NZPAZFh-16NNuvq2rzC_Evc_XljU8wsA8noCJquFC1RZFqO4UBePppu3SmfrMsCW7TIOTGu-pwcon7A1qV0GgsbG4bO29wak0vUWukNT1HmtdC4fasqK-rJjTK6srwna_RREGODLKjayOQVp9S7lJPyCrcBjO8v6QzRRFvg0-DS_wYfR7KLdoKcWn0jp8NJyUG5MiOWoek-Kwy0fjVDw3yvl0Hnb0kLUKXvORH-6UJg
 @client-id=00270e35-ea1a-4d0b-a143-af89881014c2
 
 ### Create Discount
-POST {{url_dev}}/discount/create  HTTP/1.1
+POST {{url_dev}}/create  HTTP/1.1
 Content-Type: application/json
 x-api-key: xxx
 x-client-id: {{client-id}}
@@ -26,3 +26,13 @@ Authorization: Bearer {{token}}
   "discount_is_active": true,
   "discount_applies_to": "all"
 }
+
+### Get all discount by shop
+GET {{url_dev}}/get-all-by-shop
+x-api-key: xxx
+x-client-id: {{client-id}} 
+Authorization: Bearer {{token}}
+
+### Get all discount by shop code id
+GET {{url_dev}}/get-by-code/?discountShopId=00270e35-ea1a-4d0b-a143-af89881014c2&discountCode=SALE
+x-api-key: xxx
