@@ -12,11 +12,12 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./database/schema/user/user.init.sql:/docker-entrypoint-initdb.d/01.user.init.sql
-      - ./database/schema/product/product.init.sql:/docker-entrypoint-initdb.d/02.product.init.sql
-      - ./database/schema/discount/discount.init.sql:/docker-entrypoint-initdb.d/03.discount.init.sql
-      - ./database/mock/mock.init.sql:/docker-entrypoint-initdb.d/04.mock.init.sql
-      - ./database/schema/cart/cart.init.sql:/docker-entrypoint-initdb.d/05.cart.init.sql
+      - ./database/postgres-init.sql:/docker-entrypoint-initdb.d/01.postgres.init.sql
+    # - ./database/schema/user/user.init.sql:/docker-entrypoint-initdb.d/01.user.init.sql
+    #   - ./database/schema/product/product.init.sql:/docker-entrypoint-initdb.d/02.product.init.sql
+    #   - ./database/schema/discount/discount.init.sql:/docker-entrypoint-initdb.d/03.discount.init.sql
+    #   - ./database/mock/mock.init.sql:/docker-entrypoint-initdb.d/04.mock.init.sql
+    #   - ./database/schema/cart/cart.init.sql:/docker-entrypoint-initdb.d/05.cart.init.sql
 
 #   bun:
 #     container_name: bun

@@ -31,7 +31,7 @@ const development: Config["development"] = {
     PORT: process.env.DATABASE_PORT_DEV
       ? parseInt(process.env.DATABASE_PORT_DEV, 10)
       : 5432,
-    DBNAME: process.env.DATABASE_NAME_DEV || "postgres",
+    DBNAME: process.env.DATABASE_NAME_DEV || "dev",
     USERNAME: process.env.DATABASE_USERNAME_DEV || "thuan",
     PASSWORD: process.env.DATABASE_PASSWORD_DEV || "thuan286",
   },

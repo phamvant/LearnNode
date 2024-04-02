@@ -1,0 +1,1333 @@
+{ "databaseChangeLog": [
+  {
+    "changeSet": {
+      "id": "1712067886334-1",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "createTable": {
+            "columns": [
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false,
+                    "primaryKey": true,
+                    "primaryKeyName": "User_pkey"
+                  },
+                  "name": "user_id",
+                  "type": "VARCHAR(36)"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "user_email",
+                  "type": "VARCHAR(30)"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "user_name",
+                  "type": "VARCHAR(30)"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "user_password",
+                  "type": "VARCHAR(50)"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "user_username",
+                  "type": "VARCHAR(30)"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "user_verified",
+                  "type": "BOOLEAN"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "user_status",
+                  "type": "VARCHAR(10)"
+                }
+              },
+              {
+                "column": {
+                  "name": "user_roles",
+                  "type": "VARCHAR[]"
+                }
+              }
+            ]
+            ,
+            "tableName": "User"
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-2",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "createTable": {
+            "columns": [
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false,
+                    "primaryKey": true,
+                    "primaryKeyName": "KeyToken_pkey"
+                  },
+                  "name": "keytoken_user_id",
+                  "type": "VARCHAR(36)"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "keytoken_public_key",
+                  "type": "TEXT"
+                }
+              },
+              {
+                "column": {
+                  "name": "keytoken_used_refresh_token",
+                  "type": "TEXT[]"
+                }
+              }
+            ]
+            ,
+            "tableName": "KeyToken"
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-3",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "createTable": {
+            "columns": [
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false,
+                    "primaryKey": true,
+                    "primaryKeyName": "Product_pkey"
+                  },
+                  "name": "product_id",
+                  "type": "VARCHAR(36)"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "product_category_id",
+                  "type": "INTEGER"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "product_shop_id",
+                  "type": "VARCHAR"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "product_name",
+                  "type": "TEXT"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "product_thumb",
+                  "type": "TEXT"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "product_description",
+                  "type": "TEXT"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "product_price",
+                  "type": "FLOAT8"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "defaultValueNumeric": 4.5,
+                  "name": "product_rating",
+                  "type": "FLOAT8"
+                }
+              },
+              {
+                "column": {
+                  "name": "product_slug",
+                  "type": "TEXT"
+                }
+              },
+              {
+                "column": {
+                  "defaultValueBoolean": true,
+                  "name": "product_isdraft",
+                  "type": "BOOLEAN"
+                }
+              },
+              {
+                "column": {
+                  "defaultValueBoolean": false,
+                  "name": "product_ispublished",
+                  "type": "BOOLEAN"
+                }
+              }
+            ]
+            ,
+            "tableName": "Product"
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-4",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "createTable": {
+            "columns": [
+              {
+                "column": {
+                  "autoIncrement": true,
+                  "constraints": {
+                    "nullable": false,
+                    "primaryKey": true,
+                    "primaryKeyName": "Category_pkey"
+                  },
+                  "name": "category_id",
+                  "startWith": 3,
+                  "type": "INTEGER"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "category_name",
+                  "type": "VARCHAR(50)"
+                }
+              },
+              {
+                "column": {
+                  "name": "category_parent_id",
+                  "type": "INTEGER"
+                }
+              }
+            ]
+            ,
+            "tableName": "Category"
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-5",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "createTable": {
+            "columns": [
+              {
+                "column": {
+                  "autoIncrement": true,
+                  "constraints": {
+                    "nullable": false,
+                    "primaryKey": true,
+                    "primaryKeyName": "Variation_pkey"
+                  },
+                  "name": "variation_id",
+                  "startWith": 7,
+                  "type": "INTEGER"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "variation_name",
+                  "type": "VARCHAR(100)"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "variation_value",
+                  "type": "VARCHAR(50)"
+                }
+              },
+              {
+                "column": {
+                  "name": "variation_shop_id",
+                  "type": "VARCHAR(36)"
+                }
+              }
+            ]
+            ,
+            "tableName": "Variation"
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-6",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "createTable": {
+            "columns": [
+              {
+                "column": {
+                  "autoIncrement": true,
+                  "constraints": {
+                    "nullable": false,
+                    "primaryKey": true,
+                    "primaryKeyName": "ProductVariation_pkey"
+                  },
+                  "name": "product_variation_id",
+                  "type": "INTEGER"
+                }
+              },
+              {
+                "column": {
+                  "name": "product_variation_product_id",
+                  "type": "VARCHAR(36)"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "product_variation_variation_id",
+                  "type": "INTEGER"
+                }
+              }
+            ]
+            ,
+            "tableName": "ProductVariation"
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-7",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "createTable": {
+            "columns": [
+              {
+                "column": {
+                  "autoIncrement": true,
+                  "constraints": {
+                    "nullable": false,
+                    "primaryKey": true,
+                    "primaryKeyName": "CategoryVariation_pkey"
+                  },
+                  "name": "category_variation_id",
+                  "startWith": 7,
+                  "type": "INTEGER"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "category_variation_category_id",
+                  "type": "INTEGER"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "category_variation_variation_id",
+                  "type": "INTEGER"
+                }
+              }
+            ]
+            ,
+            "tableName": "CategoryVariation"
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-8",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "createTable": {
+            "columns": [
+              {
+                "column": {
+                  "autoIncrement": true,
+                  "constraints": {
+                    "nullable": false,
+                    "primaryKey": true,
+                    "primaryKeyName": "Inventory_pkey"
+                  },
+                  "name": "inventory_id",
+                  "type": "INTEGER"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "inventory_product_id",
+                  "type": "VARCHAR(36)"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "inventory_quantity",
+                  "type": "INTEGER"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "defaultValueComputed": "CURRENT_TIMESTAMP",
+                  "name": "inventory_created_at",
+                  "type": "TIMESTAMP(3) WITHOUT TIME ZONE"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "defaultValueComputed": "CURRENT_TIMESTAMP",
+                  "name": "inventory_updated_at",
+                  "type": "TIMESTAMP(3) WITHOUT TIME ZONE"
+                }
+              }
+            ]
+            ,
+            "tableName": "Inventory"
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-9",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "createTable": {
+            "columns": [
+              {
+                "column": {
+                  "autoIncrement": true,
+                  "constraints": {
+                    "nullable": false,
+                    "primaryKey": true,
+                    "primaryKeyName": "DiscountProduct_pkey"
+                  },
+                  "name": "discount_product_id",
+                  "type": "INTEGER"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "discount_product_discount_id",
+                  "type": "INTEGER"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "discount_product_product_id",
+                  "type": "VARCHAR(36)"
+                }
+              }
+            ]
+            ,
+            "tableName": "DiscountProduct"
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-10",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "createTable": {
+            "columns": [
+              {
+                "column": {
+                  "autoIncrement": true,
+                  "constraints": {
+                    "nullable": false,
+                    "primaryKey": true,
+                    "primaryKeyName": "CartProduct_pkey"
+                  },
+                  "name": "cart_product_id",
+                  "type": "INTEGER"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "cart_product_cart_id",
+                  "type": "INTEGER"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "cart_product_product_id",
+                  "type": "VARCHAR(36)"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "defaultValueNumeric": 1,
+                  "name": "cart_product_quantity",
+                  "type": "INTEGER"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "defaultValueComputed": "CURRENT_TIMESTAMP",
+                  "name": "cart_product_created_at",
+                  "type": "TIMESTAMP(3) WITHOUT TIME ZONE"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "defaultValueComputed": "CURRENT_TIMESTAMP",
+                  "name": "cart_product_updated_at",
+                  "type": "TIMESTAMP(3) WITHOUT TIME ZONE"
+                }
+              }
+            ]
+            ,
+            "tableName": "CartProduct"
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-11",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "createTable": {
+            "columns": [
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false,
+                    "primaryKey": true,
+                    "primaryKeyName": "ApiKey_pkey"
+                  },
+                  "name": "apikey_key",
+                  "type": "VARCHAR(100)"
+                }
+              },
+              {
+                "column": {
+                  "defaultValueBoolean": true,
+                  "name": "apikey_status",
+                  "type": "BOOLEAN"
+                }
+              },
+              {
+                "column": {
+                  "name": "apikey_permission",
+                  "type": "PERMISSION[]"
+                }
+              }
+            ]
+            ,
+            "tableName": "ApiKey"
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-12",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "createIndex": {
+            "columns": [
+              {
+                "column": {
+                  "name": "user_email"
+                }
+              }
+            ]
+            ,
+            "indexName": "User_email_key",
+            "tableName": "User",
+            "unique": true
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-13",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "createIndex": {
+            "columns": [
+              {
+                "column": {
+                  "computed": true,
+                  "name": "to_tsvector('english'::regconfig, ((product_name || ' '::text) || product_description))"
+                }
+              }
+            ]
+            ,
+            "indexName": "idx_product_fts",
+            "tableName": "Product"
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-14",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "createTable": {
+            "columns": [
+              {
+                "column": {
+                  "autoIncrement": true,
+                  "constraints": {
+                    "nullable": false,
+                    "primaryKey": true,
+                    "primaryKeyName": "Discount_pkey"
+                  },
+                  "name": "discount_id",
+                  "startWith": 5,
+                  "type": "INTEGER"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "discount_name",
+                  "type": "TEXT"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "discount_description",
+                  "type": "TEXT"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "discount_type",
+                  "type": "T_DISCOUNT_TYPE"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "discount_value",
+                  "type": "FLOAT8"
+                }
+              },
+              {
+                "column": {
+                  "name": "discount_code",
+                  "type": "VARCHAR(50)"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "discount_start_date",
+                  "type": "TIMESTAMP(3) WITHOUT TIME ZONE"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "discount_end_date",
+                  "type": "TIMESTAMP(3) WITHOUT TIME ZONE"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "discount_max_uses",
+                  "type": "INTEGER"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "defaultValueNumeric": 0,
+                  "name": "discount_uses_count",
+                  "type": "INTEGER"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "defaultValueNumeric": 0,
+                  "name": "discount_users_used",
+                  "type": "INTEGER"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "discount_max_uses_per_user",
+                  "type": "INTEGER"
+                }
+              },
+              {
+                "column": {
+                  "name": "discount_min_order_value",
+                  "type": "INTEGER"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "discount_shop_id",
+                  "type": "VARCHAR(36)"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "defaultValueBoolean": false,
+                  "name": "discount_is_active",
+                  "type": "BOOLEAN"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "discount_applies_to",
+                  "type": "T_DISCOUNT_APPLIES_TO"
+                }
+              }
+            ]
+            ,
+            "tableName": "Discount"
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-15",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "createTable": {
+            "columns": [
+              {
+                "column": {
+                  "autoIncrement": true,
+                  "constraints": {
+                    "nullable": false,
+                    "primaryKey": true,
+                    "primaryKeyName": "Cart_pkey"
+                  },
+                  "name": "cart_id",
+                  "startWith": 2,
+                  "type": "INTEGER"
+                }
+              },
+              {
+                "column": {
+                  "defaultValue": "active",
+                  "name": "cart_state",
+                  "type": "T_CART_STATE_TYPE"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "cart_user_id",
+                  "type": "VARCHAR(36)"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "defaultValueNumeric": 0,
+                  "name": "cart_total",
+                  "type": "INTEGER"
+                }
+              }
+            ]
+            ,
+            "tableName": "Cart"
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-16",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "addForeignKeyConstraint": {
+            "baseColumnNames": "category_parent_id",
+            "baseTableName": "Category",
+            "constraintName": "Category_category_parent_id_fkey",
+            "deferrable": false,
+            "initiallyDeferred": false,
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "referencedColumnNames": "category_id",
+            "referencedTableName": "Category",
+            "validate": true
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-17",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "addForeignKeyConstraint": {
+            "baseColumnNames": "keytoken_user_id",
+            "baseTableName": "KeyToken",
+            "constraintName": "KeyToken_fkey",
+            "deferrable": false,
+            "initiallyDeferred": false,
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "referencedColumnNames": "user_id",
+            "referencedTableName": "User",
+            "validate": true
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-18",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "addForeignKeyConstraint": {
+            "baseColumnNames": "cart_user_id",
+            "baseTableName": "Cart",
+            "constraintName": "cart_fkey",
+            "deferrable": false,
+            "initiallyDeferred": false,
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "referencedColumnNames": "user_id",
+            "referencedTableName": "User",
+            "validate": true
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-19",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "addForeignKeyConstraint": {
+            "baseColumnNames": "cart_product_cart_id",
+            "baseTableName": "CartProduct",
+            "constraintName": "cart_product_fkey",
+            "deferrable": false,
+            "initiallyDeferred": false,
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "referencedColumnNames": "cart_id",
+            "referencedTableName": "Cart",
+            "validate": true
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-20",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "addForeignKeyConstraint": {
+            "baseColumnNames": "cart_product_product_id",
+            "baseTableName": "CartProduct",
+            "constraintName": "cart_product_fkey_2",
+            "deferrable": false,
+            "initiallyDeferred": false,
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "referencedColumnNames": "product_id",
+            "referencedTableName": "Product",
+            "validate": true
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-21",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "addForeignKeyConstraint": {
+            "baseColumnNames": "category_variation_category_id",
+            "baseTableName": "CategoryVariation",
+            "constraintName": "category_variation_fk",
+            "deferrable": false,
+            "initiallyDeferred": false,
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "referencedColumnNames": "category_id",
+            "referencedTableName": "Category",
+            "validate": true
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-22",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "addForeignKeyConstraint": {
+            "baseColumnNames": "category_variation_variation_id",
+            "baseTableName": "CategoryVariation",
+            "constraintName": "category_variation_fk_2",
+            "deferrable": false,
+            "initiallyDeferred": false,
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "referencedColumnNames": "variation_id",
+            "referencedTableName": "Variation",
+            "validate": true
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-23",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "addForeignKeyConstraint": {
+            "baseColumnNames": "discount_shop_id",
+            "baseTableName": "Discount",
+            "constraintName": "discount_fk_1",
+            "deferrable": false,
+            "initiallyDeferred": false,
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "referencedColumnNames": "user_id",
+            "referencedTableName": "User",
+            "validate": true
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-24",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "addForeignKeyConstraint": {
+            "baseColumnNames": "discount_product_product_id",
+            "baseTableName": "DiscountProduct",
+            "constraintName": "discount_product_fk1",
+            "deferrable": false,
+            "initiallyDeferred": false,
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "referencedColumnNames": "product_id",
+            "referencedTableName": "Product",
+            "validate": true
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-25",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "addForeignKeyConstraint": {
+            "baseColumnNames": "discount_product_discount_id",
+            "baseTableName": "DiscountProduct",
+            "constraintName": "discount_product_fk2",
+            "deferrable": false,
+            "initiallyDeferred": false,
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "referencedColumnNames": "discount_id",
+            "referencedTableName": "Discount",
+            "validate": true
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-26",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "addForeignKeyConstraint": {
+            "baseColumnNames": "product_category_id",
+            "baseTableName": "Product",
+            "constraintName": "product_category_fk",
+            "deferrable": false,
+            "initiallyDeferred": false,
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "referencedColumnNames": "category_id",
+            "referencedTableName": "Category",
+            "validate": true
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-27",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "addForeignKeyConstraint": {
+            "baseColumnNames": "inventory_product_id",
+            "baseTableName": "Inventory",
+            "constraintName": "product_inventory_fkey",
+            "deferrable": false,
+            "initiallyDeferred": false,
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "referencedColumnNames": "product_id",
+            "referencedTableName": "Product",
+            "validate": true
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-28",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "addForeignKeyConstraint": {
+            "baseColumnNames": "product_shop_id",
+            "baseTableName": "Product",
+            "constraintName": "product_shop_fk",
+            "deferrable": false,
+            "initiallyDeferred": false,
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "referencedColumnNames": "user_id",
+            "referencedTableName": "User",
+            "validate": true
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-29",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "addForeignKeyConstraint": {
+            "baseColumnNames": "product_variation_product_id",
+            "baseTableName": "ProductVariation",
+            "constraintName": "product_variation_fk",
+            "deferrable": false,
+            "initiallyDeferred": false,
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "referencedColumnNames": "product_id",
+            "referencedTableName": "Product",
+            "validate": true
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-30",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "addForeignKeyConstraint": {
+            "baseColumnNames": "product_variation_variation_id",
+            "baseTableName": "ProductVariation",
+            "constraintName": "product_variation_fk_2",
+            "deferrable": false,
+            "initiallyDeferred": false,
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "referencedColumnNames": "variation_id",
+            "referencedTableName": "Variation",
+            "validate": true
+          }
+        }
+      ]
+      
+    }
+  },
+  
+  {
+    "changeSet": {
+      "id": "1712067886334-31",
+      "author": "phamvant (generated)",
+      "changes": [
+        {
+          "addForeignKeyConstraint": {
+            "baseColumnNames": "variation_shop_id",
+            "baseTableName": "Variation",
+            "constraintName": "variation_shop_fk",
+            "deferrable": false,
+            "initiallyDeferred": false,
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "referencedColumnNames": "user_id",
+            "referencedTableName": "User",
+            "validate": true
+          }
+        }
+      ]
+      
+    }
+  }
+  
+]}
