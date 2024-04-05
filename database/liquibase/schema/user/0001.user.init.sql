@@ -35,3 +35,4 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"(user_email);
 CREATE UNIQUE INDEX "KeyToken_userId_key" ON "KeyToken"(keytoken_user_id);
 -- CreateIndex
 CREATE UNIQUE INDEX "ApiKey_key_key" ON "ApiKey"(apikey_key);
+--rollback drop table "ApiKey";

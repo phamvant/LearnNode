@@ -49,3 +49,4 @@ ALTER TABLE public."DiscountProduct"
 ADD CONSTRAINT "discount_product_fk1" FOREIGN KEY (discount_product_product_id) REFERENCES "Product"(product_id);
 ALTER TABLE public."DiscountProduct"
 ADD CONSTRAINT "discount_product_fk2" FOREIGN KEY (discount_product_discount_id) REFERENCES "Discount"(discount_id);
+--rollback drop table "DiscountProduct";

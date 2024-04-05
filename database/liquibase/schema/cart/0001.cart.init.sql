@@ -24,3 +24,4 @@ ALTER TABLE "CartProduct"
 ADD CONSTRAINT "cart_product_fkey" FOREIGN KEY (cart_product_cart_id) REFERENCES "Cart"(cart_id);
 ALTER TABLE "CartProduct"
 ADD CONSTRAINT "cart_product_fkey_2" FOREIGN KEY (cart_product_product_id) REFERENCES "Product"(product_id);
+--rollback drop table "CartProduct";

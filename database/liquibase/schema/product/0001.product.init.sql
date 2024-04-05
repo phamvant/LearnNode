@@ -123,3 +123,4 @@ CREATE INDEX idx_product_fts ON "Product" USING gin(
     product_name || ' ' || product_description
   )
 );
+--rollback drop table "Product";
